@@ -30,12 +30,22 @@
 </template>
 
 <script >
+// import './assets/images/background.png'
 export default {
   data() {
     return {
-      backgroundImage: './assets/images/background.png'
+      backgroundImage:null
     }
-  }
+  },
+  mounted() {
+  import('@/assets/images/background.png')
+    .then(image => {
+      this.backgroundImage = image.default;
+    })
+    .catch(error => {
+      console.error('Error loading image:', error);
+    });
+}
 }
 </script>
 
@@ -43,7 +53,10 @@ export default {
 .full-screen-background {
   background-size: cover;
   background-position: center;
-  position: fixed;
+  height: 100vh; /* Set height to 100% of viewport height */
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; 
 }
 .sign-in-container {
   background-color: #f2f2f2;

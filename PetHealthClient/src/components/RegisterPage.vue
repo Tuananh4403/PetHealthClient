@@ -27,6 +27,9 @@
     crossorigin="anonymous"
   />
 </template>
+<script>
+
+</script>
 <style>
 .signup-container {
   max-width: 400px;
