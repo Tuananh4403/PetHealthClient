@@ -5,15 +5,20 @@
         <h1>Sign in</h1>
         <p>New user? <router-link to="/register">Create an account</router-link></p>
         <form>
-          <input type="email" placeholder="Email address" />
+          <input
+            type="email"
+            placeholder="Email"
+            v-model="email"
+            @input="validateEmail"
+            @blur="validateEmail"
+          />
+          <p v-if="emailError" class="error">{{ emailError }}</p>
           <input type="password" placeholder="Password" />
-          <button type="submit">Continue</button>
+          <button type="submit">Login</button>
         </form>
         <div class="or">----------Or----------</div>
         <div class="social-login">
-          <button class="google-btn">
-            <i class="fab fa-google"></i> Continue with Google
-          </button>
+          <button class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
           <button class="facebook-btn">
             <i class="fab fa-facebook-f"></i> Continue with Facebook
           </button>
@@ -30,22 +35,35 @@
 </template>
 
 <script >
-// import './assets/images/background.png'
 export default {
   data() {
     return {
-      backgroundImage:null
+      backgroundImage: null,
+      email: '',
+      emailError: ''
     }
   },
+
   mounted() {
-  import('@/assets/images/background.png')
-    .then(image => {
-      this.backgroundImage = image.default;
-    })
-    .catch(error => {
-      console.error('Error loading image:', error);
-    });
-}
+    import('@/assets/images/background.png')
+      .then((image) => {
+        this.backgroundImage = image.default
+      })
+      .catch((error) => {
+        console.error('Error loading image:', error)
+      })
+  },
+
+  methods: {
+    validateEmail() {
+      const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+      if (!emailRegex.test(this.email)) {
+        this.emailError = 'Please enter a valid email address';
+      } else {
+        this.emailError = '';
+      }
+    }
+  }
 }
 </script>
 
@@ -53,11 +71,12 @@ export default {
 .full-screen-background {
   background-size: cover;
   background-position: center;
-  height: 100vh; /* Set height to 100% of viewport height */
+  height: 100vh;
   display: flex;
-  justify-content: center; /* Center content horizontally */
-  align-items: center; 
+  justify-content: center;
+  align-items: center;
 }
+
 .sign-in-container {
   background-color: #f2f2f2;
   padding: 30px;
@@ -112,8 +131,13 @@ button[type='submit'] {
   background-color: #3b5998;
   color: #fff;
 }
+
 .social-login button i {
   margin-right: 8px;
+}
+
+.error {
+  color: red;
 }
 </style>
 

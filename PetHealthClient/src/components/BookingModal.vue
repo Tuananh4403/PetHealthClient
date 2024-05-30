@@ -4,37 +4,57 @@
       <h2>Book an appointment</h2>
       <div class="form-row">
         <input placeholder="Pet owner" />
-        <input placeholder="Pet name" />
+        <div>
+          <multiselect
+            v-model="selectedPetName"
+            :options="pets"
+            :custom-label="detailPet"
+            placeholder="Select Pet Name"
+            label="namePet"
+            track-by="idPet"
+          >         
+          </multiselect>
+        </div>
       </div>
       <div class="form-row">
-        <input placeholder="Doctor's name" />
+        <div>
+          <multiselect
+            v-model="selectedDoctor"
+            :options="doctors"
+            :custom-label="detailDoctor"
+            placeholder="Select doctor"
+            label="nameDoctor"
+            track-by="idDoctor"
+          >         
+          </multiselect>
+        </div>
         <input placeholder="Gender" />
       </div>
       <input class="form-service" placeholder="Service" />
       <div class="form-row">
         <flat-pickr v-model="dateValue" :config="dateConfig" placeholder="Date"></flat-pickr>
-        <input class="input-time" placeholder="hh:mm" />
+        <input type="time" class="input-time" placeholder="hh:mm" />
       </div>
       <textarea placeholder="Note"></textarea>
       <div class="form-actions">
         <button class="accept">Accept</button>
-        <button class="cancel" @click="cancelAction">Cancel</button> <!--Incomplete -->
+        <button class="cancel" @click="cancelAction">Cancel</button>
+        <!--Incomplete -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import flatPickr from 'vue-flatpickr-component';
-import 'flatpickr/dist/flatpickr.css';
+import flatPickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
+import Multiselect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.css'
 
 export default {
   components: {
-    flatPickr
-  },
-
-  cancelAction() {  //Incomplete 
-    this.$router.push('/components/MainPage.vue')
+    flatPickr,
+    Multiselect
   },
 
   data() {
@@ -45,7 +65,36 @@ export default {
         dateFormat: 'd/m/Y',
         static: true
       },
+
+      doctors: [
+        { idDoctor: 1, nameDoctor: 'Doctor A' },
+        { idDoctor: 2, nameDoctor: 'Doctor B' },
+        { idDoctor: 3, nameDoctor: 'Doctor C' },
+      ],
+      selectedDoctor: [],
+
+      pets: [
+        { idPet: 1, namePet: 'Pet A' },
+        { idPet: 2, namePet: 'Pet B' },
+        { idPet: 3, namePet: 'Pet C' },
+      ],
+      selectedPetName: [],
     }
+  },
+
+  methods: {
+    cancelAction() {
+      //Incomplete
+      this.$router.push('/main')
+    },
+
+    detailDoctor ({nameDoctor, idDoctor}) {
+      return `${idDoctor} . ${nameDoctor}`
+    },
+
+    detailPet({namePet, idPet}) {
+      return `${idPet} . ${namePet}`
+    },
   }
 }
 </script>
@@ -87,7 +136,7 @@ h2 {
 }
 
 .form-row .flatpickr-input {
-  width: 365px; 
+  width: 365px;
   display: inline-block;
 }
 
@@ -109,6 +158,9 @@ textarea {
   font-size: 16px;
 }
 
+.input-time {
+  margin-bottom: 5px;
+}
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -132,4 +184,11 @@ textarea {
   border-radius: 3px;
   cursor: pointer;
 }
+
+.multiselect {
+  width: 365px;
+  border: 2px solid #ccc;
+  border-radius: 3px;
+}
+
 </style>>

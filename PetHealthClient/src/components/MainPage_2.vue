@@ -12,14 +12,17 @@
     </nav>
     <div class="header-content">
       <div class="welcome">Welcome Username</div>
-      <div class="paw-print" :style="{ backgroundImage: 'url(/assets/images/background.png)' }"></div> <!--Incomplete -->
+      <div
+        class="paw-print"
+        :style="{ backgroundImage: `url(${backgroundImage})` }"
+      ></div>
+      <!--Incomplete -->
     </div>
     <main>
       <div class="content-cards">
         <div class="content-vacxin-cards">
           <h3>Vacxin Calendar</h3>
-          <div class="content">abc
-          </div>
+          <div class="content">abc</div>
         </div>
         <div class="content-kennel-cards">
           <h3>View Kennel</h3>
@@ -33,22 +36,24 @@
         </div>
         <div class="card">
           <h3>Create Booking</h3>
-          <button class="btn-mainpage" @click="navigateTo('booking')">Button</button>
+          <button class="btn-mainpage" @click="showModal = true">Button</button>
         </div>
         <div class="card">
           <h3>About Us</h3>
-          <button class="btn-mainpage" >Button</button>
+          <button class="btn-mainpage">Button</button>
         </div>
       </div>
     </main>
     <footer>
       <p>Footer</p>
     </footer>
+    <booking-modal v-if="showModal" @close-modal="showModal = false" />
   </div>
 </template>
 
 <script>
 import { useRouter } from 'vue-router'
+import BookingModal from '../components/BookingModal.vue'
 
 export default {
   setup() {
@@ -61,10 +66,18 @@ export default {
     return {
       navigateTo
     }
+  },
+
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    BookingModal
+  },
+  data() {
+    return {
+      showModal: false
+    }
   }
 }
-
-
 </script>
 
 <style>
@@ -115,7 +128,6 @@ nav ul li a {
 .paw-print {
   width: 100%;
   height: 200px;
-  background-image: url('/assets/images/background.png'); /*Incomplete */
   background-size: cover;
 }
 
@@ -141,7 +153,7 @@ nav ul li a {
 }
 
 .content-kennel-cards {
-background-color: #f2f2f2;
+  background-color: #f2f2f2;
   padding: 20px;
   border-radius: 5px;
   width: 42%;

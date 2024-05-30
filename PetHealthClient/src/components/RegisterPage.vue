@@ -1,24 +1,33 @@
 <template>
-  <div class="signup-container">
-    <h1>Create an account</h1>
-    <div class="text">
-      <p><b>Sign up with email</b></p>
-      <p>Already have an account? <router-link to="/login">Sign in</router-link></p>
-    </div>
-    <form>
-      <input type="email" placeholder="Email address" />
-      <input type="password" placeholder="Password" />
-      <button type="submit" class="btn">Continue</button>
-    </form>
-    <div class="or">----------Or----------</div>
-        <div class="social-login">
-          <button class="google-btn"> 
-            <i class="fab fa-google"></i> Continue with Google
-          </button>
+  <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
+    <div class="signup-container">
+      <h1>Create a new account</h1>
+      <form>
+        <input type="text" placeholder="User name" />
+        <div class="name-inputs">
+          <input type="text" placeholder="First Name" />
+          <input type="text" placeholder="Last Name" />
+        </div>
+        <input
+          type="email"
+          placeholder="Email"
+          v-model="email"
+          @input="validateEmail"
+          @blur="validateEmail"
+        />
+        <p v-if="emailError" class="error">{{ emailError }}</p>
+        <input type="password" placeholder="Password" />
+        <input type="password" placeholder="Confirm Password" />
+        <button type="submit">Sign up</button>
+        <div class="or">------------- Or -------------</div>
+        <div class="social-buttons">
+          <button class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
           <button class="facebook-btn">
             <i class="fab fa-facebook-f"></i> Continue with Facebook
           </button>
         </div>
+      </form>
+    </div>
   </div>
   <link
     rel="stylesheet"
@@ -28,24 +37,66 @@
   />
 </template>
 <script>
+export default {
+  data() {
+    return {
+      backgroundImage: null,
+      email: '',
+      emailError: ''
+    }
+  },
+  
+  mounted() {
+    import('@/assets/images/background.png')
+      .then((image) => {
+        this.backgroundImage = image.default
+      })
+      .catch((error) => {
+        console.error('Error loading image:', error)
+      })
+  },
 
+  methods: {
+    validateEmail() {
+      const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+      if (!emailRegex.test(this.email)) {
+        this.emailError = 'Please enter a valid email address';
+      } else {
+        this.emailError = '';
+      }
+    }
+  }
+}
 </script>
 <style>
+.full-screen-background {
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+}
+
 .signup-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 30px;
+  max-width: 450px;
+  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f2f2f2;
-  margin-left: 700px;
+  align-items: center;
+}
+
+.name-inputs {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 input[type='email'],
-input[type='password'] {
+input[type='password'],
+input[type='text'] {
   width: 100%;
   padding: 12px 20px;
-  margin: 8px 0;
+  margin: 6px 0;
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -64,13 +115,12 @@ button[type='submit'] {
 
 .or {
   text-align: center;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
-.social-login button {
+.social-buttons button {
   width: 100%;
   padding: 12px 20px;
-  margin: 8px 0;
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -87,4 +137,7 @@ button[type='submit'] {
   color: #757575;
 }
 
+.error {
+  color: red;
+}
 </style>
