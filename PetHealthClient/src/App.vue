@@ -5,7 +5,7 @@
 </template>
 <script>
 import MainPage from "./components/MainPage.vue";
-import LoginPage from "./components/LoginPage.vue";
+import LoginPage from "./components/auth/LoginPage.vue";
 // import RegisterPage from "./components/RegisterPage.vue";
 import BookingModal from "./components/BookingModal.vue";
 import MainPage_2 from './components/MainPage_2.vue'

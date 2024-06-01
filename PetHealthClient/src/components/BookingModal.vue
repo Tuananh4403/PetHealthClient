@@ -12,25 +12,33 @@
             placeholder="Select Pet Name"
             label="namePet"
             track-by="idPet"
-          >         
+          >
           </multiselect>
         </div>
       </div>
       <div class="form-row">
         <div>
-          <multiselect
+          <multiselect          
             v-model="selectedDoctor"
             :options="doctors"
             :custom-label="detailDoctor"
             placeholder="Select doctor"
             label="nameDoctor"
             track-by="idDoctor"
-          >         
+          >
           </multiselect>
         </div>
         <input placeholder="Gender" />
       </div>
-      <input class="form-service" placeholder="Service" />
+      <multiselect
+        class="form-service"
+        v-model="selectedService"
+        :options="services"
+        :custom-label="detailService"
+        placeholder="Select Service"
+        label="nameService"
+        track-by="idService"
+      ></multiselect>
       <div class="form-row">
         <flat-pickr v-model="dateValue" :config="dateConfig" placeholder="Date"></flat-pickr>
         <input type="time" class="input-time" placeholder="hh:mm" />
@@ -69,32 +77,42 @@ export default {
       doctors: [
         { idDoctor: 1, nameDoctor: 'Doctor A' },
         { idDoctor: 2, nameDoctor: 'Doctor B' },
-        { idDoctor: 3, nameDoctor: 'Doctor C' },
+        { idDoctor: 3, nameDoctor: 'Doctor C' }
       ],
       selectedDoctor: [],
 
       pets: [
         { idPet: 1, namePet: 'Pet A' },
         { idPet: 2, namePet: 'Pet B' },
-        { idPet: 3, namePet: 'Pet C' },
+        { idPet: 3, namePet: 'Pet C' }
       ],
       selectedPetName: [],
+
+      services: [
+      { idService: 1, nameService: 'Service A' },
+      { idService: 2, nameService: 'Service B' },
+      { idService: 3, nameService: 'Service C' },
+    ],
+      selectedService: [],
     }
   },
 
   methods: {
     cancelAction() {
-
       this.$emit('close-modal')
     },
 
-    detailDoctor ({nameDoctor, idDoctor}) {
+    detailDoctor({ nameDoctor, idDoctor }) {
       return `${idDoctor} . ${nameDoctor}`
     },
 
-    detailPet({namePet, idPet}) {
+    detailPet({ namePet, idPet }) {
       return `${idPet} . ${namePet}`
     },
+
+    detailService({ nameService, idService }) {
+    return `${idService} . ${nameService}`
+  },
   }
 }
 </script>
@@ -190,5 +208,4 @@ textarea {
   border: 2px solid #ccc;
   border-radius: 3px;
 }
-
 </style>>

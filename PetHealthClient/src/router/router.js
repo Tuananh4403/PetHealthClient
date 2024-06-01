@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from '../components/MainPage.vue'
-import LoginPage from '../components/LoginPage.vue'
-import RegisterPage from '../components/RegisterPage.vue'
+import LoginPage from '../components/auth/LoginPage.vue'
+import RegisterPage from '../components/auth/RegisterPage.vue'
 import MainPage_2 from '../components/MainPage_2.vue'
 import BookingModal from '../components/BookingModal.vue'
 

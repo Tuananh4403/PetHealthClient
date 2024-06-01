@@ -18,11 +18,11 @@
         <p v-if="emailError" class="error">{{ emailError }}</p>
         <input type="password" placeholder="Password" />
         <input type="password" placeholder="Confirm Password" />
-        <button type="submit">Sign up</button>
+        <button type="submit" @click="register">Sign up</button>
         <div class="or">------------- Or -------------</div>
-        <div class="social-buttons">
+        <div class="social-buttons" @click="registerWithGoogle">
           <button class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
-          <button class="facebook-btn">
+          <button class="facebook-btn" @click="registerWithFacebook">
             <i class="fab fa-facebook-f"></i> Continue with Facebook
           </button>
         </div>
@@ -37,12 +37,14 @@
   />
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
       backgroundImage: null,
       email: '',
-      emailError: ''
+      emailError: '',
+      password: ''
     }
   },
   
@@ -64,7 +66,40 @@ export default {
       } else {
         this.emailError = '';
       }
+    },
+
+    register() {
+    if (!this.emailError) {
+      axios.post('/api/auth/register', {
+      })
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
     }
+  },
+
+  registerWithGoogle() {
+    axios.post('/api/auth/google')
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  },
+
+  registerWithFacebook() {
+    axios.post('/api/auth/facebook')
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
   }
 }
 </script>

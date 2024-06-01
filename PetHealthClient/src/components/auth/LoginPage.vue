@@ -14,12 +14,14 @@
           />
           <p v-if="emailError" class="error">{{ emailError }}</p>
           <input type="password" placeholder="Password" />
-          <button @click="increment" type="submit">Login</button>
+          <button @click="login" type="submit">Login</button>
         </form>
         <div class="or">----------Or----------</div>
         <div class="social-login">
-          <button class="google-btn"><i class="fab fa-google"></i> Login with Google</button>
-          <button class="facebook-btn">
+          <button class="google-btn" @click="loginWithGoogle">
+            <i class="fab fa-google"></i> Login with Google
+          </button>
+          <button class="facebook-btn" @click="loginWithFacebook">
             <i class="fab fa-facebook-f"></i> Login with Facebook
           </button>
         </div>
@@ -35,13 +37,14 @@
 </template>
 
 <script >
-
+import axios from 'axios'
 export default {
   data() {
     return {
       backgroundImage: null,
       email: '',
-      emailError: ''
+      emailError: '',
+      password: ''
     }
   },
 
@@ -57,12 +60,50 @@ export default {
 
   methods: {
     validateEmail() {
-      const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+      const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/
       if (!emailRegex.test(this.email)) {
-        this.emailError = 'Please enter a valid email address';
+        this.emailError = 'Please enter a valid email address'
       } else {
-        this.emailError = '';
+        this.emailError = ''
       }
+    },
+
+    login() {
+      if (!this.emailError) {
+        axios
+          .post('/api/auth/login', {
+            email: this.email,
+            password: this.password
+          })
+          .then((response) => {           
+            console.log(response.data)
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+      }
+    },
+
+    loginWithGoogle() {
+      axios
+        .post('/api/auth/google')
+        .then((response) => {
+          console.log(response.data)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+
+    loginWithFacebook() {
+      axios
+        .post('/api/auth/facebook')
+        .then((response) => {
+          console.log(response.data)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
   }
 }

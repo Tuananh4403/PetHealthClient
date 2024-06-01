@@ -214,8 +214,5 @@ footer {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
