@@ -84,8 +84,8 @@ export default {
 
   methods: {
     cancelAction() {
-      //Incomplete
-      this.$router.push('/main')
+
+      this.$emit('close-modal')
     },
 
     detailDoctor ({nameDoctor, idDoctor}) {

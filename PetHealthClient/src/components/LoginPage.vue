@@ -14,13 +14,13 @@
           />
           <p v-if="emailError" class="error">{{ emailError }}</p>
           <input type="password" placeholder="Password" />
-          <button type="submit">Login</button>
+          <button @click="increment" type="submit">Login</button>
         </form>
         <div class="or">----------Or----------</div>
         <div class="social-login">
-          <button class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
+          <button class="google-btn"><i class="fab fa-google"></i> Login with Google</button>
           <button class="facebook-btn">
-            <i class="fab fa-facebook-f"></i> Continue with Facebook
+            <i class="fab fa-facebook-f"></i> Login with Facebook
           </button>
         </div>
       </div>
@@ -35,6 +35,7 @@
 </template>
 
 <script >
+
 export default {
   data() {
     return {
