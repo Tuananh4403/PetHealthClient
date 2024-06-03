@@ -9,7 +9,7 @@
             v-model="selectedPetName"
             :options="pets"
             :custom-label="detailPet"
-            placeholder="Select Pet Name"
+            placeholder=" Select Pet Name"
             label="namePet"
             track-by="idPet"
           >
@@ -22,7 +22,7 @@
             v-model="selectedDoctor"
             :options="doctors"
             :custom-label="detailDoctor"
-            placeholder="Select doctor"
+            placeholder=" Select doctor"
             label="nameDoctor"
             track-by="idDoctor"
           >
@@ -35,7 +35,7 @@
         v-model="selectedService"
         :options="services"
         :custom-label="detailService"
-        placeholder="Select Service"
+        placeholder=" Select Service"
         label="nameService"
         track-by="idService"
       ></multiselect>
@@ -47,7 +47,6 @@
       <div class="form-actions">
         <button class="accept">Accept</button>
         <button class="cancel" @click="cancelAction">Cancel</button>
-        <!--Incomplete -->
       </div>
     </div>
   </div>
@@ -57,8 +56,7 @@
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import Multiselect from 'vue-multiselect'
-import 'vue-multiselect/dist/vue-multiselect.css'
-
+  
 export default {
   components: {
     flatPickr,
@@ -161,7 +159,7 @@ h2 {
 input {
   width: 100%;
   padding: 10px;
-  border: 2px solid #ccc;
+  border: 2px solid #000000;
   border-radius: 5px;
   margin-bottom: 15px;
   font-size: 16px;
@@ -170,7 +168,7 @@ input {
 textarea {
   width: 100%;
   padding: 10px;
-  border: 2px solid #ccc;
+  border: 2px solid #000000;
   border-radius: 5px;
   margin-bottom: 10px;
   font-size: 16px;
@@ -179,6 +177,7 @@ textarea {
 .input-time {
   margin-bottom: 5px;
 }
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -203,9 +202,6 @@ textarea {
   cursor: pointer;
 }
 
-.multiselect {
-  width: 365px;
-  border: 2px solid #ccc;
-  border-radius: 3px;
-}
+
+
 </style>>
