@@ -4,7 +4,7 @@
       <div class="sign-in-container">
         <h1>Sign in</h1>
         <p>New user? <router-link to="/register">Create an account</router-link></p>
-        <form>
+        <form @submit.prevent="login">
           <input
             type="email"
             placeholder="Email"
@@ -65,22 +65,6 @@ export default {
         this.emailError = 'Please enter a valid email address'
       } else {
         this.emailError = ''
-      }
-    },
-
-    login() {
-      if (!this.emailError) {
-        axios
-          .post('/api/auth/login', {
-            email: this.email,
-            password: this.password
-          })
-          .then((response) => {           
-            console.log(response.data)
-          })
-          .catch((error) => {
-            console.error(error)
-          })
       }
     },
 

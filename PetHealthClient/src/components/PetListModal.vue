@@ -49,7 +49,6 @@ export default {
   methods: {
     updatePet() {
       console.log('Pet data updated:', this.pet);
-      // Add your update logic here
     },
     cancelUpdate() {
       this.pet = {
