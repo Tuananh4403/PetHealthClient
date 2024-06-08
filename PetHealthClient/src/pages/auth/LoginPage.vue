@@ -5,14 +5,16 @@
         <h1>Sign in</h1>
         <p>New user? <router-link to="/register">Create an account</router-link></p>
         <form @submit.prevent="login">
+        <form @submit.prevent="login">
           <input
-            type="email"
             placeholder="Email"
             v-model="email"
             @input="validateEmail"
             @blur="validateEmail"
           />
           <p v-if="emailError" class="error">{{ emailError }}</p>
+          <input v-model="password" type="password" placeholder="Password" />
+          <button @click="handleLogin" type="submit">Login</button>
           <input type="password" placeholder="Password" />
           <button @click="login" type="submit">Login</button>
         </form>
@@ -37,12 +39,18 @@
 </template>
 
 <script >
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
+
 import axios from 'axios'
 export default {
   data() {
     return {
       backgroundImage: null,
       email: '',
+      emailError: '',
+      password: ''
       emailError: '',
       password: ''
     }
@@ -65,6 +73,31 @@ export default {
         this.emailError = 'Please enter a valid email address'
       } else {
         this.emailError = ''
+      }
+    },
+    async handleLogin() {
+      try {
+        let data = JSON.stringify({
+          "username": "tes5",
+          "password": "123"
+        });
+
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'http://localhost:4000/api/auth/authenticate',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          data: data
+        };
+
+        const response = await axios.request(config);
+        Cookies.set('auth_token', response.data.token, { expires: 7 });
+        const router = this.$router;
+        router.push('/main'); // Redirect to the main page
+      } catch (error) {
+        console.error(error);
       }
     },
 
@@ -90,7 +123,7 @@ export default {
         })
     }
   }
-}
+  }
 </script>
 
 <style>
