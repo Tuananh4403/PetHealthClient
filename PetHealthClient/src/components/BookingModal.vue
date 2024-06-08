@@ -37,7 +37,7 @@
       </div>
       <textarea placeholder="Note"></textarea>
       <div class="form-actions">
-        <button class="accept">Accept</button>
+        <button class="accept" @click="createBooking">Accept</button>
         <button class="cancel" @click="cancelAction">Cancel</button>
         <!--Incomplete -->
       </div>
@@ -50,6 +50,8 @@ import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import Multiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.css'
+import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -95,7 +97,32 @@ export default {
     detailPet({namePet, idPet}) {
       return `${idPet} . ${namePet}`
     },
-  }
+    async handleLogin() {
+      try {
+        let data = JSON.stringify({
+          "username": "tes5",
+          "password": "123"
+        });
+
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'http://localhost:4000/api/auth/authenticate',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          data: data
+        };
+
+        const response = await axios.request(config);
+        Cookies.set('auth_token', response.data.token, { expires: 7 });
+        const router = this.$router;
+        router.push('/main'); // Redirect to the main page
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    }
 }
 </script>
 

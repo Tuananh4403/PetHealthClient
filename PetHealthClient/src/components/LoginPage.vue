@@ -4,17 +4,16 @@
       <div class="sign-in-container">
         <h1>Sign in</h1>
         <p>New user? <router-link to="/register">Create an account</router-link></p>
-        <form>
+        <form @submit.prevent="login">
           <input
-            type="email"
             placeholder="Email"
             v-model="email"
             @input="validateEmail"
             @blur="validateEmail"
           />
           <p v-if="emailError" class="error">{{ emailError }}</p>
-          <input type="password" placeholder="Password" />
-          <button @click="increment" type="submit">Login</button>
+          <input v-model="password" type="password" placeholder="Password" />
+          <button @click="handleLogin" type="submit">Login</button>
         </form>
         <div class="or">----------Or----------</div>
         <div class="social-login">
@@ -35,13 +34,17 @@
 </template>
 
 <script >
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
 
 export default {
   data() {
     return {
       backgroundImage: null,
       email: '',
-      emailError: ''
+      emailError: '',
+      password: ''
     }
   },
 
@@ -63,9 +66,34 @@ export default {
       } else {
         this.emailError = '';
       }
+    },
+    async handleLogin() {
+      try {
+        let data = JSON.stringify({
+          "username": "tes5",
+          "password": "123"
+        });
+
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'http://localhost:4000/api/auth/authenticate',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          data: data
+        };
+
+        const response = await axios.request(config);
+        Cookies.set('auth_token', response.data.token, { expires: 7 });
+        const router = this.$router;
+        router.push('/main'); // Redirect to the main page
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
-}
+  }
 </script>
 
 <style>
