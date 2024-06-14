@@ -5,6 +5,7 @@
         <h1>Sign in</h1>
         <p>New user? <router-link to="/register">Create an account</router-link></p>
         <form @submit.prevent="login">
+        <form @submit.prevent="login">
           <input
             placeholder="Email"
             v-model="email"
@@ -14,11 +15,15 @@
           <p v-if="emailError" class="error">{{ emailError }}</p>
           <input v-model="password" type="password" placeholder="Password" />
           <button @click="handleLogin" type="submit">Login</button>
+          <input type="password" placeholder="Password" />
+          <button @click="login" type="submit">Login</button>
         </form>
         <div class="or">----------Or----------</div>
         <div class="social-login">
-          <button class="google-btn"><i class="fab fa-google"></i> Login with Google</button>
-          <button class="facebook-btn">
+          <button class="google-btn" @click="loginWithGoogle">
+            <i class="fab fa-google"></i> Login with Google
+          </button>
+          <button class="facebook-btn" @click="loginWithFacebook">
             <i class="fab fa-facebook-f"></i> Login with Facebook
           </button>
         </div>
@@ -38,11 +43,14 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'vue-router';
 
+import axios from 'axios'
 export default {
   data() {
     return {
       backgroundImage: null,
       email: '',
+      emailError: '',
+      password: ''
       emailError: '',
       password: ''
     }
@@ -60,11 +68,11 @@ export default {
 
   methods: {
     validateEmail() {
-      const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+      const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/
       if (!emailRegex.test(this.email)) {
-        this.emailError = 'Please enter a valid email address';
+        this.emailError = 'Please enter a valid email address'
       } else {
-        this.emailError = '';
+        this.emailError = ''
       }
     },
     async handleLogin() {
@@ -91,6 +99,28 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+
+    loginWithGoogle() {
+      axios
+        .post('/api/auth/google')
+        .then((response) => {
+          console.log(response.data)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+
+    loginWithFacebook() {
+      axios
+        .post('/api/auth/facebook')
+        .then((response) => {
+          console.log(response.data)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
   }
   }

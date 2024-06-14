@@ -1,5 +1,4 @@
 <template>
-  <div class="app">
     <nav>
       <ul>
         <li><a href="#">Home</a></li>
@@ -10,13 +9,8 @@
         <li><a href="#">Service</a></li>
       </ul>
     </nav>
-    <div class="header-content">
+    <div class="header-content bg-image" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <div class="welcome">Welcome Username</div>
-      <div
-        class="paw-print"
-        :style="{ backgroundImage: `url(${backgroundImage})` }"
-      ></div>
-      <!--Incomplete -->
     </div>
     <main>
       <div class="content-cards">
@@ -32,7 +26,7 @@
       <div class="button-cards">
         <div class="card">
           <h3>View Pet List</h3>
-          <button class="btn-mainpage">Button</button>
+          <button class="btn-mainpage" @click="navigateTo('petList')">Button</button>
         </div>
         <div class="card">
           <h3>Create Booking</h3>
@@ -50,7 +44,6 @@
     <div class="modal" v-if="showModal">
       <booking-modal @close-modal="showModal = false" />
     </div>
-  </div>
 </template>
 
 <script>
@@ -71,27 +64,28 @@ export default {
   },
 
   components: {
-    // eslint-disable-next-line vue/no-unused-components
     BookingModal
   },
   data() {
     return {
-      showModal: false
+      showModal: false,
+      backgroundImage: null,
     }
-  }
+  },
+
+  mounted() {
+    import('@/assets/images/bgmain.png')
+      .then((image) => {
+        this.backgroundImage = image.default
+      })
+      .catch((error) => {
+        console.error('Error loading image:', error)
+      })
+  },
 }
 </script>
 
 <style>
-.app {
-  flex-direction: column;
-  min-height: 200vh;
-}
-
-body {
-  font-family: Arial;
-}
-
 nav {
   background-color: #ffd68e;
   padding: 8px;
@@ -114,23 +108,22 @@ nav ul li a {
 }
 
 .header-content {
-  background-color: #c94c4c;
   color: #fff;
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  height: 455px;
+}
+
+.bg-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 455px; 
 }
 
 .welcome {
   font-size: 36px;
   margin-top: 200px;
-}
-
-.paw-print {
-  width: 100%;
-  height: 200px;
-  background-size: cover;
 }
 
 .content-cards {
@@ -214,8 +207,5 @@ footer {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
