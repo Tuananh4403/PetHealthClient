@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+
     <div class="container">
       <h1>List of your pets</h1>
     </div>
@@ -38,7 +39,8 @@ export default {
         { name: 'Goldie', kind: 'Fish', gender: 'Male', birthday: '2021-07-07', species: 'Goldfish' }
       ]
     };
-  }
+  },
+
 };
 </script>
 

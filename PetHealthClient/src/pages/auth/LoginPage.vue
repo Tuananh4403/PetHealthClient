@@ -5,18 +5,13 @@
         <h1>Sign in</h1>
         <p>New user? <router-link to="/register">Create an account</router-link></p>
         <form @submit.prevent="login">
-        <form @submit.prevent="login">
           <input
             placeholder="Email"
             v-model="email"
-            @input="validateEmail"
-            @blur="validateEmail"
           />
           <p v-if="emailError" class="error">{{ emailError }}</p>
           <input v-model="password" type="password" placeholder="Password" />
           <button @click="handleLogin" type="submit">Login</button>
-          <input type="password" placeholder="Password" />
-          <button @click="login" type="submit">Login</button>
         </form>
         <div class="or">----------Or----------</div>
         <div class="social-login">
@@ -41,16 +36,11 @@
 <script >
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useRouter } from 'vue-router';
-
-import axios from 'axios'
 export default {
   data() {
     return {
       backgroundImage: null,
       email: '',
-      emailError: '',
-      password: ''
       emailError: '',
       password: ''
     }
