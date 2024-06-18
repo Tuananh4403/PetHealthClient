@@ -6,32 +6,32 @@
         <input placeholder="Pet owner" />
         <div>
           <multiselect
+            class="form-multi"
             v-model="selectedPetName"
             :options="pets"
             :custom-label="detailPet"
             placeholder=" Select Pet Name"
             label="namePet"
             track-by="idPet"
-          >
-          </multiselect>
+          ></multiselect>
         </div>
       </div>
       <div class="form-row">
         <div>
-          <multiselect          
+          <multiselect
+            class="form-multi"
             v-model="selectedDoctor"
             :options="doctors"
             :custom-label="detailDoctor"
             placeholder=" Select doctor"
             label="nameDoctor"
             track-by="idDoctor"
-          >
-          </multiselect>
+          ></multiselect>
         </div>
         <input placeholder="Gender" />
       </div>
       <multiselect
-        class="form-service"
+        class="form-multi"
         v-model="selectedService"
         :options="services"
         :custom-label="detailService"
@@ -41,7 +41,7 @@
       ></multiselect>
       <div class="form-row">
         <flat-pickr v-model="dateValue" :config="dateConfig" placeholder="Date"></flat-pickr>
-        <input type="time" class="input-time" placeholder="hh:mm" />
+        <input type="time" placeholder="hh:mm" />
       </div>
       <textarea placeholder="Note"></textarea>
       <div class="form-actions">
@@ -56,11 +56,10 @@
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import Multiselect from 'vue-multiselect'
-import 'vue-multiselect/dist/vue-multiselect.css'
-import Cookies from 'js-cookie';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
-  
+import Cookies from 'js-cookie'
+// import { useRouter } from 'vue-router';
+import axios from 'axios'
+
 export default {
   components: {
     flatPickr,
@@ -91,11 +90,11 @@ export default {
       selectedPetName: [],
 
       services: [
-      { idService: 1, nameService: 'Service A' },
-      { idService: 2, nameService: 'Service B' },
-      { idService: 3, nameService: 'Service C' },
-    ],
-      selectedService: [],
+        { idService: 1, nameService: 'Service A' },
+        { idService: 2, nameService: 'Service B' },
+        { idService: 3, nameService: 'Service C' }
+      ],
+      selectedService: []
     }
   },
 
@@ -117,73 +116,33 @@ export default {
     async handleLogin() {
       try {
         let data = JSON.stringify({
-          "username": "tes5",
-          "password": "123"
-        });
+          username: 'tes5',
+          password: '123'
+        })
 
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
           url: 'http://localhost:4000/api/auth/authenticate',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json'
           },
           data: data
-        };
+        }
 
-        const response = await axios.request(config);
-        Cookies.set('auth_token', response.data.token, { expires: 7 });
-        const router = this.$router;
-        router.push('/main'); // Redirect to the main page
+        const response = await axios.request(config)
+        Cookies.set('auth_token', response.data.token, { expires: 7 })
+        const router = this.$router
+        router.push('/main') // Redirect to the main page
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
     }
-    }
+  }
 }
 </script>
 
-<style scoped>
-.booking-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 100px;
-}
-
-.booking-form {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  max-width: 800px;
-  width: 100%;
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.form-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
-.form-service {
-  margin-bottom: 30px;
-}
-
-.form-row input {
-  width: 48%;
-}
-
-.form-row .flatpickr-input {
-  width: 365px;
-  display: inline-block;
-}
-
+<style scoped>  
 input {
   width: 100%;
   padding: 10px;
@@ -202,34 +161,16 @@ textarea {
   font-size: 16px;
 }
 
-.input-time {
-  margin-bottom: 5px;
+input[type='time'] {
+  margin-top: 8px;
+  width: 200px;
+  height: 42px;
 }
 
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.accept {
-  background-color: #4285f4;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
+.form-multi {
+  width: 365px;
+  border: 2px solid #000000;
   border-radius: 3px;
-  cursor: pointer;
-  margin-left: 10px;
+  margin-bottom: 15px;
 }
-
-.cancel {
-  background-color: rgb(181, 175, 175);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-
-
 </style>>

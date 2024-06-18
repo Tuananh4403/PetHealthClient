@@ -30,7 +30,7 @@
         </div>
         <div class="card">
           <h3>Create Booking</h3>
-          <button class="btn-mainpage" @click="showModal = true">Button</button>
+          <button class="btn-mainpage" @click="showBookingModal = true">Button</button>
         </div>
         <div class="card">
           <h3>About Us</h3>
@@ -41,8 +41,8 @@
     <footer>
       <p>Footer</p>
     </footer>
-    <div class="modal" v-if="showModal">
-      <booking-modal @close-modal="showModal = false" />
+    <div class="modal" v-if="showBookingModal">
+      <booking-modal @close-modal="showBookingModal = false" />
     </div>
 </template>
 
@@ -66,9 +66,10 @@ export default {
   components: {
     BookingModal
   },
+
   data() {
     return {
-      showModal: false,
+      showBookingModal: false,
       backgroundImage: null,
     }
   },
@@ -85,127 +86,3 @@ export default {
 }
 </script>
 
-<style>
-nav {
-  background-color: #ffd68e;
-  padding: 8px;
-}
-
-nav ul {
-  list-style-type: none;
-  display: flex;
-  justify-content: center;
-}
-
-nav ul li {
-  margin: 0 20px;
-}
-
-nav ul li a {
-  color: black;
-  text-decoration: none;
-  font-size: 20px;
-}
-
-.header-content {
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  height: 455px;
-}
-
-.bg-image {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 455px; 
-}
-
-.welcome {
-  font-size: 36px;
-  margin-top: 200px;
-}
-
-.content-cards {
-  display: flex;
-  justify-content: space-between;
-  margin: 50px 0;
-}
-
-.button-cards {
-  display: flex;
-  justify-content: space-between;
-  margin: 100px 0;
-  align-items: stretch;
-}
-
-.content-vacxin-cards {
-  background-color: #f2f2f2;
-  padding: 20px;
-  border-radius: 5px;
-  width: 53%;
-  height: 400px;
-}
-
-.content-kennel-cards {
-  background-color: #f2f2f2;
-  padding: 20px;
-  border-radius: 5px;
-  width: 42%;
-  height: 400px;
-}
-
-.card {
-  background-color: #f2f2f2;
-  padding: 20px;
-  border-radius: 5px;
-  width: 48%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  text-align: center;
-}
-
-.card h3 {
-  margin-bottom: 10px;
-}
-
-.content {
-  height: 150px;
-  background-color: #ddd;
-  padding-top: 200px;
-}
-
-.btn-mainpage {
-  background-color: black;
-  color: yellow;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-self: center;
-}
-
-footer {
-  background-color: #f2f2f2;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  height: 100px;
-}
-
-.modal {
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-</style>

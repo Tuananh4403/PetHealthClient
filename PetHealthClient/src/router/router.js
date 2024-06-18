@@ -6,44 +6,56 @@ import MainPage_2 from '../components/MainPage_2.vue'
 import BookingModal from '../components/BookingModal.vue'
 import PetListPage from '../pages/PetListPage.vue'
 import PetListModal from '../components/PetListModal.vue'
+import RecordPage from '../components/RecordPage.vue'
+import InforPetModal from '../components/InforPetModal.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'main',
+      name: 'Main',
       component: MainPage
     },
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       component: LoginPage
     },
     {
       path: '/register',
-      name: 'register',
+      name: 'Register',
       component: RegisterPage
     },
     {
       path: '/main',
-      name: 'mainP',
+      name: 'MainP',
       component: MainPage_2
     },
     {
       path: '/booking',
-      name: 'booking',
+      name: 'Booking',
       component: BookingModal
     },
     {
       path: '/petList',
-      name: 'petList',
+      name: 'PetList',
       component: PetListPage
     },
     {
       path: '/petlistModal',
-      name: 'petListModal',
+      name: 'PetListModal',
       component: PetListModal
+    },
+    {
+      path: '/record',
+      name: 'Record',
+      component: RecordPage
+    },
+    {
+      path: '/inforPet',
+      name: 'InforPet',
+      component: InforPetModal
     },
   ]
 })

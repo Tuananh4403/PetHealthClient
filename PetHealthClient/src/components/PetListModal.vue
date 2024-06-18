@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container">
+  <div class="container">
     <div class="form-container">
       <h2>Update your pet</h2>
       <form @submit.prevent="updatePet">
@@ -58,7 +58,7 @@ export default {
         species: '',
         birthday: ''
       };
-      console.log('Update canceled');
+      this.$emit('close-modal')
     }
   }
 };
@@ -70,7 +70,6 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f8f8f8;
 }
 
 .form-container {

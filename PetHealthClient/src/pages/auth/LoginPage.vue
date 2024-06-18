@@ -5,8 +5,8 @@
         <h1>Sign in</h1>
         <p>New user? <router-link to="/register">Create an account</router-link></p>
         <form @submit.prevent="login">
-        <form @submit.prevent="login">
           <input
+            type="email"
             placeholder="Email"
             v-model="email"
             @input="validateEmail"
@@ -15,11 +15,9 @@
           <p v-if="emailError" class="error">{{ emailError }}</p>
           <input v-model="password" type="password" placeholder="Password" />
           <button @click="handleLogin" type="submit">Login</button>
-          <input type="password" placeholder="Password" />
-          <button @click="login" type="submit">Login</button>
         </form>
         <div class="or">----------Or----------</div>
-        <div class="social-login">
+        <div class="social-buttons">
           <button class="google-btn" @click="loginWithGoogle">
             <i class="fab fa-google"></i> Login with Google
           </button>
@@ -39,18 +37,15 @@
 </template>
 
 <script >
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { useRouter } from 'vue-router';
-
 import axios from 'axios'
+import Cookies from 'js-cookie'
+// import { useRouter } from 'vue-router';
+
 export default {
   data() {
     return {
       backgroundImage: null,
       email: '',
-      emailError: '',
-      password: ''
       emailError: '',
       password: ''
     }
@@ -78,26 +73,26 @@ export default {
     async handleLogin() {
       try {
         let data = JSON.stringify({
-          "username": "tes5",
-          "password": "123"
-        });
+          username: 'tes5',
+          password: '123'
+        })
 
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
           url: 'http://localhost:4000/api/auth/authenticate',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json'
           },
           data: data
-        };
+        }
 
-        const response = await axios.request(config);
-        Cookies.set('auth_token', response.data.token, { expires: 7 });
-        const router = this.$router;
-        router.push('/main'); // Redirect to the main page
+        const response = await axios.request(config)
+        Cookies.set('auth_token', response.data.token, { expires: 7 })
+        const router = this.$router
+        router.push('/main') // Redirect to the main page
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
     },
 
@@ -123,81 +118,8 @@ export default {
         })
     }
   }
-  }
+}
 </script>
 
-<style>
-.full-screen-background {
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.sign-in-container {
-  background-color: #f2f2f2;
-  padding: 30px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  max-width: 400px;
-  margin-left: 700px;
-}
-
-input[type='email'],
-input[type='password'] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button[type='submit'] {
-  background-color: #4285f4;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-}
-
-.or {
-  text-align: center;
-  margin: 20px 0;
-}
-
-.social-login button {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.google-btn {
-  background-color: #fff;
-  color: #757575;
-}
-
-.facebook-btn {
-  background-color: #3b5998;
-  color: #fff;
-}
-
-.social-login button i {
-  margin-right: 8px;
-}
-
-.error {
-  color: red;
-}
-</style>
 
 
