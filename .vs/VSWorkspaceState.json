@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\PetHealthClient",
+    "\\PetHealthClient\\src",
+    "\\PetHealthClient\\src\\assets",
+    "\\PetHealthClient\\src\\components",
+    "\\PetHealthClient\\src\\pages",
+    "\\PetHealthClient\\src\\pages\\auth",
+    "\\PetHealthClient\\src\\router"
+  ],
+  "SelectedNode": "\\PetHealthClient",
+  "PreviewInSolutionExplorer": false
+}
