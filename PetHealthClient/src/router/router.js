@@ -47,12 +47,12 @@ const router = createRouter({
       component: PetListModal
     },
     {
-      path: '/',
-      component: BaseLayout,
-      children: [
-        { path: 'petlistModal', component: BaseLayout },
-        // Add more routes as needed
-      ],
+      // path: '/',
+      // component: BaseLayout,
+      // children: [
+      //   { path: 'petlistModal', component: BaseLayout },
+      //   // Add more routes as needed
+      // ],
     }
   ]
 })

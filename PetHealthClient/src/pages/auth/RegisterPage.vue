@@ -1,31 +1,32 @@
 <template>
-  <div id="app">
-    <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
-      <div class="sign-in-container">
-        <h1>Sign in</h1>
-        <p>New user? <router-link to="/register">Create an account</router-link></p>
-        <form @submit.prevent="login">
-          <input
-            type="email"
-            placeholder="Email"
-            v-model="email"
-            @input="validateEmail"
-            @blur="validateEmail"
-          />
-          <p v-if="emailError" class="error">{{ emailError }}</p>
-          <input type="password" placeholder="Password" v-model="password" />
-          <button type="submit">Login</button>
-        </form>
-        <div class="or">----------Or----------</div>
-        <div class="social-login">
-          <button class="google-btn" @click="loginWithGoogle">
-            <i class="fab fa-google"></i> Login with Google
-          </button>
-          <button class="facebook-btn" @click="loginWithFacebook">
-            <i class="fab fa-facebook-f"></i> Login with Facebook
+  <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
+    <div class="signup-container">
+      <h1>Create a new account</h1>
+      <form>
+        <input type="text" placeholder="User name" />
+        <div class="name-inputs">
+          <input type="text" placeholder="First Name" />
+          <input type="text" placeholder="Last Name" />
+        </div>
+        <input
+          type="email"
+          placeholder="Email"
+          v-model="email"
+          @input="validateEmail"
+          @blur="validateEmail"
+        />
+        <p v-if="emailError" class="error">{{ emailError }}</p>
+        <input type="password" placeholder="Password" />
+        <input type="password" placeholder="Confirm Password" />
+        <button type="submit" @click="register">Sign up</button>
+        <div class="or">------------- Or -------------</div>
+        <div class="social-buttons" @click="registerWithGoogle">
+          <button class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
+          <button class="facebook-btn" @click="registerWithFacebook">
+            <i class="fab fa-facebook-f"></i> Continue with Facebook
           </button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
   <link
@@ -35,9 +36,8 @@
     crossorigin="anonymous"
   />
 </template>
-
 <script>
-import axios from 'axios'
+import axios from '../../api/axios';
 export default {
   data() {
     return {
@@ -47,7 +47,7 @@ export default {
       password: ''
     }
   },
-
+  
   mounted() {
     import('@/assets/images/background.png')
       .then((image) => {
@@ -60,40 +60,49 @@ export default {
 
   methods: {
     validateEmail() {
-      const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/
+      const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
       if (!emailRegex.test(this.email)) {
-        this.emailError = 'Please enter a valid email address'
+        this.emailError = 'Please enter a valid email address';
       } else {
-        this.emailError = ''
+        this.emailError = '';
       }
     },
 
-    
-    loginWithGoogle() {
-      axios
-        .post('http://localhost:3000/auth/google')
-        .then((response) => {
-          console.log(response.data)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    },
-
-    loginWithFacebook() {
-      axios
-        .post('http://localhost:3000/auth/facebook')
-        .then((response) => {
-          console.log(response.data)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+    register() {
+    if (!this.emailError) {
+      axios.post('/api/auth/register', {
+      })
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
     }
+  },
+
+  registerWithGoogle() {
+    axios.post('/api/auth/google')
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  },
+
+  registerWithFacebook() {
+    axios.post('/api/auth/facebook')
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
   }
 }
 </script>
-
 <style>
 .full-screen-background {
   background-size: cover;

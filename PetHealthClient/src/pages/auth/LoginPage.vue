@@ -8,6 +8,9 @@
           <input
             placeholder="Email"
             v-model="email"
+            type="email"
+            @input="validateEmail"
+            @blur="validateEmail"
           />
           <p v-if="emailError" class="error">{{ emailError }}</p>
           <input v-model="password" type="password" placeholder="Password" />
@@ -34,8 +37,9 @@
 </template>
 
 <script >
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import axios from '../../api/axios';
+import { getToken, saveToken, saveUserId, saveUserName } from '@/utils/auth';
+
 export default {
   data() {
     return {
@@ -67,23 +71,11 @@ export default {
     },
     async handleLogin() {
       try {
-        let data = JSON.stringify({
-          "username": "tes5",
-          "password": "123"
+        const response = await axios.post('/api/auth/authenticate', {
+          "username": this.email,
+          "password": this.password
         });
 
-        let config = {
-          method: 'post',
-          maxBodyLength: Infinity,
-          url: 'http://localhost:4000/api/auth/authenticate',
-          headers: { 
-            'Content-Type': 'application/json'
-          },
-          data: data
-        };
-
-        const response = await axios.request(config);
-        Cookies.set('auth_token', response.data.token, { expires: 7 });
         const router = this.$router;
         router.push('/main'); // Redirect to the main page
       } catch (error) {

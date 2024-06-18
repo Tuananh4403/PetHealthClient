@@ -24,7 +24,7 @@
   </template>
   
   <script>
-  import { BSidebar } from 'bootstrap-vue'
+  import { BSidebar } from 'bootstrap-vue-3'
   export default {
     name: 'SidebarComponet',
   };
