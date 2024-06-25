@@ -1,9 +1,7 @@
 <template>
   <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
-    <div id="app">
-      <div class="container">
-        <h1>List of your pets</h1>
-      </div>
+    <div class="list-container">
+      <h1>List of your pets</h1>
       <table>
         <thead>
           <tr>
@@ -58,24 +56,43 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  margin: 20px;
+.full-screen-background {
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-container {
+  width: 90%; 
+  margin: auto;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7); 
+  border-radius: 5px;
+  color: white; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
   text-align: center;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
-th,
-td {
-  border: 1px solid #ddd;
+th, td {
   padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd; 
 }
 
 th {
-  background-color: #f2f2f2;
-  text-align: left;
+  background-color: #9b0f0a; 
+}
+
+tr:hover {
+  background-color: #555;
 }
 </style>
