@@ -1,15 +1,24 @@
 <template>
     <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <div class="signup-container">
-        <h1>Search your pet</h1>
+        <h1>Update your pet</h1>
         <form>
           <label for="pet-name">Pet Name</label>
           <input type="text" id="pet-name" placeholder="Pet Name" />
   
-          <label for="cus-name">Your Name</label>
-          <input type="text" id="cus-name" placeholder="Your Name" />
+          <label for="kind-of-pet">Kind Of Pet</label>
+          <input type="text" id="kind-of-pet" placeholder="Kind Of Pet" />
   
-          <button type="submit">Search</button>
+          <label for="gender">Gender</label>
+          <input type="text" id="gender" placeholder="Gender" />
+  
+          <label for="birthday">Birthday</label>
+          <input type="date" id="birthday" />
+  
+          <label for="species">Species</label>
+          <input type="text" id="species" placeholder="Species" />
+  
+          <button type="submit">Save change</button>
         </form>
       </div>
     </div>

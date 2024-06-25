@@ -8,6 +8,7 @@ import PetListPage from '../pages/PetListPage.vue'
 import PetListModal from '../components/PetListModal.vue'
 import CreatePet from '../components/CreatePet.vue'
 import UpdatePet from '@/pages/customer/UpdatePet.vue' 
+import DeletePet from '../pages/customer/DeletePet.vue'
 import BaseLayout from '../layouts/BaseLayout.vue'
 
 const router = createRouter({
@@ -57,6 +58,11 @@ const router = createRouter({
       path: '/updatePet',
       name: 'updatePet',
       component: UpdatePet
+    },
+    {
+      path: '/deletePet',
+      name: 'deletePet',
+      component: DeletePet
     },
   ]
 })
