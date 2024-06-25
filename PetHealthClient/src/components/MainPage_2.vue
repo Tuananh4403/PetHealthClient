@@ -2,7 +2,12 @@
   <nav>
     <ul>
       <li><a href="#">Home</a></li>
-      <li><a href="#">Medical History</a></li>
+      <li class="dropdown">
+        <a href="#" @click="toggleDropdown">Medical History</a>
+        <div class="dropdown-content" v-show="showDropdown">
+          <a href="#" @click="navigateTo('viewPet')">Pet Medical</a>
+        </div>
+      </li>
       <li class="dropdown">
         <a href="#" @click="toggleDropdown">Pet</a>
         <div class="dropdown-content" v-show="showDropdown">
@@ -12,9 +17,20 @@
           <a href="#" @click="navigateTo('petList')">List Pet</a>
         </div>
       </li>
-      <li><a href="#">Vaccin Calendar</a></li>
-      <li><a href="#">Kennel</a></li>
-      <li><a href="#" @click="navigateTo('booking')" >Service</a></li>
+      <li class="dropdown">
+        <a href="#" @click="toggleDropdown">Kennel</a>
+        <div class="dropdown-content" v-show="showDropdown">
+          <a href="#" @click="navigateTo('viewBarn')">Save Barn</a>
+        </div>
+      </li>
+      <li class="dropdown">
+        <a href="#" @click="toggleDropdown">Service</a>
+        <div class="dropdown-content" v-show="showDropdown">
+          <a href="#" @click="navigateTo('booking')">Create Booking</a>
+          <a href="#" @click="navigateTo('updateBooking')">Update Booking</a>
+          <a href="#" @click="navigateTo('viewBooking')">List Booking</a>
+        </div>
+      </li>
       <li class="profile">
         <img src="../assets/images/icon.png" alt="Profile Image"/>
         <span>Lê Chi</span>
