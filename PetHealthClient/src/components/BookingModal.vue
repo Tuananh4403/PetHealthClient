@@ -133,7 +133,7 @@ export default {
         const response = await axios.request(config);
         Cookies.set('auth_token', response.data.token, { expires: 7 });
         const router = this.$router;
-        router.push('/main'); 
+        router.push('/main'); // Redirect to the main page
       } catch (error) {
         console.error(error);
       }
@@ -227,9 +227,9 @@ textarea {
 }
 .form-actions {
   display: flex;
-  justify-content: center; 
-  gap: 20px; 
-  margin-top: 20px; 
+  justify-content: center; /* Aligns buttons to the center */
+  gap: 20px; /* Adds space between the buttons */
+  margin-top: 20px; /* Adds space above the button row */
 }
 .accept,
 .cancel {
@@ -237,7 +237,7 @@ textarea {
   border-radius: 3px;
   cursor: pointer;
   font-size: 16px;
-  
+  /* Remove margin-left from .accept to use gap for spacing */
 }
 
 .accept {
