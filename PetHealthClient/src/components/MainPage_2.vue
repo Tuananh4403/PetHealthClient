@@ -38,7 +38,7 @@
     </ul>
   </nav>
   <div class="header-content bg-image" :style="{ backgroundImage: `url(${backgroundImage})` }">
-    <img src="../assets/images/catdog.png" alt="Main Image"/>
+    <img src="../assets/images/pet.png" alt="Main Image"/>
   </div>
 </template>
 
@@ -227,10 +227,10 @@ nav ul {
 }
 .header-content img {
   position: absolute;
-  bottom: 0;
+  bottom: -10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 70%;
+  width: 80%;
   height: auto; 
   margin: auto; 
   display: block;
