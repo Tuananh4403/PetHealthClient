@@ -56,7 +56,6 @@
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import Multiselect from 'vue-multiselect'
-import 'vue-multiselect/dist/vue-multiselect.css'
 import Cookies from 'js-cookie';
 import axios from 'axios';
   

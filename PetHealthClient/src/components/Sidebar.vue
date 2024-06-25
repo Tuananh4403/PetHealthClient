@@ -21,6 +21,12 @@
       </router-link>
       <router-link to="/service" class="menu-item">
         <span class="material-icons">Service</span>
+      </router-link>
+      <router-link to="/manageDoctor" class="menu-item">
+        <span class="material-icons">Manage Doctor</span>
+      </router-link>  
+      <router-link to="/manageStaff" class="menu-item">
+        <span class="material-icons">Manage Staff</span>
       </router-link>    
     </div>
   </div>
