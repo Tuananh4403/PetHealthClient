@@ -1,61 +1,39 @@
 <template>
-  
-  <main>
-  <div class="booking-page">
-    <div class="booking-form">
-      <h2>Book an appointment</h2>
-      <div class="form-row">
-        <input placeholder="Pet owner" />
-        <div>
-          <multiselect
-            v-model="selectedPetName"
-            :options="pets"
-            :custom-label="detailPet"
-            placeholder=" Select Pet Name"
-            label="namePet"
-            track-by="idPet"
-          >
-          </multiselect>
+  <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
+    <div class="booking-page">
+      <div class="booking-form">
+        <h2>Book an appointment</h2>
+        <multiselect class="form-service" v-model="selectedService" :options="services" :custom-label="detailService"
+          placeholder=" Select Service" label="nameService" track-by="idService"></multiselect>
+        
+        <div class="form-row">
+          <div>
+            <multiselect v-model="selectedDoctor" :options="doctors" :custom-label="detailDoctor"
+              placeholder=" Select doctor" label="nameDoctor" track-by="idDoctor">
+            </multiselect>
+          </div>
+          <div>
+            <multiselect v-model="selectedPetName" :options="pets" :custom-label="detailPet"
+              placeholder=" Select Pet Name" label="namePet" track-by="idPet">
+            </multiselect>
+          </div>
         </div>
-      </div>
-      <div class="form-row">
-        <div>
-          <multiselect          
-            v-model="selectedDoctor"
-            :options="doctors"
-            :custom-label="detailDoctor"
-            placeholder=" Select doctor"
-            label="nameDoctor"
-            track-by="idDoctor"
-          >
-          </multiselect>
+        <div class="form-row">
+          <input placeholder="Pet owner" />
+          <input placeholder="Gender" />
         </div>
-        <input placeholder="Gender" />
-      </div>
-      <multiselect
-        class="form-service"
-        v-model="selectedService"
-        :options="services"
-        :custom-label="detailService"
-        placeholder=" Select Service"
-        label="nameService"
-        track-by="idService"
-      ></multiselect>
-      <div class="form-row">
-        <flat-pickr v-model="dateValue" :config="dateConfig" placeholder="Date"></flat-pickr>
-        <input type="time" class="input-time" placeholder="hh:mm"/>
-      </div>
-      <textarea placeholder="Note"></textarea>
-      <div class="form-actions">
-        <button class="accept" @click="createBooking">Booking</button>
-        <button class="cancel" @click="cancelAction">Cancel</button>
+        <div class="form-row">
+          <flat-pickr v-model="dateValue" :config="dateConfig" placeholder="Date"></flat-pickr>
+          <flat-pickr v-model="timeValue" :config="timeConfig" placeholder="Time"></flat-pickr>
+        </div>
+        <textarea placeholder="Note"></textarea>
+        <div class="form-actions">
+          <button class="accept" @click="createBooking">Booking</button>
+          <button class="cancel" @click="cancelAction">Cancel</button>
+        </div>
       </div>
     </div>
-    <div class="booking-img">
-    <img :src="dogImage" alt="Dog" />
   </div>
-  </div>
-</main>
 </template>
 
 <script>
@@ -65,8 +43,7 @@ import Multiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.css'
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import dogImage from '@/assets/images/dog.png';
-  
+
 export default {
   components: {
     flatPickr,
@@ -75,11 +52,17 @@ export default {
 
   data() {
     return {
-      dogImage: dogImage,
+      backgroundImage: null,
       dateValue: null,
       timeValue: null,
       dateConfig: {
         dateFormat: 'd/m/Y',
+        static: true
+      },
+      timeConfig: {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: 'H:i',
         static: true
       },
 
@@ -98,15 +81,15 @@ export default {
       selectedPetName: [],
 
       services: [
-      { idService: 1, nameService: 'Service A' },
-      { idService: 2, nameService: 'Service B' },
-      { idService: 3, nameService: 'Service C' },
-    ],
+        { idService: 1, nameService: 'Service A' },
+        { idService: 2, nameService: 'Service B' },
+        { idService: 3, nameService: 'Service C' },
+      ],
       selectedService: [],
     }
   },
   mounted() {
-    import('@/assets/images/dog.png')
+    import('@/assets/images/background.png')
       .then((image) => {
         this.backgroundImage = image.default
       })
@@ -114,7 +97,6 @@ export default {
         console.error('Error loading image:', error)
       })
   },
-
 
   methods: {
     cancelAction() {
@@ -142,7 +124,7 @@ export default {
           method: 'post',
           maxBodyLength: Infinity,
           url: 'http://localhost:4000/api/auth/authenticate',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json'
           },
           data: data
@@ -156,81 +138,70 @@ export default {
         console.error(error);
       }
     }
-    }
+  }
 }
 </script>
 
 <style scoped>
-
-.booking-page {
-  /* display: flex;
+.full-screen-background {
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
-  background-color: #86110f; */
+}
+.booking-page {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-top: 100px;
-  background-color: #fff0c7;
+  justify-content: center;
+  align-items: center;
 }
 
 .booking-form {
-  /* background-color: #f8e5b2;
+  background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   max-width: 800px;
-  width: 100%; */
-  background-color: #fff0c7;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: none;
-  width: 66%;
-}
-.booking-img {
-  width: 33%; 
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 100px;
-}
-
-.booking-img img {
-  max-width: 100%;
-  height: auto;
-  margin-right: 20px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #2e2506;
 }
 
 .form-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 10px; 
   margin-bottom: 15px;
 }
-
+.form-row > div,
+.form-row input,
+.form-service > .multiselect__single,
+.flat-pickr {
+  width: 100%;
+}
+.flat-pickr .flatpickr-input {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+}
+.multiselect {
+  width: 100%;
+}
 .form-service {
   margin-bottom: 30px;
 }
 
-.form-row input {
-  width: 48%;
-}
-
-.form-row .flatpickr-input {
-  width: 365px;
-  display: inline-block;
-}
 
 input {
   width: 100%;
   padding: 10px;
-  border: 2px solid #000000;
+  border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 15px;
   font-size: 16px;
@@ -239,50 +210,48 @@ input {
 textarea {
   width: 100%;
   padding: 10px;
-  border: 2px solid #000000;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-size: 16px;
+  grid-column: 1 / -1; 
 }
 
 .input-time {
-  /* margin-bottom: 2px; */
-  border: 2px solid #000000;
-  border-radius: 5px;
-  padding: 10px;
-  font-size: 16px;
+  margin-bottom: 5px;
 }
 
 .form-actions {
   display: flex;
-  justify-content: flex-start; 
+  justify-content: flex-end;
+}
+.form-actions {
+  display: flex;
+  justify-content: center; /* Aligns buttons to the center */
+  gap: 20px; /* Adds space between the buttons */
+  margin-top: 20px; /* Adds space above the button row */
+}
+.accept,
+.cancel {
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+  /* Remove margin-left from .accept to use gap for spacing */
 }
 
 .accept {
-  background-color: #e6a417;
+  background-color: #9b0707;
   color: #fff;
-  border: 2px, solid white;
-  padding: 10px 40px;
-  width: auto;
+  border: none;
   border-radius: 10px;
-  cursor: pointer;
-  margin-left: 10px;
 }
 
 .cancel {
-  background-color: #9b9a96;
-  color: #fff;
-  border: 2px, solid white;
-  padding: 10px 40px;
-  width: auto;
+  background-color: rgb(181, 175, 175);
+  color: white;
+  border: none;
   border-radius: 10px;
-  cursor: pointer;
-  margin-left: 10px;
 }
-.accept, .cancel {
-  margin-right: 10px; 
-}
-
-
 
 </style>
