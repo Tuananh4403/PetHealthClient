@@ -1,4 +1,6 @@
 <template>
+  
+  <main>
   <div class="booking-page">
     <div class="booking-form">
       <h2>Book an appointment</h2>
@@ -41,15 +43,19 @@
       ></multiselect>
       <div class="form-row">
         <flat-pickr v-model="dateValue" :config="dateConfig" placeholder="Date"></flat-pickr>
-        <input type="time" class="input-time" placeholder="hh:mm" />
+        <input type="time" class="input-time" placeholder="hh:mm"/>
       </div>
       <textarea placeholder="Note"></textarea>
       <div class="form-actions">
-        <button class="accept" @click="createBooking">Accept</button>
+        <button class="accept" @click="createBooking">Booking</button>
         <button class="cancel" @click="cancelAction">Cancel</button>
       </div>
     </div>
+    <div class="booking-img">
+    <img :src="dogImage" alt="Dog" />
   </div>
+  </div>
+</main>
 </template>
 
 <script>
@@ -58,6 +64,7 @@ import 'flatpickr/dist/flatpickr.css'
 import Multiselect from 'vue-multiselect'
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import dogImage from '@/assets/images/dog.png';
   
 export default {
   components: {
@@ -67,6 +74,7 @@ export default {
 
   data() {
     return {
+      dogImage: dogImage,
       dateValue: null,
       timeValue: null,
       dateConfig: {
@@ -96,6 +104,16 @@ export default {
       selectedService: [],
     }
   },
+  mounted() {
+    import('@/assets/images/dog.png')
+      .then((image) => {
+        this.backgroundImage = image.default
+      })
+      .catch((error) => {
+        console.error('Error loading image:', error)
+      })
+  },
+
 
   methods: {
     cancelAction() {
@@ -142,25 +160,51 @@ export default {
 </script>
 
 <style scoped>
+
 .booking-page {
-  display: flex;
+  /* display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 100px;
+  background-color: #86110f; */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 100px;
+  background-color: #fff0c7;
 }
 
 .booking-form {
-  background-color: #fff;
+  /* background-color: #f8e5b2;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   max-width: 800px;
-  width: 100%;
+  width: 100%; */
+  background-color: #fff0c7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: none;
+  width: 66%;
+}
+.booking-img {
+  width: 33%; 
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.booking-img img {
+  max-width: 100%;
+  height: auto;
+  margin-right: 20px;
 }
 
 h2 {
   text-align: center;
   margin-bottom: 20px;
+  color: #2e2506;
 }
 
 .form-row {
@@ -201,33 +245,43 @@ textarea {
 }
 
 .input-time {
-  margin-bottom: 5px;
+  /* margin-bottom: 2px; */
+  border: 2px solid #000000;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
 }
 
 .form-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start; 
 }
 
 .accept {
-  background-color: #4285f4;
+  background-color: #e6a417;
   color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 3px;
+  border: 2px, solid white;
+  padding: 10px 40px;
+  width: auto;
+  border-radius: 10px;
   cursor: pointer;
   margin-left: 10px;
 }
 
 .cancel {
-  background-color: rgb(181, 175, 175);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 3px;
+  background-color: #9b9a96;
+  color: #fff;
+  border: 2px, solid white;
+  padding: 10px 40px;
+  width: auto;
+  border-radius: 10px;
   cursor: pointer;
+  margin-left: 10px;
+}
+.accept, .cancel {
+  margin-right: 10px; 
 }
 
 
 
-</style>>
+</style>

@@ -1,54 +1,54 @@
 <template>
-    <nav>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Medical History</a></li>
-        <li><a href="#">Petlast</a></li>
-        <li><a href="#">Vaccin Calendar</a></li>
-        <li><a href="#">Kennail</a></li>
-        <li><a href="#">Service</a></li>
-      </ul>
-    </nav>
-    <div class="header-content bg-image" :style="{ backgroundImage: `url(${backgroundImage})` }">
-      <div class="welcome">Welcome Username</div>
-    </div>
-    <main>
-      <div class="content-cards">
-        <div class="content-vacxin-cards">
-          <h3>Vacxin Calendar</h3>
-          <div class="content">abc</div>
-        </div>
-        <div class="content-kennel-cards">
-          <h3>View Kennel</h3>
-          <div class="content">abc</div>
-        </div>
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Medical History</a></li>
+      <li><a href="#">Petlast</a></li>
+      <li><a href="#">Vaccin Calendar</a></li>
+      <li><a href="#">Kennail</a></li>
+      <li><a href="#">Service</a></li>
+    </ul>
+  </nav>
+  <div class="header-content bg-image" :style="{ backgroundImage: `url(${backgroundImage})` }">
+    <div class="welcome">Welcome Username</div>
+  </div>
+  <main>
+    <div class="content-cards">
+      <div class="content-vacxin-cards">
+        <h3>Vacxin Calendar</h3>
+        <div class="content">abc</div>
       </div>
-      <div class="button-cards">
-        <div class="card">
-          <h3>View Pet List</h3>
-          <button class="btn-mainpage" @click="navigateTo('petList')">Button</button>
-        </div>
-        <div class="card">
-          <h3>Create Booking</h3>
-          <button class="btn-mainpage" @click="showModal = true">Button</button>
-        </div>
-        <div class="card">
-          <h3>About Us</h3>
-          <button class="btn-mainpage">Button</button>
-        </div>
+      <div class="content-kennel-cards">
+        <h3>View Kennel</h3>
+        <div class="content">abc</div>
       </div>
-    </main>
-    <footer>
-      <p>Footer</p>
-    </footer>
-    <div class="modal" v-if="showModal">
-      <booking-modal @close-modal="showModal = false" />
     </div>
+    <div class="button-cards">
+      <div class="card">
+        <h3>View Pet List</h3>
+        <button class="btn-mainpage" @click="navigateTo('petList')">Your Pet List</button>
+      </div>
+      <div class="card">
+        <h3>Create Booking</h3>
+        <button class="btn-mainpage" @click="navigateTo('booking')">Create Booking</button>
+      </div>
+      <div class="card">
+        <h3>About Us</h3>
+        <button class="btn-mainpage">Information</button>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>Footer</p>
+  </footer>
+  <!-- <div class="modal" v-if="showModal">
+    <booking-modal @close-modal="showModal = false" />
+  </div> -->
 </template>
 
 <script>
 import { useRouter } from 'vue-router'
-import BookingModal from '../components/BookingModal.vue'
+//import BookingModal from '../components/BookingModal.vue'
 
 export default {
   setup() {
@@ -63,12 +63,11 @@ export default {
     }
   },
 
-  components: {
-    BookingModal
-  },
+  // components: {
+  //   //BookingModal
+  // },
   data() {
     return {
-      showModal: false,
       backgroundImage: null,
     }
   },
@@ -118,7 +117,7 @@ nav ul li a {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 455px; 
+  height: 455px;
 }
 
 .welcome {
