@@ -3,63 +3,52 @@
     <ul>
       <li><a href="#">Home</a></li>
       <li><a href="#">Medical History</a></li>
-      <li><a href="#">Petlast</a></li>
+      <li class="dropdown">
+        <a href="#" @click="toggleDropdown">Pet</a>
+        <div class="dropdown-content" v-show="showDropdown">
+          <a href="#" @click="navigateTo('createPet')">Create Pet</a>
+          <a href="#" @click="navigateTo('updatePet')">Update Pet</a>
+          <a href="#" @click="navigateTo('deletePet')">Delete Pet</a>
+          <a href="#" @click="navigateTo('petList')">List Pet</a>
+        </div>
+      </li>
       <li><a href="#">Vaccin Calendar</a></li>
-      <li><a href="#">Kennail</a></li>
-      <li><a href="#">Service</a></li>
+      <li><a href="#">Kennel</a></li>
+      <li><a href="#" @click="navigateTo('booking')" >Service</a></li>
+      <li class="profile">
+        <img src="../assets/images/icon.png" alt="Profile Image"/>
+        <span>Lê Chi</span>
+      </li>
     </ul>
   </nav>
   <div class="header-content bg-image" :style="{ backgroundImage: `url(${backgroundImage})` }">
-    <div class="welcome">Welcome Username</div>
+    <img src="../assets/images/catdog.png" alt="Main Image"/>
   </div>
-  <main>
-    <div class="content-cards">
-      <div class="content-vacxin-cards">
-        <h3>Vacxin Calendar</h3>
-        <div class="content">abc</div>
-      </div>
-      <div class="content-kennel-cards">
-        <h3>View Kennel</h3>
-        <div class="content">abc</div>
-      </div>
-    </div>
-    <div class="button-cards">
-      <div class="card">
-        <h3>View Pet List</h3>
-        <button class="btn-mainpage" @click="navigateTo('petList')">Your Pet List</button>
-      </div>
-      <div class="card">
-        <h3>Create Booking</h3>
-        <button class="btn-mainpage" @click="navigateTo('booking')">Create Booking</button>
-      </div>
-      <div class="card">
-        <h3>About Us</h3>
-        <button class="btn-mainpage">Information</button>
-      </div>
-    </div>
-  </main>
-  <footer>
-    <p>Footer</p>
-  </footer>
-  <!-- <div class="modal" v-if="showModal">
-    <booking-modal @close-modal="showModal = false" />
-  </div> -->
 </template>
 
 <script>
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 //import BookingModal from '../components/BookingModal.vue'
 
 export default {
   setup() {
     const router = useRouter()
+    const showDropdown = ref(false)
+
+    const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value
+}
+
 
     const navigateTo = (route) => {
       router.push(`/${route}`)
     }
 
     return {
-      navigateTo
+      navigateTo,
+      toggleDropdown,
+      showDropdown
     }
   },
 
@@ -117,7 +106,7 @@ nav ul li a {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 455px;
+  height: 535px;
 }
 
 .welcome {
@@ -189,14 +178,6 @@ nav ul li a {
   align-self: center;
 }
 
-footer {
-  background-color: #f2f2f2;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  height: 100px;
-}
-
 .modal {
   position: fixed;
   z-index: 1;
@@ -206,5 +187,62 @@ footer {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
+}
+nav ul {
+  position: relative; 
+}
+
+.profile {
+  position: absolute;
+  right: 0; 
+  display: flex; 
+  align-items: center; 
+  height: 100%; 
+}
+
+.profile img {
+  height: 50px; 
+  width: auto; 
+  margin-right: 10px;
+}
+
+.profile span {
+  font-weight: bold; 
+}
+.header-content img {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: auto; 
+  margin: auto; 
+  display: block;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 </style>

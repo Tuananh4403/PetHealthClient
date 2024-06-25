@@ -1,20 +1,17 @@
 <template>
-  <div id="app">
-    <!-- Header with gradient background and circular patterns -->
-    <div class="header">
-      <h1>List of Your Pets</h1>
-    </div>
-
-    <!-- Table with centered text, bold headers, and horizontal separators -->
-    <div class="table-container">
+  <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
+    <div id="app">
+      <div class="container">
+        <h1>List of your pets</h1>
+      </div>
       <table>
         <thead>
           <tr>
-            <th>No.</th>
-            <th>Pet Name <i class="fas fa-paw"></i></th>
-            <th>Type of Pet</th>
-            <th>Gender <i class="fas fa-venus-mars"></i></th>
-            <th>Birthdate</th>
+            <th>No</th>
+            <th>Pet Name</th>
+            <th>Kind of pet</th>
+            <th>Gender</th>
+            <th>Birthday</th>
             <th>Species</th>
           </tr>
         </thead>
@@ -33,10 +30,12 @@
   </div>
 </template>
 
+
 <script>
 export default {
   data() {
     return {
+      backgroundImage: null,
       pets: [
         { name: 'Buddy', kind: 'Dog', gender: 'Male', birthday: '2020-01-01', species: 'Canine' },
         { name: 'Mittens', kind: 'Cat', gender: 'Female', birthday: '2019-05-05', species: 'Feline' },
@@ -44,53 +43,39 @@ export default {
       ]
     };
   },
+
+  mounted() {
+      import('@/assets/images/background.png')
+        .then((image) => {
+          this.backgroundImage = image.default
+        })
+        .catch((error) => {
+          console.error('Error loading image:', error)
+        })
+    },
+
 };
 </script>
 
 <style scoped>
-.header {
+.container {
+  margin: 20px;
   text-align: center;
-  background: #f7b748;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  padding: 20px;
-  color: rgb(7, 7, 7); /* Changed to yellow */
-  font-size: 24px;
-}
-
-.table-container {
-  padding: 0 20px;
-  background-color: #f0f0f0; /* Added background color */
-  background-image: url(${backgroundImage}); /* Added watermark image */
 }
 
 table {
   width: 100%;
-  border-spacing: 0;
-  border-radius: 15px;
-  overflow: hidden;
+  border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
+  border: 1px solid #ddd;
   padding: 8px;
-  text-align: center; /* Centered text */
 }
 
 th {
   background-color: #f2f2f2;
-  color: #333;
-  font-weight: bold; /* Bold headers */
-}
-
-tr:not(:last-child) td {
-  border-bottom: 1px solid #ddd; /* Horizontal separators */
-}
-
-tr:last-child td {
-  border-bottom: none; /* No border for the last row */
-}
-
-tr:nth-child(even) {
-  background-color: #f9f9f9;
+  text-align: left;
 }
 </style>

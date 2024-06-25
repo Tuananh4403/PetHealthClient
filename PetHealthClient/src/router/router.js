@@ -6,6 +6,7 @@ import MainPage_2 from '../components/MainPage_2.vue'
 import BookingModal from '../components/BookingModal.vue'
 import PetListPage from '../pages/PetListPage.vue'
 import PetListModal from '../components/PetListModal.vue'
+import CreatePet from '../components/CreatePet.vue'
 import BaseLayout from '../layouts/BaseLayout.vue'
 
 const router = createRouter({
@@ -47,13 +48,10 @@ const router = createRouter({
       component: PetListModal
     },
     {
-      // path: '/',
-      // component: BaseLayout,
-      // children: [
-      //   { path: 'petlistModal', component: BaseLayout },
-      //   // Add more routes as needed
-      // ],
-    }
+      path: '/createPet',
+      name: 'createPet',
+      component: CreatePet
+    },
   ]
 })
 
