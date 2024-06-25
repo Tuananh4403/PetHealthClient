@@ -18,53 +18,47 @@
       </tbody>
     </table>
   </div>
-  
-  <UpdateService
+   
+  <UpdateDoctor
     v-if="showUpdateModal"
-    :service="selectedService"
+    :staff="selectedStaff"
     @close="closeUpdateModal"
   />
 </template>
 
 <script>
-import UpdateService from '../components/UpdateService.vue';
+import UpdateDoctor from '../components/UpdateDoctor.vue';
 
 export default {
-  name: 'DataTable',
   components: {
-    UpdateService
+    UpdateDoctor
   },
   data() {
     return {
-      headers: ['Type', 'Id', 'Name', 'Status', 'Price', 'Note', 'Action'],
+      headers: ['Role', 'Id', 'Name', 'Status', 'Action'],
       rows: [
-        { type: 'Service', id: 'SV001', name: 'General Checkup', status: 'Available', price: '$50' },
-        { type: 'Medical', id: 'MD001', name: 'Antibiotics', status: 'In Stock', price: '$25' },
-        { type: 'Vaccine', id: 'VC001', name: 'Flu Shot', status: 'Available', price: '$30' },
-        { type: 'Service', id: 'SV002', name: 'Dental Cleaning', status: 'Available', price: '$75' },
-        { type: 'Medical', id: 'MD002', name: 'Pain Reliever', status: 'Low Stock', price: '$15' },
-        { type: 'Vaccine', id: 'VC002', name: 'COVID-19 Vaccine', status: 'Limited', price: '$0' },
-        { type: 'Service', id: 'SV003', name: 'X-Ray', status: 'Available', price: '$100' },
-        { type: 'Medical', id: 'MD003', name: 'Allergy Medicine', status: 'In Stock', price: '$20' },
-        { type: 'Vaccine', id: 'VC003', name: 'Tetanus Shot', status: 'Available', price: '$40' },
+        { role: 'Doctor', id: 'DR001', name: 'Dr. John Smith', status: 'Active' },
+        { role: 'Doctor', id: 'DR002', name: 'Sarah Johnson', status: 'Active' },
+        { role: 'Doctor', id: 'DR003', name: 'Emily Brown', status: 'On Leave' },
+        { role: 'Doctor', id: 'DR004', name: 'Dr. Emma Davis', status: 'Active' },
+        { role: 'Doctor', id: 'DR005', name: 'Michael Wilson', status: 'Active' },
       ],
       showUpdateModal: false,
-      selectedService: null
+      selectedDoctor: null
     }
   },
   methods: {
-    openUpdateModal(service) {
-      this.selectedService = service;
+    openUpdateModal(doctor) {
+      this.selectedDoctor = doctor;
       this.showUpdateModal = true;
     },
     closeUpdateModal() {
       this.showUpdateModal = false;
-      this.selectedService = null;
+      this.selectedDoctor = null;
     }
   }
 }
 </script>
-
 <style scoped>
 .table-container {
   margin: 20px;
