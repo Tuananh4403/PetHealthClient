@@ -1,11 +1,12 @@
 import axios from "axios";
 import { getToken } from "../utils/auth";
 import { SYS_API_URL } from "../constants/global";
+import { toastError } from "@/utils/toast";
 
-export default axios.create({
+const apiClient =  axios.create({
     baseURL: SYS_API_URL,
 });
-export const axiosPrivate = axios.create({
+const axiosPrivate = axios.create({
     baseURL: SYS_API_URL,
     headers: {
         "Content-Type": "application/json",
@@ -24,3 +25,31 @@ axiosPrivate.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+// Response interceptor for handling errors globally
+const handleError = (error) => {
+    if (error.response) {
+        switch (error.response.status) {
+            case 401:
+                toastError('Unauthorized. Please login.');
+                break;
+            case 403:
+                toastError('Forbidden. You do not have permission to access this resource.');
+                break;
+            case 404:
+                toastError('Resource not found.');
+                break;
+            default:
+                toastError('An error occurred. Please try again later.');
+        }
+    } else if (error.request) {
+        toastError('No response received. Please check your network.');
+    } else {
+        toastError('Error: ' + error.message);
+    }
+    return Promise.reject(error);
+};
+
+apiClient.interceptors.response.use(response => response, handleError);
+axiosPrivate.interceptors.response.use(response => response, handleError);
+
+export {  apiClient ,axiosPrivate };

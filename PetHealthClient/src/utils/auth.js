@@ -4,9 +4,10 @@ import { COOKIE_DOMAIN } from '../constants/global';
 const accessTokenKey = 'access_token';
 const userId = 'user_id';
 const userName = 'user_name';
+const roleTitle = "role_title";
 
 const objCookies = {
-    expries: 30,
+    expires : 365,
     domain: COOKIE_DOMAIN
 };
 
@@ -26,7 +27,7 @@ export const saveToken = (access_token) => {
 
 export const saveUserId = (id) =>{
   if(id){
-    Cookies.set(userId, id, {
+    Cookies.set(userId, id.toString(), {
       ...objCookies,
     });
   } else {
@@ -51,6 +52,19 @@ export const saveUserName = (name) => {
     })
   };
 };
+export const saveUserRole = (role) => {
+  if(role){
+    Cookies.set(roleTitle, role, {
+      ...objCookies,
+    });
+  } else { 
+    Cookies.remove(roleTitle, {
+      ...objCookies,
+      path: "/",
+      domain: COOKIE_DOMAIN,
+    })
+  };
+};
 export const getToken = () => {
   const access_token = Cookies.get(accessTokenKey);
   return access_token;
@@ -58,10 +72,15 @@ export const getToken = () => {
 
 export const getUserId = () => {
   const id = Cookies.get(userId);
-  return id;
+  return id ? parseInt(userId, 10) : null;
 };
 
 export const getUserName = () => {
   const name = Cookies.get(userName);
   return name;
 };
+
+export const getUserRole = () => {
+  const role = Cookies.get(roleTitle);
+  return role
+}

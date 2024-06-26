@@ -16,6 +16,6 @@ export default defineConfig({
     }
   },
   server: {
-    port: 5000 // Replace with your desired port number
+    port: 3000 // Replace with your desired port number
   }
 })

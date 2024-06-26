@@ -70,12 +70,14 @@ const router = createRouter({
       name: 'deletePet',
       component: DeletePet
     },
-      // path: '/',
-      // component: BaseLayout,
-      // children: [
-      //   { path: 'petlistModal', component: BaseLayout },
-      //   // Add more routes as needed
-      // ],
+    {
+      path: '/',
+      component: BaseLayout,
+      children: [
+        { path: 'petlistModal', component: BaseLayout },
+        // Add more routes as needed
+      ],
+      
     },
     {
       path: '/',
@@ -85,6 +87,7 @@ const router = createRouter({
           name: 'Dashboard',
           path: '/dashboard',
           component: () => import('../views/Dashboard.vue'),
+          meta: { roles: ['Admin'] }
         },
         // Pages
         {
@@ -94,17 +97,17 @@ const router = createRouter({
         },
         {
           name: 'MedicalHistory',
-          path: '/medicalHistory',
+          path: '/medical-history',
           component: () => import('../views/MedicalHistory.vue'),
         },
         {
           name: 'PetList',
-          path: '/petList',
+          path: '/pet-list',
           component: () => import('../views/PetList.vue'),
         },
         {
           name: 'VaccineCalendar',
-          path: '/vaccineCalendar',
+          path: '/vaccine-calendar',
           component: () => import('../views/VaccineCalendar.vue'),
         },
         {
@@ -119,12 +122,12 @@ const router = createRouter({
         },   
         {
           name: 'ManageDoctor',
-          path: '/manageDoctor',
+          path: '/manage-doctor',
           component: () => import('../views/ManageDoctor.vue'),
         },
         {
           name: 'ManageStaff',
-          path: '/manageStaff',
+          path: '/manage-staff',
           component: () => import('../views/ManageStaff.vue'),
         },   
       ],
