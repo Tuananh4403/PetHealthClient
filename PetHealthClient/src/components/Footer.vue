@@ -3,8 +3,7 @@
       <div class="inner">
         <p>&copy; 2024 My App. All rights reserved.</p>
         <nav class="nav">
-          <router-link to="/privacy">Privacy Policy</router-link>
-          <router-link to="/terms">Terms of Service</router-link>
+        
         </nav>
       </div>
     </footer>

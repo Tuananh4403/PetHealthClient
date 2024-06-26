@@ -3,6 +3,7 @@
       <HeaderComponet />
       <div class="main-content">
         <SidebarComponet />
+        <router-view />
         <div class="content">
           <slot></slot>
         </div>
@@ -14,14 +15,14 @@
   <script>
   import HeaderComponet from '../components/Header.vue';
   import FooterComponet from '../components/Footer.vue';
-  // import SidebarComponet from '../components/Sidebar.vue';
+  import SidebarComponet from '../components/Sidebar.vue';
   
   export default {
     name: 'BaseLayout',
     components: {
         HeaderComponet,
         FooterComponet,
-        // SidebarComponet,
+        SidebarComponet,
     },
   };
   </script>

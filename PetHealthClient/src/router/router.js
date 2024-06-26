@@ -10,44 +10,50 @@ import CreatePet from '../components/CreatePet.vue'
 import UpdatePet from '@/pages/customer/UpdatePet.vue' 
 import DeletePet from '../pages/customer/DeletePet.vue'
 import BaseLayout from '../layouts/BaseLayout.vue'
+import RecordPage from '../components/RecordPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'main',
+      path: '/button',
+      name: 'Main',
       component: MainPage
     },
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       component: LoginPage
     },
     {
       path: '/register',
-      name: 'register',
+      name: 'Register',
       component: RegisterPage
     },
     {
       path: '/main',
-      name: 'mainP',
+      name: 'MainP',
       component: MainPage_2
     },
     {
       path: '/booking',
-      name: 'booking',
+      name: 'Booking',
       component: BookingModal
     },
     {
-      path: '/petList',
-      name: 'petList',
+      path: '/petListP',
+      name: 'PetListP',
       component: PetListPage
     },
     {
       path: '/petlistModal',
-      name: 'petListModal',
+      name: 'PetListModal',
       component: PetListModal
+    },
+    {
+      path: '/record',
+      name: 'Record',
+      component: RecordPage
     },
     {
       path: '/createPet',
@@ -63,6 +69,65 @@ const router = createRouter({
       path: '/deletePet',
       name: 'deletePet',
       component: DeletePet
+    },
+      // path: '/',
+      // component: BaseLayout,
+      // children: [
+      //   { path: 'petlistModal', component: BaseLayout },
+      //   // Add more routes as needed
+      // ],
+    },
+    {
+      path: '/',
+      component: () => import('../layouts//BaseLayout.vue'),
+      children: [
+        {
+          name: 'Dashboard',
+          path: '/dashboard',
+          component: () => import('../views/Dashboard.vue'),
+        },
+        // Pages
+        {
+          name: 'Home',
+          path: '/home',
+          component: () => import('../views/Home.vue'),
+        },
+        {
+          name: 'MedicalHistory',
+          path: '/medicalHistory',
+          component: () => import('../views/MedicalHistory.vue'),
+        },
+        {
+          name: 'PetList',
+          path: '/petList',
+          component: () => import('../views/PetList.vue'),
+        },
+        {
+          name: 'VaccineCalendar',
+          path: '/vaccineCalendar',
+          component: () => import('../views/VaccineCalendar.vue'),
+        },
+        {
+          name: 'Kennel',
+          path: '/kennel',
+          component: () => import('../views/Kennel.vue'),
+        },
+        {
+          name: 'Service',
+          path: '/service',
+          component: () => import('../views/Service.vue'),
+        },   
+        {
+          name: 'ManageDoctor',
+          path: '/manageDoctor',
+          component: () => import('../views/ManageDoctor.vue'),
+        },
+        {
+          name: 'ManageStaff',
+          path: '/manageStaff',
+          component: () => import('../views/ManageStaff.vue'),
+        },   
+      ],
     },
   ]
 })

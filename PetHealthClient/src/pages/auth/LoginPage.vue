@@ -70,6 +70,8 @@ export default {
       }
     },
     async handleLogin() {
+    console.log("Email: " + this.email );
+    console.log("Password: " + this.password );
       try {
         const response = await axios.post('/api/auth/authenticate', {
           "username": this.email,
