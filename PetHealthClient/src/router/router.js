@@ -41,8 +41,8 @@ const router = createRouter({
       component: BookingModal
     },
     {
-      path: '/petListP',
-      name: 'PetListP',
+      path: '/petList',
+      name: 'PetList',
       component: PetListPage
     },
     {
@@ -70,13 +70,6 @@ const router = createRouter({
       name: 'deletePet',
       component: DeletePet
     },
-      // path: '/',
-      // component: BaseLayout,
-      // children: [
-      //   { path: 'petlistModal', component: BaseLayout },
-      //   // Add more routes as needed
-      // ],
-    },
     {
       path: '/',
       component: () => import('../layouts//BaseLayout.vue'),
@@ -98,8 +91,8 @@ const router = createRouter({
           component: () => import('../views/MedicalHistory.vue'),
         },
         {
-          name: 'PetList',
-          path: '/petList',
+          name: 'PetListP',
+          path: '/petListP',
           component: () => import('../views/PetList.vue'),
         },
         {
