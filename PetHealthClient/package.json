@@ -16,6 +16,7 @@
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "bootstrap-vue-3": "^0.3.12",
+    "chart.js": "^4.4.3",
     "flatpickr": "^4.6.13",
     "js-cookie": "^3.0.5",
     "toastr": "^2.1.4",
