@@ -11,6 +11,7 @@ import UpdatePet from '@/pages/customer/UpdatePet.vue'
 import DeletePet from '../pages/customer/DeletePet.vue'
 import BaseLayout from '../layouts/BaseLayout.vue'
 import RecordPage from '../components/RecordPage.vue'
+import BookingList from '../'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,12 +73,22 @@ const router = createRouter({
     },
     {
       path: '/',
+      component: BaseLayout,
+      children: [
+        { path: 'petlistModal', component: BaseLayout },
+        // Add more routes as needed
+      ],
+      
+    },
+    {
+      path: '/',
       component: () => import('../layouts//BaseLayout.vue'),
       children: [
         {
           name: 'Dashboard',
           path: '/dashboard',
           component: () => import('../views/Dashboard.vue'),
+          meta: { roles: ['Admin'] }
         },
         // Pages
         {
@@ -87,7 +98,7 @@ const router = createRouter({
         },
         {
           name: 'MedicalHistory',
-          path: '/medicalHistory',
+          path: '/medical-history',
           component: () => import('../views/MedicalHistory.vue'),
         },
         {
@@ -97,7 +108,7 @@ const router = createRouter({
         },
         {
           name: 'VaccineCalendar',
-          path: '/vaccineCalendar',
+          path: '/vaccine-calendar',
           component: () => import('../views/VaccineCalendar.vue'),
         },
         {
@@ -112,14 +123,19 @@ const router = createRouter({
         },   
         {
           name: 'ManageDoctor',
-          path: '/manageDoctor',
+          path: '/manage-doctor',
           component: () => import('../views/ManageDoctor.vue'),
         },
         {
           name: 'ManageStaff',
-          path: '/manageStaff',
+          path: '/manage-staff',
           component: () => import('../views/ManageStaff.vue'),
         },   
+        {
+          name: 'listBooking',
+          path: '/listBooking',
+          component: () => import('../views/BookingList.vue'),
+        },
       ],
     },
   ]

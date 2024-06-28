@@ -2,11 +2,11 @@
   <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
     <div class="signup-container">
       <h1>Create a new account</h1>
-      <form>
-        <input type="text" placeholder="User name" />
+      <form @submit.prevent="register">
+        <input v-model="username" type="text" placeholder="User name" />
         <div class="name-inputs">
-          <input type="text" placeholder="First Name" />
-          <input type="text" placeholder="Last Name" />
+          <input v-model="firstName" type="text" placeholder="First Name" />
+          <input v-model="lastName" type="text" placeholder="Last Name" />
         </div>
         <input
           type="email"
@@ -16,9 +16,10 @@
           @blur="validateEmail"
         />
         <p v-if="emailError" class="error">{{ emailError }}</p>
-        <input type="password" placeholder="Password" />
+        <input v-model="phoneNumber" type="text" placeholder="Phone Number" />
+        <input v-model="password" type="password" placeholder="Password" />
         <input type="password" placeholder="Confirm Password" />
-        <button type="submit" @click="register">Sign up</button>
+        <button type="submit" >Sign up</button>
         <div class="or">------------- Or -------------</div>
         <div class="social-buttons" @click="registerWithGoogle">
           <button class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
@@ -37,14 +38,19 @@
   />
 </template>
 <script>
-import axios from '../../api/axios';
+import { apiClient } from '@/api/axios';
+
 export default {
   data() {
     return {
       backgroundImage: null,
       email: '',
       emailError: '',
-      password: ''
+      password: '',
+      username: '',
+      firstName: '',
+      lastName: '',
+      phone:''
     }
   },
   
@@ -70,19 +76,35 @@ export default {
 
     register() {
     if (!this.emailError) {
-      axios.post('/api/auth/register', {
+      apiClient.post('/api/auth/register', {
+        username: this.username,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          email: this.email,
+          phone: this.phone,
+          password: this.password,
+          roleId: 2,
+          isCustomer: true
       })
       .then(response => {
-        console.log(response.data)
-      })
-      .catch(error => {
-        console.error(error)
-      })
-    }
+      const data = response.data;
+      if (data.success) {
+        alert(data.message || 'Registration successful');
+        // You might want to redirect the user or clear the form here
+        const router = this.$router;
+        router.push('/main'); 
+      } else {
+        alert(data.message || 'An error occurred during registration');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert('An unexpected error occurred');
+    })}
   },
 
   registerWithGoogle() {
-    axios.post('/api/auth/google')
+    apiClient.post('/api/auth/google')
       .then(response => {
         console.log(response.data)
       })
@@ -92,7 +114,7 @@ export default {
   },
 
   registerWithFacebook() {
-    axios.post('/api/auth/facebook')
+    apiClient.post('/api/auth/facebook')
       .then(response => {
         console.log(response.data)
       })

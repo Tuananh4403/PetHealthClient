@@ -4,7 +4,7 @@
       <div class="sign-in-container">
         <h1>Sign in</h1>
         <p>New user? <router-link to="/register">Create an account</router-link></p>
-        <form @submit.prevent="login">
+        <form @submit.prevent="handleLogin">
           <input
             placeholder="Email"
             v-model="email"
@@ -14,7 +14,7 @@
           />
           <p v-if="emailError" class="error">{{ emailError }}</p>
           <input v-model="password" type="password" placeholder="Password" />
-          <button @click="handleLogin" type="submit">Login</button>
+          <button type="submit">Login</button>
         </form>
         <div class="or">----------Or----------</div>
         <div class="social-login">
@@ -37,8 +37,7 @@
 </template>
 
 <script >
-import axios from '../../api/axios';
-import { getToken, saveToken, saveUserId, saveUserName } from '@/utils/auth';
+import { apiClient } from '@/api/axios';
 
 export default {
   data() {
@@ -70,23 +69,20 @@ export default {
       }
     },
     async handleLogin() {
-    console.log("Email: " + this.email );
-    console.log("Password: " + this.password );
       try {
-        const response = await axios.post('/api/auth/authenticate', {
-          "username": this.email,
-          "password": this.password
+        await this.$store.dispatch('login', {
+          email: this.email,
+          password: this.password,
         });
-
-        const router = this.$router;
-        router.push('/main'); // Redirect to the main page
+        this.$router.push('/main'); // Redirect to the main page
       } catch (error) {
-        console.error(error);
+        console.error('Login failed:', error);
+        // Optionally show an error message to the user
       }
     },
 
     loginWithGoogle() {
-      axios
+      apiClient
         .post('/api/auth/google')
         .then((response) => {
           console.log(response.data)
@@ -97,7 +93,7 @@ export default {
     },
 
     loginWithFacebook() {
-      axios
+      apiClient
         .post('/api/auth/facebook')
         .then((response) => {
           console.log(response.data)
