@@ -11,7 +11,7 @@ import UpdatePet from '@/pages/customer/UpdatePet.vue'
 import DeletePet from '../pages/customer/DeletePet.vue'
 import BaseLayout from '../layouts/BaseLayout.vue'
 import RecordPage from '../components/RecordPage.vue'
-import BookingList from '../'
+import BookingList from '../views/BookingList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,6 +72,11 @@ const router = createRouter({
       component: DeletePet
     },
     {
+      path: '/listBooking',
+      name: 'listBooking',
+      component: BookingList
+    },
+    {
       path: '/',
       component: BaseLayout,
       children: [
@@ -130,12 +135,7 @@ const router = createRouter({
           name: 'ManageStaff',
           path: '/manage-staff',
           component: () => import('../views/ManageStaff.vue'),
-        },   
-        {
-          name: 'listBooking',
-          path: '/listBooking',
-          component: () => import('../views/BookingList.vue'),
-        },
+        },  
       ],
     },
   ]

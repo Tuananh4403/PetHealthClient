@@ -27,18 +27,16 @@
         <a href="#" @click="toggleDropdown">Service</a>
         <div class="dropdown-content" v-show="showDropdown">
           <a href="#" @click="navigateTo('booking')">Create Booking</a>
-          <a href="#" @click="navigateTo('updateBooking')">Update Booking</a>
-          <a href="#" @click="navigateTo('viewBooking')">List Booking</a>
+          <a href="#" @click="navigateTo('listBooking')">List Booking</a>
         </div>
       </li>
       <li class="profile">
         <img src="../assets/images/icon.png" alt="Profile Image"/>
-        <span>Lê Chi</span>
+        <span>chinl</span>
       </li>
     </ul>
   </nav>
   <div class="header-content bg-image" :style="{ backgroundImage: `url(${backgroundImage})` }">
-    <img src="../assets/images/catdog.png" alt="Main Image"/>
   </div>
 </template>
 
@@ -55,7 +53,6 @@ export default {
     const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value
 }
-
 
     const navigateTo = (route) => {
       router.push(`/${route}`)
