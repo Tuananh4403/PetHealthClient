@@ -102,8 +102,8 @@ const router = createRouter({
           component: () => import('../views/Home.vue'),
         },
         {
-          name: 'MedicalHistory',
-          path: '/medical-history',
+          name: 'medicalHistory',
+          path: '/medicalHistory',
           component: () => import('../views/MedicalHistory.vue'),
         },
         {
