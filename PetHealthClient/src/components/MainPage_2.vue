@@ -26,7 +26,7 @@
       <div class="button-cards">
         <div class="card">
           <h3>View Pet List</h3>
-          <button class="btn-mainpage" @click="navigateTo('petList')">Button</button>
+          <button class="btn-mainpage" @click="navigateTo('petListP')">Button</button>
         </div>
         <div class="card">
           <h3>Create Booking</h3>
