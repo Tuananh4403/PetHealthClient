@@ -11,6 +11,7 @@ import UpdatePet from '@/pages/customer/UpdatePet.vue'
 import DeletePet from '../pages/customer/DeletePet.vue'
 import BaseLayout from '../layouts/BaseLayout.vue'
 import RecordPage from '../components/RecordPage.vue'
+import BookingList from '../views/BookingList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,8 +42,8 @@ const router = createRouter({
       component: BookingModal
     },
     {
-      path: '/petListP',
-      name: 'PetListP',
+      path: '/petList',
+      name: 'PetList',
       component: PetListPage
     },
     {
@@ -69,6 +70,11 @@ const router = createRouter({
       path: '/deletePet',
       name: 'deletePet',
       component: DeletePet
+    },
+    {
+      path: '/listBooking',
+      name: 'listBooking',
+      component: BookingList
     },
     {
       path: '/',
@@ -101,8 +107,8 @@ const router = createRouter({
           component: () => import('../views/MedicalHistory.vue'),
         },
         {
-          name: 'PetList',
-          path: '/pet-list',
+          name: 'PetListP',
+          path: '/petListP',
           component: () => import('../views/PetList.vue'),
         },
         {
@@ -129,7 +135,7 @@ const router = createRouter({
           name: 'ManageStaff',
           path: '/manage-staff',
           component: () => import('../views/ManageStaff.vue'),
-        },   
+        },  
       ],
     },
   ]
