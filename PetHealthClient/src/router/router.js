@@ -1,14 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import MainPage from '../components/MainPage.vue'
 import LoginPage from '../pages/auth/LoginPage.vue'
 import RegisterPage from '../pages/auth/RegisterPage.vue'
-import MainPage_2 from '../components/MainPage_2.vue'
+import MainPage from '../components/MainPage.vue'
 import BookingModal from '../components/BookingModal.vue'
 import PetListPage from '../pages/PetListPage.vue'
 import CreatePet from '../components/CreatePet.vue'
 import UpdatePet from '@/pages/customer/UpdatePet.vue' 
 import DeletePet from '../pages/customer/DeletePet.vue'
-import BaseLayout from '../layouts/BaseLayout.vue'
 import RecordPage from '../components/RecordPage.vue'
 import store  from "@/store/store";
 import BookingList from '../views/BookingList.vue'
@@ -31,49 +29,9 @@ const router = createRouter({
       name: 'Register',
       component: RegisterPage
     },
-    // {
-    //   path: '/main',
-    //   name: 'MainP',
-    //   component: MainPage_2
-    // },
-    // {
-    //   path: '/booking',
-    //   name: 'Booking',
-    //   component: BookingModal
-    // },
-    // {
-    //   path: '/petListP',
-    //   name: 'PetListP',
-    //   component: PetListPage
-    // },
-    // {
-    //   path: '/petlistModal',
-    //   name: 'PetListModal',
-    //   component: PetListModal
-    // },
-    // {
-    //   path: '/record',
-    //   name: 'Record',
-    //   component: RecordPage
-    // },
-    // {
-    //   path: '/createPet',
-    //   name: 'createPet',
-    //   component: CreatePet,
-    //   meta: { requiresAuth: true }
-    // },
-    // {
-    //   path: '/updatePet',
-    //   name: 'updatePet',
-    //   component: UpdatePet
-    // },
-    // {
-    //   path: '/deletePet',
-    //   name: 'deletePet',
-    //   component: DeletePet
-    // },
     {
       path: '/customer',
+      meta: { requiresAuth: true, role: ['Customer']},
       children: [
         {
           path: 'updatePet',
@@ -93,8 +51,8 @@ const router = createRouter({
         },
         {
           path: 'main',
-          name: 'MainP',
-          component: MainPage_2
+          name: 'main',
+          component: MainPage
         },
         {
           path: 'petListP',
@@ -109,21 +67,11 @@ const router = createRouter({
       ],
       
     },
-    {
-      path: '/listBooking',
-      name: 'listBooking',
-      component: BookingList
-    },
-    {
-      path: '/listBooking',
-      name: 'listBooking',
-      component: BookingList
-    },
+    
     {
       path: '/doctor',
-      component: BaseLayout,
+      meta: { requiresAuth: true, role: ['Doctor']},
       children: [
-        // { path: 'petlistModal', component: BaseLayout },
         {
           path: 'record',
           name: 'Record',
@@ -134,8 +82,22 @@ const router = createRouter({
       
     },
     {
+      path: '/staff',
+      meta: { requiresAuth: true, role: ['Staff']},
+      children: [
+        {
+          path: '/listBooking',
+          name: 'listBooking',
+          component: BookingList
+        },
+        // Add more routes as needed
+      ],
+      
+    },
+    {
       path: '/admin',
-      component: () => import('../layouts//BaseLayout.vue'),
+      // component: () => import('../layouts//BaseLayout.vue'),
+      meta: { requiresAuth: true, role: ['Admin']},
       children: [
         {
           name: 'Dashboard',

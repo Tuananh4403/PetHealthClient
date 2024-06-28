@@ -112,7 +112,7 @@ export default {
     detailService({ nameService, idService }) {
       return `${idService} . ${nameService}`
     },
-    async handleLogin() {
+    async getDoctor() {
       try {
         let data = JSON.stringify({
           "username": "tes5",

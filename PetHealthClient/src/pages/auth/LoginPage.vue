@@ -74,7 +74,7 @@ export default {
           email: this.email,
           password: this.password,
         });
-        this.$router.push('/main'); // Redirect to the main page
+        this.$router.push('/customer/main'); // Redirect to the main page
       } catch (error) {
         console.error('Login failed:', error);
         // Optionally show an error message to the user
