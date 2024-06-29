@@ -24,6 +24,9 @@ export default createStore({
       state.currentUser = null;
       state.token = null;
       state.role = null;
+      saveToken(null);
+      saveUserId(null);
+      saveUserName(null);
     },
   },
   actions: {

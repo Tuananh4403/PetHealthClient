@@ -112,24 +112,9 @@ export default {
     detailService({ nameService, idService }) {
       return `${idService} . ${nameService}`
     },
-    async handleLogin() {
+    async getDoctor() {
       try {
-        let data = JSON.stringify({
-          "username": "tes5",
-          "password": "123"
-        });
-
-        let config = {
-          method: 'post',
-          maxBodyLength: Infinity,
-          url: 'http://localhost:4000/api/auth/authenticate',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          data: data
-        };
-
-        const response = await axios.request(config);
+        const response = await axios.get("");
         Cookies.set('auth_token', response.data.token, { expires: 7 });
         const router = this.$router;
         router.push('/main'); // Redirect to the main page

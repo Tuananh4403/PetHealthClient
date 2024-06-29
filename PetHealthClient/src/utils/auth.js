@@ -7,13 +7,14 @@ const userName = 'user_name';
 const roleTitle = "role_title";
 
 const objCookies = {
+    path  : "/",
     expires : 365,
     domain: COOKIE_DOMAIN
 };
 
 export const saveToken = (access_token) => {
   if(access_token){
-    Cookies.set(accessTokenKey. accessTokenKey, {
+    Cookies.set(accessTokenKey, access_token, {
       ...objCookies,
     });
   } else{
