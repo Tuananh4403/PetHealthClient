@@ -15,8 +15,9 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/button',
+      path: '/',
       name: 'Main',
+      meta: { requiresAuth: true},
       component: MainPage
     },
     {
@@ -28,6 +29,16 @@ const router = createRouter({
       path: '/register',
       name: 'Register',
       component: RegisterPage
+    },
+    {
+      name: 'medicalHistory',
+      path: '/medicalHistory',
+      component: () => import('../views/MedicalHistory.vue'),
+    },
+    {
+      path: '/listBooking',
+      name: 'listBooking',
+      component: BookingList
     },
     {
       path: '/customer',
@@ -64,10 +75,14 @@ const router = createRouter({
           name: 'deletePet',
           component: DeletePet
         },
+        {
+          path: 'listBooking',
+          name: 'listBooking',
+          component: BookingList
+        },
       ],
       
     },
-    
     {
       path: '/doctor',
       meta: { requiresAuth: true, role: ['Doctor']},
@@ -77,6 +92,7 @@ const router = createRouter({
           name: 'Record',
           component: RecordPage
         },
+
         // Add more routes as needed
       ],
       
@@ -85,11 +101,11 @@ const router = createRouter({
       path: '/staff',
       meta: { requiresAuth: true, role: ['Staff']},
       children: [
-        {
-          path: '/listBooking',
-          name: 'listBooking',
-          component: BookingList
-        },
+        // {
+        //   path: '/listBooking',
+        //   name: 'listBooking',
+        //   component: BookingList
+        // },
         // Add more routes as needed
       ],
       
@@ -111,11 +127,7 @@ const router = createRouter({
           path: '/home',
           component: () => import('../views/Home.vue'),
         },
-        {
-          name: 'medicalHistory',
-          path: '/medicalHistory',
-          component: () => import('../views/MedicalHistory.vue'),
-        },
+        
         {
           name: 'PetListP',
           path: '/petListP',

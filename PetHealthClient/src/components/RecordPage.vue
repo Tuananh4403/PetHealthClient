@@ -26,7 +26,7 @@
                                     <span :title="option.name">{{ option.name }}</span>
                                 </span>
                             </template>
-                            <template #noResult>
+                            <template #noResult>  
                                 Không tìm thấy phương thức thanh toán phù hợp.
                             </template>
           </multiselect>

@@ -12,6 +12,7 @@
               <th>Service</th>
               <th>Date</th>
               <th>Note</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -23,6 +24,11 @@
               <td>{{ pet.Service }}</td>
               <td>{{ pet.Date }}</td>
               <td>{{ pet.Note }}</td>
+              <td>
+                <button  @click="approveBooking(pet)">
+                  Approve
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -31,15 +37,13 @@
   </template>
   
   <script>
+import { axiosPrivate } from '@/api/axios';
+
   export default {
     data() {
       return {
         backgroundImage: null,
-        pets: [
-          { Customer: 'Chi', PetName: 'Destiny', Doctor: 'Mr Abram', Service: 'General Examination', Date: '2024-06-30', Note: "Coming soon" },
-          { Customer: 'ChiLe', PetName: 'Dorry', Doctor: 'Mr Vu', Service: 'General Examination', Date: '2024-06-30', Note: "Coming soon" },
-          { Customer: 'Tuan', PetName: 'Tom', Doctor: 'Mr Nhan', Service: 'General Examination', Date: '2024-07-01', Note: "Weight" }
-        ]
+        pets: []
       };
     },
   
@@ -51,7 +55,65 @@
         .catch((error) => {
           console.error('Error loading image:', error);
         });
+        this.fetchPets();
     },
+    methods: {
+      fetchPets() {
+        console.log("test");
+        axiosPrivate.get("/api/booking/review-booking")
+          .then(response => {
+            console.log(response.data.data);
+            console.log(response.data.success);
+
+            if(response.data.success){
+            console.log(response.data.data);
+            var data = Object.values(response.data.data)
+            console.log(Array.isArray(data))
+
+              data.forEach(item => {
+                var booking = this.mapBookingData(item);
+                console.log(booking);
+                this.pets.push(booking)
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching pets:', error);
+          });
+    },
+    approveBooking(pet) {
+      // Example of sending data (pet) to an API endpoint
+      console.log(pet)
+      axiosPrivate.post('/api/booking/confirm/' + pet.id)
+        .then(response => {
+          // Handle success response if needed
+          console.log('Booking approved:', response.data);
+          // Optionally update UI or fetch new data after approval
+        })
+        .catch(error => {
+          console.error('Error approving booking:', error);
+          // Handle error scenario
+        });
+    },
+    mapBookingData(petData) {
+    const pet = petData.pet;
+    const customer = pet.customer.user;
+    const Doctor = petData.doctor ? petData.doctor.user : 'Default Doctor';
+    console.log(petData.bookingServices[0].service.name);
+    // const Service = petData.bookingServices[0] ? pet.bookingServices[0].service.name : 'Default Service';
+    // console.log(Service);
+    return {
+        id : petData.id,
+        Customer: `${customer.firstName} ${customer.lastName}`,
+        PetName: pet.petName,
+        Doctor: Doctor ? `${Doctor.firstName} ${Doctor.lastName}` :  'Default Doctor',
+        Service: petData.bookingServices[0].service.name ? petData.bookingServices[0].service.name : 'Default Service', // Replace with actual service information if available
+        Date: new Date(petData.bookingTime).toLocaleDateString(), // Format date as needed
+        Note: '' // Add any notes or additional information
+    };
+}
+
+    }
   };
   </script>
   
