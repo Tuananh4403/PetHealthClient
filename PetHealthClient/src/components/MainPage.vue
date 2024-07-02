@@ -44,17 +44,28 @@
   </nav>
   <div class="header-content bg-image" :style="{ backgroundImage: `url(${backgroundImage})` }">
   </div>
+   <div class="chat-toggle" @click="toggleChat">
+    <div class="chat-bar">Messeage</div>
+  </div>
+  <ChatBox v-if="isChatOpen" :isOpen="isChatOpen" @close="toggleChat" />
 </template>
 
 <script>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import Chatbox from '@/components/ChatBox.vue'
 //import BookingModal from '../components/BookingModal.vue'
 
 export default {
+
+  components: {
+    Chatbox
+  },
+
   setup() {
     const router = useRouter()
     const showDropdown = ref(false)
+    const isChatOpen = ref(false)
 
     const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value
@@ -64,10 +75,17 @@ export default {
       router.push(`/${route}`)
     }
 
+    const toggleChat = () => {
+      console.log('toggleChat called, isChatOpen:', isChatOpen.value);
+      isChatOpen.value = !isChatOpen.value;
+    }
+
     return {
       navigateTo,
       toggleDropdown,
-      showDropdown
+      showDropdown,
+      isChatOpen,
+      toggleChat
     }
   },
 
@@ -95,12 +113,12 @@ export default {
         console.error( error);
         // Optionally show an error message to the user
       }
-    }
+    },
   }
 }
 </script>
 
-<style>
+<style scoped>
 .profile-right {
     display: flex;
     justify-content: right; /* Align items to the right */
@@ -278,4 +296,22 @@ nav ul {
   display: block;
 }
 
+.chat-toggle {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chat-bar {
+  width: 100%;
+  height: 100%;
+  background-color: #007bff;
+  color: white;
+  align-content: center;
+}
 </style>
