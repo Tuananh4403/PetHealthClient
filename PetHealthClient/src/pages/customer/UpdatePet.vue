@@ -4,7 +4,15 @@
         <h1>Update your pet</h1>
         <form>
           <label for="pet-name">Pet Name</label>
-          <input type="text" id="pet-name" placeholder="Pet Name" />
+          <multiselect 
+          v-model="selectedPet" 
+          :options="pets" 
+          placeholder="Pet Name" 
+          label="name" 
+          track-by="id"
+          :searchable="true"
+          :allow-empty="false"
+        />
   
           <label for="kind-of-pet">Kind Of Pet</label>
           <input type="text" id="kind-of-pet" placeholder="Kind Of Pet" />
@@ -25,13 +33,15 @@
   </template>
   
   <script>
+  import Multiselect from 'vue-multiselect';
   export default {
+    components: { Multiselect },
+    
     data() {
       return {
         backgroundImage: null,
-        email: '',
-        emailError: '',
-        password: ''
+        pets: [],
+        selectedPet: null,
       }
     },
     mounted() {

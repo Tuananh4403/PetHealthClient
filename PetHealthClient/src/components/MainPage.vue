@@ -11,31 +11,31 @@
       <li class="dropdown">
         <a href="#" @click="toggleDropdown">Pet</a>
         <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo('createPet')">Create Pet</a>
-          <a href="#" @click="navigateTo('updatePet')">Update Pet</a>
-          <a href="#" @click="navigateTo('deletePet')">Delete Pet</a>
-          <a href="#" @click="navigateTo('petList')">List Pet</a>
+          <a href="#" @click="navigateTo('customer/createPet')">Create Pet</a>
+          <a href="#" @click="navigateTo('customer/updatePet')">Update Pet</a>
+          <a href="#" @click="navigateTo('customer/deletePet')">Delete Pet</a>
+          <a href="#" @click="navigateTo('customer/petList')">List Pet</a>
         </div>
       </li>
       <li class="dropdown">
         <a href="#" @click="toggleDropdown">Kennel</a>
         <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo('viewBarn')">Save Barn</a>
+          <a href="#" @click="navigateTo('customer/viewBarn')">Save Barn</a>
         </div>
       </li>
       <li class="dropdown">
         <a href="#" @click="toggleDropdown">Service</a>
         <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo('booking')">Create Booking</a>
-          <a href="#" @click="navigateTo('listBooking')">List Booking</a>
+          <a href="#" @click="navigateTo('customer/booking')">Create Booking</a>
+          <a href="#" @click="navigateTo('customer/listBooking')">List Booking</a>
         </div>
       </li>
       <div class="profile-right">
       <li class="profile dropdown split">
         <img src="../assets/images/icon.png" alt="Profile Image"/>
-        <a href="#" @click="toggleDropdown">Username</a>
+        <a href="#" @click="toggleDropdown">{{userName}}</a>
           <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo('booking')">View Profile</a>
+          <a href="#" @click="navigateTo()">View Profile</a>
           <a href="#" @click="logout">Logout</a>
         </div>
       </li>
@@ -49,6 +49,7 @@
 <script>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { getUserName } from '@/utils/auth';
 //import BookingModal from '../components/BookingModal.vue'
 
 export default {
@@ -74,6 +75,7 @@ export default {
   data() {
     return {
       backgroundImage: null,
+      userName: "",
     }
   },
 
@@ -85,6 +87,7 @@ export default {
       .catch((error) => {
         console.error('Error loading image:', error)
       })
+      this.fetchUsername();
   },
   methods: {
     logout(){
@@ -95,6 +98,9 @@ export default {
         console.error( error);
         // Optionally show an error message to the user
       }
+    },
+    fetchUsername(){
+      this.userName = getUserName();
     }
   }
 }

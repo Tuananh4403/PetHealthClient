@@ -16,7 +16,7 @@
           @blur="validateEmail"
         />
         <p v-if="emailError" class="error">{{ emailError }}</p>
-        <input v-model="phoneNumber" type="text" placeholder="Phone Number" />
+        <input v-model="phone" type="text" placeholder="Phone Number" />
         <input v-model="password" type="password" placeholder="Password" />
         <input type="password" placeholder="Confirm Password" />
         <button type="submit" >Sign up</button>
@@ -39,6 +39,7 @@
 </template>
 <script>
 import { apiClient } from '@/api/axios';
+import { toastSuccess } from '@/utils/toast';
 
 export default {
   data() {
@@ -89,18 +90,14 @@ export default {
       .then(response => {
       const data = response.data;
       if (data.success) {
-        alert(data.message || 'Registration successful');
+        toastSuccess(data.message || 'Registration successful');
         // You might want to redirect the user or clear the form here
         const router = this.$router;
-        router.push('/main'); 
+        router.push('/'); 
       } else {
-        alert(data.message || 'An error occurred during registration');
+        toastWarning(data.message || 'An error occurred during registration');
       }
-    })
-    .catch(error => {
-      console.error(error);
-      alert('An unexpected error occurred');
-    })}
+    })};
   },
 
   registerWithGoogle() {
