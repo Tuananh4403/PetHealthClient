@@ -1,24 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import MainPage from '../components/MainPage.vue'
 import LoginPage from '../pages/auth/LoginPage.vue'
 import RegisterPage from '../pages/auth/RegisterPage.vue'
-import MainPage_2 from '../components/MainPage_2.vue'
+import MainPage from '../components/MainPage.vue'
 import BookingModal from '../components/BookingModal.vue'
 import PetListPage from '../pages/PetListPage.vue'
-import PetListModal from '../components/PetListModal.vue'
 import CreatePet from '../components/CreatePet.vue'
 import UpdatePet from '@/pages/customer/UpdatePet.vue' 
 import DeletePet from '../pages/customer/DeletePet.vue'
-import BaseLayout from '../layouts/BaseLayout.vue'
 import RecordPage from '../components/RecordPage.vue'
+import store  from "@/store/store";
 import BookingList from '../views/BookingList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/button',
+      path: '/',
       name: 'Main',
+      meta: { requiresAuth: true},
       component: MainPage
     },
     {
@@ -32,44 +31,9 @@ const router = createRouter({
       component: RegisterPage
     },
     {
-      path: '/main',
-      name: 'MainP',
-      component: MainPage_2
-    },
-    {
-      path: '/booking',
-      name: 'Booking',
-      component: BookingModal
-    },
-    {
-      path: '/petList',
-      name: 'PetList',
-      component: PetListPage
-    },
-    {
-      path: '/petlistModal',
-      name: 'PetListModal',
-      component: PetListModal
-    },
-    {
-      path: '/record',
-      name: 'Record',
-      component: RecordPage
-    },
-    {
-      path: '/createPet',
-      name: 'createPet',
-      component: CreatePet
-    },
-    {
-      path: '/updatePet',
-      name: 'updatePet',
-      component: UpdatePet
-    },
-    {
-      path: '/deletePet',
-      name: 'deletePet',
-      component: DeletePet
+      name: 'medicalHistory',
+      path: '/medicalHistory',
+      component: () => import('../views/MedicalHistory.vue'),
     },
     {
       path: '/listBooking',
@@ -77,17 +41,79 @@ const router = createRouter({
       component: BookingList
     },
     {
-      path: '/',
-      component: BaseLayout,
+      path: '/customer',
+      meta: { requiresAuth: true, role: ['Customer']},
       children: [
-        { path: 'petlistModal', component: BaseLayout },
+        {
+          path: 'updatePet',
+          name: 'updatePet',
+          component: UpdatePet
+        },
+        {
+          path: 'createPet',
+          name: 'createPet',
+          component: CreatePet,
+          // meta: { requiresAuth: true }
+        },
+        {
+          path: 'booking',
+          name: 'Booking',
+          component: BookingModal
+        },
+        {
+          path: 'main',
+          name: 'main',
+          component: MainPage
+        },
+        {
+          path: 'petListP',
+          name: 'PetListP',
+          component: PetListPage
+        },
+        {
+          path: 'deletePet',
+          name: 'deletePet',
+          component: DeletePet
+        },
+        {
+          path: 'listBooking',
+          name: 'listBooking',
+          component: BookingList
+        },
+      ],
+      
+    },
+    {
+      path: '/doctor',
+      meta: { requiresAuth: true, role: ['Doctor']},
+      children: [
+        {
+          path: 'record',
+          name: 'Record',
+          component: RecordPage
+        },
+
         // Add more routes as needed
       ],
       
     },
     {
-      path: '/',
-      component: () => import('../layouts//BaseLayout.vue'),
+      path: '/staff',
+      meta: { requiresAuth: true, role: ['Staff']},
+      children: [
+        // {
+        //   path: '/listBooking',
+        //   name: 'listBooking',
+        //   component: BookingList
+        // },
+        // Add more routes as needed
+      ],
+      
+    },
+    {
+      path: '/admin',
+      // component: () => import('../layouts//BaseLayout.vue'),
+      meta: { requiresAuth: true, role: ['Admin']},
       children: [
         {
           name: 'Dashboard',
@@ -101,11 +127,7 @@ const router = createRouter({
           path: '/home',
           component: () => import('../views/Home.vue'),
         },
-        {
-          name: 'medicalHistory',
-          path: '/medicalHistory',
-          component: () => import('../views/MedicalHistory.vue'),
-        },
+        
         {
           name: 'PetListP',
           path: '/petListP',
@@ -140,5 +162,21 @@ const router = createRouter({
     },
   ]
 })
-
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.getters.isAuthenticated) {
+      next({ name: 'Login' }); // Redirect to login if not authenticated
+    } else {
+      const userRoles = store.getters.roles;
+      const requiredRoles = to.meta.roles;
+      if (requiredRoles && !requiredRoles.some(role => userRoles.includes(role))) {
+        next({ name: 'Home' }); // Redirect to home if user lacks required role
+      } else {
+        next();
+      }
+    }
+  } else {
+    next();
+  }
+});
 export default router

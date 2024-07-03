@@ -20,7 +20,7 @@
   
   <style scoped>
   .header {
-    background-color: #333;
+    background-color: #0b0c5d;
     color: white;
     padding: 1rem;
     display: flex;
