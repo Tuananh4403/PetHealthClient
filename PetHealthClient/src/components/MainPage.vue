@@ -5,16 +5,16 @@
       <li class="dropdown">
         <a href="#" @click="toggleDropdown">Medical History</a>
         <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo('viewPet')">Pet Medical</a>
+          <a href="#" @click="navigateTo('customer/petMedicalHistory')">Pet Medical</a>
         </div>
       </li>
       <li class="dropdown">
         <a href="#" @click="toggleDropdown">Pet</a>
         <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo('createPet')">Create Pet</a>
-          <a href="#" @click="navigateTo('updatePet')">Update Pet</a>
-          <a href="#" @click="navigateTo('deletePet')">Delete Pet</a>
-          <a href="#" @click="navigateTo('petList')">List Pet</a>
+          <a href="#" @click="navigateTo('customer/createPet')">Create Pet</a>
+          <a href="#" @click="navigateTo('customer/updatePet')">Update Pet</a>
+          <a href="#" @click="navigateTo('customer/deletePet')">Delete Pet</a>
+          <a href="#" @click="navigateTo('customer/petList')">List Pet</a>
         </div>
       </li>
       <li class="dropdown">
@@ -26,8 +26,8 @@
       <li class="dropdown">
         <a href="#" @click="toggleDropdown">Service</a>
         <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo('booking')">Create Booking</a>
-          <a href="#" @click="navigateTo('listBooking')">List Booking</a>
+          <a href="#" @click="navigateTo('customer/booking')">Create Booking</a>
+          <a href="#" @click="navigateTo('customer/listBooking')">List Booking</a>
         </div>
       </li>
       <div class="profile-right">

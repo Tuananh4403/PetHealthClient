@@ -34,16 +34,15 @@ export default createStore({
       try {
         const response = await apiClient.post('/api/auth/authenticate', { username: email, password });
         console.log(response);
-        if (response.data.success) {
-          console.log(response.data.data);
-          const { id, fullName, email, username, role, token } = response.data.data;
-          const user = { id, fullName, email, username , role};
+        if (response.data.message === "Login successful") {
+          console.log(response.data.result);
+          const { id, fullName, email, username, token } = response.data.result;
+          const user = { id, fullName, email, username };
           commit('setUser', user);
           commit('setToken', token);
           saveToken(token);
           saveUserId(id);
           saveUserName(username);
-          saveUserRole(role);
           toastSuccess("Đăng nhập thành công!");
         } else {
           toastWarning(response.data.message);
