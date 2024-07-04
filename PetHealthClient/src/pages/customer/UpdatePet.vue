@@ -5,7 +5,8 @@
         <form>
           <label for="pet-name">Pet Name</label>
           <multiselect 
-          v-model="selectedPet" 
+          v-model="selectedPet"
+          @open="fetchPetData" 
           :options="pets" 
           placeholder="Pet Name" 
           label="name" 
@@ -33,6 +34,7 @@
   </template>
   
   <script>
+  import { axiosPrivate } from '@/api/axios';
   import Multiselect from 'vue-multiselect';
   export default {
     components: { Multiselect },
@@ -53,7 +55,23 @@
           console.error('Error loading image:', error)
         })
     },
-    
+    methods:{
+      async fetchPetData() {
+      try {
+        await axiosPrivate.get('/api/pet/get-list-pet-by-user')
+          .then(response => {
+            const data = response.data;
+
+            if (data.success) {
+              this.pets = data.data.map(pet => ({ id: pet.id, name: pet.name }));
+            }
+          }); // Replace with your API endpoint
+        this.pets = data.map(pet => ({ id: pet.id, name: pet.name }));
+      } catch (error) {
+        console.error('Error fetching pet data:', error);
+      }
+    }
+    }
     
   }
   </script>

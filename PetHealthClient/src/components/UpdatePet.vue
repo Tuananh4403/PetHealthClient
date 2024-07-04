@@ -5,7 +5,7 @@
       <form>
         <label for="pet-name">Pet Name</label>
         <multiselect v-model="selectedPet" :options="pets" placeholder="Pet Name" label="name" track-by="id"
-          :searchable="true" :allow-empty="false" />
+          :searchable="true" @open="fetchPetData" :allow-empty="false" />
 
         <label for="kind-of-pet">Kind Of Pet</label>
         <input type="text" id="kind-of-pet" placeholder="Kind Of Pet" />
@@ -33,9 +33,8 @@ export default {
   data() {
     return {
       backgroundImage: null,
-      email: '',
-      emailError: '',
-      password: ''
+      pets: [],
+      selectedPet: null,
     }
   },
   mounted() {
@@ -50,8 +49,16 @@ export default {
   methods: {
     async fetchPetData() {
       try {
-        const response = await axiosPrivate('https://api.example.com/pets'); // Replace with your API endpoint
-        const data = await response.json();
+        await axiosPrivate.get('/api/pet/get-list-pet-by-user')
+          .then(response => {
+            const data = response.data;
+            console.log(response);
+            if (data.success) {
+              this.pets = data.data.map(pet => ({ id: pet.id, name: pet.name }));
+            } else {
+              toastWarning(data.message || 'An error occurred during registration');
+            }
+          }); // Replace with your API endpoint
         this.pets = data.map(pet => ({ id: pet.id, name: pet.name }));
       } catch (error) {
         console.error('Error fetching pet data:', error);
