@@ -20,7 +20,7 @@
       <li class="dropdown">
         <a href="#" @click="toggleDropdown">Kennel</a>
         <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo('viewBarn')">Save Barn</a>
+          <a href="#" @click="navigateTo('customer/viewBarn')">Save Barn</a>
         </div>
       </li>
       <li class="dropdown">
