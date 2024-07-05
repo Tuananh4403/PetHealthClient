@@ -13,6 +13,8 @@ import BookingList from '../views/BookingList.vue'
 import MedicalHistoryCustomer from '../views/MedicalHistoryCustomer.vue'
 import PetBarn from '../views/PetBarn.vue'
 import PetRecordDetail from '../views/PetRecordDetail.vue'
+import CustomerProfile from '../views/CustomerProfile.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -96,6 +98,11 @@ const router = createRouter({
           path: '/customer/petRecord/:id',
           name: 'PetRecordDetail',
           component: PetRecordDetail
+        },
+        {
+          path: 'profile',
+          name: 'profile',
+          component: CustomerProfile
         },
       ],
       
