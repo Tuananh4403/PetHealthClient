@@ -47,7 +47,7 @@
    <div class="chat-toggle" @click="toggleChat">
     <div class="chat-bar">Messeage</div>
   </div>
-  <ChatBox v-if="isChatOpen" :isOpen="isChatOpen" @close="toggleChat" />
+  <Chatbox v-if="isChatOpen" :isOpen="isChatOpen" @close="toggleChat" />
 </template>
 
 <script>

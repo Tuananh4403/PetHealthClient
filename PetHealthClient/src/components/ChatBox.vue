@@ -18,7 +18,6 @@
 
 <script>
 export default {
-  name: 'ChatBox',
   props: {
     isOpen: Boolean
   },
