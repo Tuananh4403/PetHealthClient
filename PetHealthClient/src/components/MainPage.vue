@@ -35,7 +35,7 @@
         <img src="../assets/images/icon.png" alt="Profile Image"/>
         <a href="#" @click="toggleDropdown">Username</a>
           <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo('booking')">View Profile</a>
+          <a href="#" @click="navigateTo('customer/profile')">View Profile</a>
           <a href="#" @click="logout">Logout</a>
         </div>
       </li>
