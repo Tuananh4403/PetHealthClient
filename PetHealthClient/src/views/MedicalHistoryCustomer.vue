@@ -1,186 +1,211 @@
 <template>
-    <div>
-      <nav>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li class="dropdown">
-            <a href="#" @click="toggleDropdown">Medical History</a>
-            <div class="dropdown-content" v-show="showDropdown">
-              <a href="#" @click="navigateTo('customer/petMedicalHistory')">Pet Medical</a>
-            </div>
-          </li>
-          <li class="dropdown">
-            <a href="#" @click="toggleDropdown">Pet</a>
-            <div class="dropdown-content" v-show="showDropdown">
-              <a href="#" @click="navigateTo('customer/createPet')">Create Pet</a>
-              <a href="#" @click="navigateTo('customer/updatePet')">Update Pet</a>
-              <a href="#" @click="navigateTo('customer/deletePet')">Delete Pet</a>
-              <a href="#" @click="navigateTo('customer/petList')">List Pet</a>
-            </div>
-          </li>
-          <li class="dropdown">
-            <a href="#" @click="toggleDropdown">Kennel</a>
-            <div class="dropdown-content" v-show="showDropdown">
-              <a href="#" @click="navigateTo('viewBarn')">Save Barn</a>
-            </div>
-          </li>
-          <li class="dropdown">
-            <a href="#" @click="toggleDropdown">Service</a>
-            <div class="dropdown-content" v-show="showDropdown">
-              <a href="#" @click="navigateTo('customer/booking')">Create Booking</a>
-              <a href="#" @click="navigateTo('customer/listBooking')">List Booking</a>
-            </div>
-          </li>
-          <div class="profile-right">
-            <li class="profile dropdown split">
-              <img src="../assets/images/icon.png" alt="Profile Image"/>
-              <a href="#" @click="toggleDropdown">Username</a>
-              <div class="dropdown-content" v-show="showDropdown">
-                <a href="#" @click="navigateTo('booking')">View Profile</a>
-                <a href="#" @click="logout">Logout</a>
-              </div>
-            </li>
-          </div>
-        </ul>
-      </nav>
-      <div class="header-content bg-image" :style="{ backgroundImage: `url(${backgroundImage})` }">
+  <div class="pet-health-records">
+    <h1>Pet Health Records</h1>
+    <div class="section" v-for="(section, index) in sections" :key="index">
+      <div class="section-header" @click="toggleSection(index)">
+        <h2>{{ section.title }}</h2>
+        <span class="arrow" :class="{ 'up': !section.collapsed, 'down': section.collapsed }"></span>
       </div>
-      <div class="pet-container">
-        <div class="pet-card" v-for="pet in pets" :key="pet.id">
-          <img :src="pet.image" alt="Pet Image" class="pet-image"/>
-          <h3>{{ pet.name }}</h3>
+      <div class="section-content" v-show="!section.collapsed">
+        <div v-if="section.title === 'Pet Information'" class="pet-information">
+          <div>
+            <label>Pet Name</label>
+            <input type="text" v-model="pet.name" />
+          </div>
+          <div>
+            <label>Kind Of Pet</label>
+            <input type="text" v-model="pet.kind" />
+          </div>
+          <div>
+            <label>Gender</label>
+            <input type="text" v-model="pet.gender" />
+          </div>
+          <div>
+            <label>Birthday</label>
+            <input type="text" v-model="pet.birthday" />
+          </div>
+          <div>
+            <label>Species</label>
+            <input type="text" v-model="pet.species" />
+          </div>
+        </div>
+        <div v-if="section.title === 'Medical History'" class="medical-history">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Doctor</th>
+                <th>Detail Prediction</th>
+                <th>Conclude</th>
+                <th>View Detail</th>
+                <th>Save Barn</th>
+                <th>Barn</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(record, index) in medicalHistory" :key="index">
+                <td><input type="text" v-model="record.date" /></td>
+                <td><input type="text" v-model="record.doctor" /></td>
+                <td><input type="text" v-model="record.detailPrediction" /></td>
+                <td><input type="text" v-model="record.conclude" /></td>
+                <td><input type="text" v-model="record.viewDetail" /></td>
+                <td><input type="checkbox" v-model="record.saveBarn" /></td>
+                <td><input type="text" v-model="record.barn" v-if="record.saveBarn" /></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
+
 <script>
 export default {
-    setup(){
-        const router = useRouter()
-        const navigateTo = (route) => {
-        router.push(`/${route}`)
+  data() {
+    return {
+      pet: {
+        name: '',
+        kind: '',
+        gender: '',
+        birthday: '',
+        species: ''
+      },
+      medicalHistory: [
+        {
+          date: '2024-01-01',
+          doctor: 'Dr. John',
+          saveBarn: true,
+          barn: 'Barn 1',
+          detailPrediction: 'Prediction 1',
+          conclude: 'Conclude 1',
+          viewDetail: 'Detail 1'
+        },
+        {
+          date: '2024-02-01',
+          doctor: 'Dr. Smith',
+          saveBarn: false,
+          barn: '',
+          detailPrediction: '',
+          conclude: '',
+          viewDetail: ''
+        },
+        {
+          date: '2024-03-01',
+          doctor: 'Dr. Jane',
+          saveBarn: true,
+          barn: 'Barn 2',
+          detailPrediction: 'Prediction 2',
+          conclude: 'Conclude 2',
+          viewDetail: 'Detail 2'
         }
-    return {
-      navigateTo,
-    }
-},
-data() {
-    return {
-        showDropdown: false,
-        backgroundImage: null,
-      pets: [
-        { id: 1, name: 'Pet 1', image: 'path/to/pet1.jpg' },
-        { id: 2, name: 'Pet 2', image: 'path/to/pet2.jpg' },
-        { id: 3, name: 'Pet 3', image: 'path/to/pet3.jpg' }
+      ],
+      sections: [
+        {
+          title: 'Pet Information',
+          collapsed: false
+        },
+        {
+          title: 'Medical History',
+          collapsed: false
+        }
       ]
     };
   },
-  mounted() {
-    import('@/assets/images/bgmain.png')
-      .then((image) => {
-        this.backgroundImage = image.default
-      })
-      .catch((error) => {
-        console.error('Error loading image:', error)
-      })
-  },
   methods: {
-    toggleDropdown() {
-      this.showDropdown = !this.showDropdown;
-    },
-    navigateTo(path) {
-      this.$router.push({ path });
+    toggleSection(index) {
+      this.sections[index].collapsed = !this.sections[index].collapsed;
     }
   }
 };
 </script>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-nav ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: space-around;
-  background-color: #333;
+.pet-health-records {
+  width: 80%;
+  margin: auto;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #f4f4f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-nav ul li {
-  position: relative;
-}
-
-nav ul li a {
-  display: block;
-  color: white;
+h1, h2 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
   text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
 }
 
-nav ul li a:hover {
-  background-color: #111;
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
 }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+.arrow {
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
 }
 
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
+.arrow.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.arrow.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.section-content {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.pet-information div, .medical-record div {
+  margin-bottom: 8px;
+}
+
+.medical-history table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.medical-history th, .medical-history td {
+  border: 1px solid #ccc;
+  padding: 8px;
   text-align: left;
 }
 
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
+input[type="text"], input[type="email"], input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.profile-right {
-  margin-left: auto;
+input[type="checkbox"] {
+  margin-left: 10px;
 }
-
-.bg-image {
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-}
-
-.pet-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 20px;
-}
-
-.pet-card {
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 10px;
-  padding: 20px;
+.medical-history th {
+  background-color: #e0e0e0;
   text-align: center;
-  width: calc(50% - 40px); /* 2 cards per row */
-}
-
-.pet-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-h3 {
-  font-family: 'Roboto', sans-serif;
   font-weight: bold;
 }
+
 </style>
-  
