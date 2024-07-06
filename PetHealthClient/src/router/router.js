@@ -10,6 +10,10 @@ import DeletePet from '../pages/customer/DeletePet.vue'
 import RecordPage from '../components/RecordPage.vue'
 import store  from "@/store/store";
 import BookingList from '../views/BookingList.vue'
+import MedicalHistoryCustomer from '../views/MedicalHistoryCustomer.vue'
+import PetBarn from '../views/PetBarn.vue'
+import PetRecordDetail from '../views/PetRecordDetail.vue'
+import CustomerProfile from '../views/CustomerProfile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,8 +70,8 @@ const router = createRouter({
           component: MainPage
         },
         {
-          path: 'petListP',
-          name: 'PetListP',
+          path: 'petList',
+          name: 'PetList',
           component: PetListPage
         },
         {
@@ -79,6 +83,26 @@ const router = createRouter({
           path: 'listBooking',
           name: 'listBooking',
           component: BookingList
+        },
+        {
+          path: 'petMedicalHistory',
+          name: 'petMedicalHistory',
+          component: MedicalHistoryCustomer
+        },
+        {
+          path: 'viewBarn',
+          name: 'viewBarn',
+          component: PetBarn
+        },
+        {
+          path: '/customer/petRecord/:id',
+          name: 'PetRecordDetail',
+          component: PetRecordDetail
+        },
+        {
+          path: 'profile',
+          name: 'profile',
+          component: CustomerProfile
         },
       ],
       

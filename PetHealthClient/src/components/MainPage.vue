@@ -5,7 +5,7 @@
       <li class="dropdown">
         <a href="#" @click="toggleDropdown">Medical History</a>
         <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo('viewPet')">Pet Medical</a>
+          <a href="#" @click="navigateTo('customer/petMedicalHistory')">Pet Medical</a>
         </div>
       </li>
       <li class="dropdown">
@@ -35,7 +35,7 @@
         <img src="../assets/images/icon.png" alt="Profile Image"/>
         <a href="#" @click="toggleDropdown">{{userName}}</a>
           <div class="dropdown-content" v-show="showDropdown">
-          <a href="#" @click="navigateTo()">View Profile</a>
+          <a href="#" @click="navigateTo('customer/profile')">View Profile</a>
           <a href="#" @click="logout">Logout</a>
         </div>
       </li>

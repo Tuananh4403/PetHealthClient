@@ -29,25 +29,6 @@
             <input type="text" v-model="pet.species" />
           </div>
         </div>
-        <div v-if="section.title === 'Owner Information'" class="owner-information">
-          <div>
-            <label>Owner's Name</label>
-            <input type="text" v-model="owner.firstName" placeholder="First Name" />
-            <input type="text" v-model="owner.lastName" placeholder="Last Name" />
-          </div>
-          <div>
-            <label>Phone Number</label>
-            <input type="text" v-model="owner.phoneNumber" />
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="text" v-model="owner.email" />
-          </div>
-          <div>
-            <label>Address</label>
-            <input type="text" v-model="owner.address" />
-          </div>
-        </div>
         <div v-if="section.title === 'Medical History'" class="medical-history">
           <table>
             <thead>
@@ -90,13 +71,6 @@ export default {
         birthday: '',
         species: ''
       },
-      owner: {
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        email: '',
-        address: ''
-      },
       medicalHistory: [
         {
           date: '2024-01-01',
@@ -129,10 +103,6 @@ export default {
       sections: [
         {
           title: 'Pet Information',
-          collapsed: false
-        },
-        {
-          title: 'Owner Information',
           collapsed: false
         },
         {
@@ -207,7 +177,7 @@ h1, h2 {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.pet-information div, .owner-information div, .medical-record div {
+.pet-information div, .medical-record div {
   margin-bottom: 8px;
 }
 
