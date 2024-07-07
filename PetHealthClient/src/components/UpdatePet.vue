@@ -28,6 +28,7 @@
 <script>
 import { axiosPrivate } from '@/api/axios';
 import Multiselect from 'vue-multiselect';
+import { toastWarning, toastSuccess } from '@/utils/toast';
 export default {
   components: { Multiselect },
   data() {
@@ -51,15 +52,16 @@ export default {
       try {
         await axiosPrivate.get('/api/pet/get-list-pet-by-user')
           .then(response => {
-            const data = response.data;
             console.log(response);
+            const data = response;
+
             if (data.success) {
               this.pets = data.data.map(pet => ({ id: pet.id, name: pet.name }));
             } else {
               toastWarning(data.message || 'An error occurred during registration');
             }
           }); // Replace with your API endpoint
-        this.pets = data.map(pet => ({ id: pet.id, name: pet.name }));
+
       } catch (error) {
         console.error('Error fetching pet data:', error);
       }

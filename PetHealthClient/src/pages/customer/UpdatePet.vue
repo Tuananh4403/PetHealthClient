@@ -60,17 +60,19 @@
       try {
         await axiosPrivate.get('/api/pet/get-list-pet-by-user')
           .then(response => {
+            console.log(response)
             const data = response.data;
 
             if (data.success) {
               this.pets = data.data.map(pet => ({ id: pet.id, name: pet.name }));
             }
           }); // Replace with your API endpoint
-        this.pets = data.map(pet => ({ id: pet.id, name: pet.name }));
+        // this.pets = data.map(pet => ({ id: pet.id, name: pet.name }));
       } catch (error) {
         console.error('Error fetching pet data:', error);
       }
-    }
+    },
+    
     }
     
   }

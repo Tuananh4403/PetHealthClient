@@ -39,7 +39,7 @@
 </template>
 <script>
 import { apiClient } from '@/api/axios';
-import { toastSuccess } from '@/utils/toast';
+import { toastSuccess, toastWarning } from '@/utils/toast';
 
 export default {
   data() {
@@ -78,7 +78,7 @@ export default {
     register() {
     if (!this.emailError) {
       apiClient.post('/api/auth/register', {
-        username: this.username,
+          username: this.username,
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,

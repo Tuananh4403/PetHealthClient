@@ -4,17 +4,17 @@
       <div class="booking-form">
         <h2>Book an appointment</h2>
         <multiselect class="form-service" v-model="selectedService" :options="services" :custom-label="detailService"
-          placeholder=" Select Service" label="nameService" track-by="idService"></multiselect>
+          placeholder=" Select Service" label="nameService" @open="getService" track-by="idService"></multiselect>
         
         <div class="form-row">
           <div>
             <multiselect v-model="selectedDoctor" :options="doctors" :custom-label="detailDoctor"
-              placeholder=" Select doctor" label="nameDoctor" track-by="idDoctor">
+              placeholder=" Select doctor" label="nameDoctor" @open="getDoctor" track-by="idDoctor">
             </multiselect>
           </div>
           <div>
             <multiselect v-model="selectedPetName" :options="pets" :custom-label="detailPet"
-              placeholder=" Select Pet Name" label="namePet" track-by="idPet">
+              placeholder=" Select Pet Name" @open="getPet" label="namePet" track-by="idPet">
             </multiselect>
           </div>
         </div>
@@ -39,9 +39,9 @@
 <script>
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
-import Multiselect from 'vue-multiselect'
-import Cookies from 'js-cookie';
-import axios from 'axios';
+import Multiselect from 'vue-multiselect';
+import { axiosPrivate } from '@/api/axios';
+import { formatNumber } from '@/utils/common';
 
 export default {
   components: {
@@ -65,24 +65,14 @@ export default {
         static: true
       },
 
-      doctors: [
-        { idDoctor: 1, nameDoctor: 'Doctor A' },
-        { idDoctor: 2, nameDoctor: 'Doctor B' },
-        { idDoctor: 3, nameDoctor: 'Doctor C' }
-      ],
+      doctors: [],
       selectedDoctor: [],
 
       pets: [
-        { idPet: 1, namePet: 'Pet A' },
-        { idPet: 2, namePet: 'Pet B' },
-        { idPet: 3, namePet: 'Pet C' }
       ],
       selectedPetName: [],
 
       services: [
-        { idService: 1, nameService: 'Service A' },
-        { idService: 2, nameService: 'Service B' },
-        { idService: 3, nameService: 'Service C' },
       ],
       selectedService: [],
     }
@@ -102,31 +92,73 @@ export default {
       this.$emit('close-modal')
     },
 
-    detailDoctor({ nameDoctor, idDoctor }) {
-      return `${idDoctor} . ${nameDoctor}`
+    detailDoctor({ name }) {
+      return `${name}`
     },
 
-    detailPet({ namePet, idPet }) {
-      return `${idPet} . ${namePet}`
+    detailPet({petName}) {
+      return `${petName}`
     },
-    detailService({ nameService, idService }) {
-      return `${idService} . ${nameService}`
+    detailService({ name, code, price}) {
+      return `${code} - ${name} - ${formatNumber(price)} VNĐ`
     },
-    async getDoctor() {
-      try {
-        const response = await axios.get("");
-        Cookies.set('auth_token', response.data.token, { expires: 7 });
-        const router = this.$router;
-        router.push('/main'); // Redirect to the main page
-      } catch (error) {
-        console.error(error);
+    async getService(){
+      await axiosPrivate.get('/api/service/get-service?searchOption=T&TypeId=2')
+      .then(response => {
+        const data = response.data;
+        if(data.success){
+          console.log(data.data)
+          this.services = data.data;
+          console.log(this.services)
+
+          }
+        }
+      )
+    },
+    async getPet(){
+      await axiosPrivate.get('/api/pet/get-list-pet-by-user')
+                  .then(async response => {
+                    const data = response.data;
+                    if(data.success){
+                      console.log(data.data)
+                      this.pets = data.data;
+                      console.log(this.pets);
+                    }
+                  })
+    },
+    async getDoctor(){
+      await axiosPrivate.get('/api/doctor/get-doctor')
+                  .then(async response => {
+                    const data = response.data;
+                    if(data.success){
+                      console.log(data.data)
+                      this.doctors = this.mapDotor(data.data);
+                      console.log(this.doctors);
+                    }
+                  })
+    },
+    mapDotor(doctors){
+      var result = [];
+      console.log(doctors);
+      for(var doc in doctors){
+        var doctor = new Object;
+        console.log(doctors[doc].user)
+        doctor.id = doctors[doc].Id;
+        doctor.name = doctors[doc].user.firstName + ' ' +doctors[doc].user.lastName;
+        result.push(doctor)
       }
+      return result
     }
+    
   }
 }
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped>
+.multiselect__content-wrapper {
+  max-height: 200px; /* Set a max height for the dropdown */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
 .full-screen-background {
   background-size: cover;
   background-position: center;

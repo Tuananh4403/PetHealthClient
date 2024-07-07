@@ -30,14 +30,13 @@
 
 
 <script>
+import { axiosPrivate } from '@/api/axios';
+import { formatDate } from '@/utils/common';
 export default {
   data() {
     return {
       backgroundImage: null,
       pets: [
-        { name: 'Buddy', kind: 'Dog', gender: 'Male', birthday: '2020-01-01', species: 'Canine' },
-        { name: 'Mittens', kind: 'Cat', gender: 'Female', birthday: '2019-05-05', species: 'Feline' },
-        { name: 'Goldie', kind: 'Fish', gender: 'Male', birthday: '2021-07-07', species: 'Goldfish' }
       ]
     };
   },
@@ -49,9 +48,41 @@ export default {
         })
         .catch((error) => {
           console.error('Error loading image:', error)
-        })
+        }),
+        this.fetchGetPet();
     },
-
+  methods: {
+    async fetchGetPet(){
+      await axiosPrivate.get('/api/pet/get-list-pet-by-user')
+                  .then(async response => {
+                    const data = response.data;
+                    if(data.success){
+                      console.log(response)
+                      await this.addMappedPet(data.data);
+                    }
+                  })
+    },
+    mapPetData(data) {
+      // console.log(data.petName);
+      var pet = {
+        name: data.petName,
+        kind: data.kindOfPet,
+        gender: data.gender ? 'Đực' : 'Cái',
+        birthday: formatDate(data.birthday),
+        species: data.species
+      }
+      // console.log(pet);
+      return pet;
+    },
+    async addMappedPet(data) {
+      for(var pet in data){
+        console.log(data[pet]);
+        const mappedPet = this.mapPetData(data[pet]);
+        // console.log(mappedPet)
+        await this.pets.push(mappedPet);
+      }
+  },
+  }
 };
 </script>
 

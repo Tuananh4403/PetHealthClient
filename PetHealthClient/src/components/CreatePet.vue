@@ -2,36 +2,66 @@
     <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <div class="signup-container">
         <h1>Register for your pet</h1>
-        <form>
+        <form @submit.prevent="handleCreatePet">
           <label for="pet-name">Pet Name</label>
-          <input type="text" id="pet-name" placeholder="Pet Name" />
+          <input v-model="petName" type="text" id="pet-name" placeholder="Pet Name" />
   
           <label for="kind-of-pet">Kind Of Pet</label>
-          <input type="text" id="kind-of-pet" placeholder="Kind Of Pet" />
+          <input v-model="kindOfPet" type="text" id="kind-of-pet" placeholder="Kind Of Pet" />
   
           <label for="gender">Gender</label>
-          <input type="text" id="gender" placeholder="Gender" />
+          <multiselect v-model="gender" style="cursor: pointer" label="name" track-by="name"
+                                    class="custom-input-select" selectLabel="" deselectLabel="" selectedLabel=""
+                                    placeholder="Chọn giới tính" :options="genders" :custom-label="customLabel">
+                                    <template #tag="{ option, remove }">
+                                        <span class="multiselect__tag" style="background: #22445d">
+                                            <span class="font-weight-bold">{{
+                                        option.name
+                                    }}</span>
+                                            <i tabindex="1" class="multiselect__tag-icon" @click="remove(option)"></i>
+                                        </span>
+                                    </template>
+                                    <template #noResult>
+                                        Không tìm thấy dữ liệu.
+                                    </template>
+                                </multiselect>
   
           <label for="birthday">Birthday</label>
-          <input type="date" id="birthday" />
+          <input v-model="birthday" type="date" id="birthday" />
   
           <label for="species">Species</label>
-          <input type="text" id="species" placeholder="Species" />
+          <input v-model="species" type="text" id="species" placeholder="Species" />
   
-          <button type="submit">Sign up</button>
+          <button type="submit">Add your Pet</button>
         </form>
       </div>
     </div>
   </template>
   
   <script>
+import { axiosPrivate } from '@/api/axios';
+import { toastSuccess, toastWarning } from '@/utils/toast';
+import Multiselect from 'vue-multiselect';
+
   export default {
+    components: { Multiselect },
     data() {
       return {
         backgroundImage: null,
-        email: '',
-        emailError: '',
-        password: ''
+        petName: '',
+        kindOfPet: '',
+        gender: false,
+        genders: [{
+                value: true,
+                name: 'Đực'
+            },
+            {
+                value: false,
+                name: 'Cái'
+            },],
+        birthday: null,
+        species: '',
+        
       }
     },
     
@@ -44,6 +74,30 @@
           console.error('Error loading image:', error)
         })
     },
+    methods: {
+      async handleCreatePet(){
+        await axiosPrivate.post('/api/pet/register-pet', {
+          PetName: this.petName,
+          KindOfPet: this.kindOfPet,
+          Gender: this.gender?.value,
+          Birthday: this.birthday,
+          Species: this.species
+        })
+        .then(response => {
+          const data = response.data;
+          console.log(response)
+          if(data.success){
+            toastSuccess("create Pet success!");
+            this.$router.push('/customer/main'); // Redirect to the main page   
+          }else{
+            toastWarning(data.message)
+          }
+        })
+      },
+      customLabel({ name }) {
+            return `${name}`;
+        },
+    }
   }
   </script>
   <style>
