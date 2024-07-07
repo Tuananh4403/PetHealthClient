@@ -106,7 +106,7 @@ export default {
   }
 </script>
 
-<style>
+<style scoped>
 .full-screen-background {
   background-size: cover;
   background-position: center;

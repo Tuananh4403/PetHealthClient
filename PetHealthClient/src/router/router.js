@@ -40,9 +40,29 @@ const router = createRouter({
       component: () => import('../views/MedicalHistory.vue'),
     },
     {
+      name: 'ChatBox',
+      path: '/chatbox',
+      component: () => import('@/components/ChatBox.vue'),
+    },
+    {
+      name: 'MainPage',
+      path: '/mainpage',
+      component: () => import('@/components/MainPage.vue'),
+    },
+    {
       path: '/listBooking',
       name: 'listBooking',
       component: BookingList
+    },
+    {
+      path: '/baselayout',
+      name: 'Base',
+      component: () => import('@/layouts/BaseLayout.vue'),
+    },
+    {
+      path: '/manage-user',
+      name: 'ManageUser',
+      component: () => import('@/views/ManageUser.vue'),
     },
     {
       path: '/customer',

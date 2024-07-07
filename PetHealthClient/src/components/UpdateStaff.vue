@@ -42,7 +42,7 @@ export default {
     }
   },
   methods: {
-    updateDoctor() {
+    updateStaff() {
       console.log('Updating staff:', this.form);
       this.$emit('update', this.form);
       this.$emit('close');
