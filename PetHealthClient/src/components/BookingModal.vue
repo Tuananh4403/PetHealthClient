@@ -19,12 +19,14 @@
           </div>
         </div>
         <div class="form-row">
-          <input placeholder="Pet owner" />
-          <input placeholder="Gender" />
+          <input v-model="petOwner" :disabled="true" placeholder="Pet owner" />
+          <input  v-model="gender" :disabled="true" placeholder="Gender" />
         </div>
         <div class="form-row">
           <flat-pickr v-model="dateValue" :config="dateConfig" placeholder="Date"></flat-pickr>
-          <flat-pickr v-model="timeValue" :config="timeConfig" placeholder="Time"></flat-pickr>
+          <multiselect v-model="shift" :options="pets" :custom-label="detailPet"
+              placeholder=" Select Pet Name" @open="getPet" label="namePet" track-by="idPet">
+            </multiselect>
         </div>
         <textarea placeholder="Note"></textarea>
         <div class="form-actions">
@@ -64,7 +66,16 @@ export default {
         dateFormat: 'H:i',
         static: true
       },
-
+      petOwner: '',
+      gender: '',
+      genders: [{
+                value: true,
+                name: 'Đực'
+            },
+            {
+                value: false,
+                name: 'Cái'
+            },],
       doctors: [],
       selectedDoctor: [],
 
@@ -86,7 +97,19 @@ export default {
         console.error('Error loading image:', error)
       })
   },
-
+  watch: {
+    selectedPetName(newVal) {
+      console.log(newVal.customer.user);
+      if (newVal) {
+        const name = newVal.customer.user.firstName + ' ' + newVal.customer.user.lastName;
+        this.petOwner = name;
+        this.gender = this.genders.find(g => g.value === newVal.gender).name;
+      } else {
+        this.petOwner = '';
+        this.gender = '';
+      }
+    }
+  },
   methods: {
     cancelAction() {
       this.$emit('close-modal')
@@ -120,9 +143,7 @@ export default {
                   .then(async response => {
                     const data = response.data;
                     if(data.success){
-                      console.log(data.data)
                       this.pets = data.data;
-                      console.log(this.pets);
                     }
                   })
     },
@@ -131,9 +152,7 @@ export default {
                   .then(async response => {
                     const data = response.data;
                     if(data.success){
-                      console.log(data.data)
                       this.doctors = this.mapDotor(data.data);
-                      console.log(this.doctors);
                     }
                   })
     },
@@ -142,7 +161,6 @@ export default {
       console.log(doctors);
       for(var doc in doctors){
         var doctor = new Object;
-        console.log(doctors[doc].user)
         doctor.id = doctors[doc].Id;
         doctor.name = doctors[doc].user.firstName + ' ' +doctors[doc].user.lastName;
         result.push(doctor)
