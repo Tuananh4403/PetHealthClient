@@ -53,9 +53,14 @@ export const saveUserName = (name) => {
     })
   };
 };
-export const saveUserRole = (role) => {
-  if(role){
-    Cookies.set(roleTitle, role, {
+export const saveUserRole = (roles) => {
+  if(roles){
+    var dataSave = [];
+    roles.forEach(role => {
+      dataSave.push(role.name);
+      
+    });
+    Cookies.set(roleTitle, dataSave, {
       ...objCookies,
     });
   } else { 
