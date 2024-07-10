@@ -65,6 +65,11 @@ const router = createRouter({
       component: () => import('@/views/ManageUser.vue'),
     },
     {
+      path: '/listRecord',
+      name: 'ListRecord',
+      component: () => import('@/components/ListRecord.vue'),
+    },
+    {
       path: '/customer',
       meta: { requiresAuth: true, role: ['Customer']},
       children: [

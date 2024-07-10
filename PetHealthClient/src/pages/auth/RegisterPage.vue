@@ -128,6 +128,8 @@ export default {
   background-position: center;
   height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .signup-container {
@@ -187,8 +189,8 @@ button[type='submit'] {
 }
 
 .facebook-btn {
-  background-color: #fff;
-  color: #757575;
+  background-color: #3b5998;
+  color: #fff;
 }
 
 .error {

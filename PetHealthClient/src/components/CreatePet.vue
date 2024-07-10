@@ -100,7 +100,7 @@ import Multiselect from 'vue-multiselect';
     }
   }
   </script>
-  <style>
+  <style scoped>
   .full-screen-background {
     background-size: cover;
     background-position: center;
