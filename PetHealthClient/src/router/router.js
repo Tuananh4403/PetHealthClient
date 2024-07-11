@@ -69,7 +69,7 @@ const router = createRouter({
     {
       name: 'Service',
       path: '/service',
-      component: () => import('../views/Service.vue'),
+      component: () => import('@/views/Service.vue'),
     },
     {
       path: '/customer',
