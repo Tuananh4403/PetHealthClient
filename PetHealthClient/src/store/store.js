@@ -33,6 +33,7 @@ export default createStore({
     async login({ commit }, { email, password }) {
       try {
         const response = await apiClient.post('/api/auth/authenticate', { username: email, password });
+        console.log(response);
         if (response.data.success) {
           const { id, fullName, email, username, role, token } = response.data.data;
           const user = { id, fullName, email, username , role};

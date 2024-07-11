@@ -17,6 +17,9 @@
 </template>
 
 <script>
+import { HubConnectionBuilder } from '@microsoft/signalr';
+import { SYS_API_URL } from "../constants/global";
+
 export default {
   props: {
     isOpen: Boolean
@@ -24,26 +27,64 @@ export default {
   data() {
     return {
       message: '',
-      messages: [
-        { type: 'received', text: 'Xin chào! Tôi có thể giúp gì cho bạn?' },
-        { type: 'sent', text: 'Tôi cần thông tin về dịch vụ chăm sóc thú cưng.' },
-        { type: 'received', text: 'Chúng tôi có nhiều dịch vụ chăm sóc thú cưng. Bạn quan tâm đến dịch vụ nào cụ thể?' }
-      ]
+      messages: []
+    };
+  },
+  mounted() {
+    // Create a new SignalR connection
+    const connection = new HubConnectionBuilder()
+      .withUrl(SYS_API_URL + '/chathub')
+      .build();
+
+    // Start the connection
+    connection.start()
+      .then(() => {
+        console.log('SignalR Connected.');
+
+        // Handle incoming messages
+        connection.on('ReceiveMessage', (user, message) => {
+          this.messages.push({ type: 'received', text: message });
+          this.scrollToBottom(); // Scroll to bottom on new message
+        });
+      })
+      .catch(error => {
+        console.error('SignalR Connection Error: ', error);
+      });
+
+    // Assign connection to a property for cleanup if needed
+    this.connection = connection;
+  },
+  beforeUnmount() {
+    // Ensure to stop SignalR connection when component unmounts
+    if (this.connection) {
+      this.connection.stop();
     }
   },
   methods: {
     sendMessage() {
       if (this.message.trim()) {
+        // Send message via SignalR
+        this.connection.invoke('SendMessage', 'User', this.message)
+          .catch(error => {
+            console.error('Error sending message:', error);
+          });
+
+        // Add sent message to local messages array
         this.messages.push({ type: 'sent', text: this.message });
         this.message = '';
-        
-        setTimeout(() => {
-          this.messages.push({ type: 'received', text: 'Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi sớm nhất có thể.' });
-        }, 1000);
+
+        this.scrollToBottom(); // Scroll to bottom after sending message
+      }
+    },
+    scrollToBottom() {
+      // Scroll to bottom of messages container
+      const chatMessages = this.$refs.chatMessages;
+      if (chatMessages) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
