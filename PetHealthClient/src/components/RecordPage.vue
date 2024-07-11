@@ -9,27 +9,10 @@
       <div class="form-row">
         <div class="form-group">
           <label for="petName">Pet Name</label>
-          <multiselect v-model="selectedPet" :options="petOptions" label="name" track-by="name"
-                                    v-debounce:300ms="fetchPetOptions"
-                                    placeholder="Select a pet" 
-                                    @select="onPetSelect" 
-                                    :hide-selected="true"
-                                    :searchable="true" 
-                                    :close-on-select="true"
-                                    :showNoOptions="false"
-                                    @open="fetchPetOptions"
-                                    :allow-empty="false"
-                                    class="selectPet"
-                              :clear-on-select="false">
-                              <template #singleLabel="{ option }">
-                                <span class="option__code">
-                                    <span :title="option.name">{{ option.name }}</span>
-                                </span>
-                            </template>
-                            <template #noResult>  
-                                Không tìm thấy phương thức thanh toán phù hợp.
-                            </template>
-          </multiselect>
+          <multiselect v-model="selectedPet" :options="pets" :custom-label="detailPet"
+             :showNoOptions="false" :allow-empty="false" :close-on-select="true" :showLabels="false"
+              placeholder=" Select Pet Name" @open="getPet" label="namePet" track-by="idPet">
+            </multiselect>
         </div>
         <div class="form-group">
           <label for="gender">Gender</label>
@@ -103,7 +86,7 @@
 import Multiselect from 'vue-multiselect';
 import { axiosPrivate } from '@/api/axios';
 import { toastError, toastSuccess, toastWarning } from '@/utils/toast';
-import $ from 'jquery';
+import { formatDate } from '@/utils/common';
 
 export default {
   name: 'RecordPet',
@@ -112,11 +95,11 @@ export default {
   data() {
     return {
       selectedPet: null,
-      petOptions: [],
+      pets: [],
       petInfo: {
         id: 0,
         name: '',
-        gender: '',
+        gender: null,
         kind: '',
         birthday: '',
         weight: '',
@@ -124,6 +107,14 @@ export default {
         species: '',
         temperature: ''
       },
+      genders: [{
+                value: true,
+                name: 'Đực'
+            },
+            {
+                value: false,
+                name: 'Cái'
+            },],
       detailPrediction: '',
       conclude: '',
       services: [
@@ -139,7 +130,26 @@ export default {
   create() {
     this.fetchPetOptions();
   },
+  watch: {
+    selectedPet(newVal) {
+      if (newVal) {
+        const name = newVal.customer.user.firstName + ' ' + newVal.customer.user.lastName;
+        console.log(newVal);
+        this.petOwner = name;
+        this.petInfo.gender = this.genders.find(g => g.value === newVal.gender).name;
+        this.petInfo.kind = newVal.kindOfPet;
+        this.petInfo.birthday = formatDate(newVal.birthday);
+        this.petInfo.species = newVal.species;
+      } else {
+        this.petOwner = '';
+        this.gender = '';
+      }
+    }
+  },
   methods: {
+    detailPet({petName}) {
+      return `${petName}`
+    },
     async submitForm() {
       console.log('Form submitted', this.petInfo, this.detailPrediction, this.conclude, this.services)
       try {
@@ -178,20 +188,25 @@ export default {
     removeService(index) {
       this.services.splice(index, 1)
     },
-    async fetchPetOptions() {
-      var pet_info = $(".selectPet").find("input").val().trim();
-
-      await axiosPrivate.get('/api/pets', {
-        params: {
-                _info: pet_info,
-        },
-      })
-        .then(response => {
-          this.petOptions = response.data;
-        })
-        .catch(error => {
-          console.error('Error fetching pet options:', error);
-        });
+    async getPet(){
+      await axiosPrivate.get('/api/pet/get-list-pet-by-user')
+                  .then(async response => {
+                    const data = response.data;
+                    if(data.success){
+                      console.log(data.data)
+                      this.pets = data.data;
+                    }
+                  })
+    },
+    async getService(){
+      await axiosPrivate.get('/api/service/get-service?searchOption=T&TypeId=2')
+      .then(response => {
+        const data = response.data;
+        if(data.success){
+          this.services = data.data;
+          }
+        }
+      )
     },
     onPetSelect(selectedPet) {
       this.petInfo = {

@@ -1,23 +1,24 @@
 <template>
     <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <div class="list-container">
-        <h1>List of booking</h1>
+        <h1>List of Record</h1>
         <table>
           <thead>
-            <tr>
-              <th>No</th>
-              <th>Customer</th>
-              <th>Pet Name</th>
-              <th>Doctor</th>
-              <th>Service</th>
-              <th>Date</th>
-              <th>Note</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
+              <tr>
+                <th>Pet</th>
+                <th>Date</th>
+                <th>Doctor</th>
+                <th>Detail Prediction</th>
+                <th>Conclude</th>
+                <th>View Detail</th>
+                <th>Save Barn</th>
+                <th>Barn</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
           <tbody>
-            <tr v-for="(pet, index) in bookings" :key="index">
+            <tr v-for="(Record, index) in Records" :key="index">
               <td>{{ index + 1 }}</td>
               <td>{{ pet.Customer }}</td>
               <td>{{ pet.PetName }}</td>
@@ -40,6 +41,7 @@
         </table>
       </div>
     </div>
+    
   </template>
   
   <script>
@@ -70,12 +72,12 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
         if(this.userRoles.includes('Customer')){
           this.isCustomer = true;
         }
-        this.fetchBookings();
+        this.fetchRecord();
         
     },
     methods: {
-      createRecord(pet){
-        axiosPrivate.post("/api/record/creat-by-booking/" + pet.id )
+      createRecord(){
+        axiosPrivate.post("/api/record/create")
         .then(res => {
           console.log(res);
           const data = res.data; 
@@ -86,7 +88,7 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
           }
         })
       },
-      fetchBookings() {
+      fetchRecord() {
         axiosPrivate.get("/api/booking/review-booking")
           .then(response => {
             if(response.data.success){

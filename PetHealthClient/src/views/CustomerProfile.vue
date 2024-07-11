@@ -29,7 +29,11 @@
           <h2>Update Profile</h2>
           <div class="form-group">
             <label>Full Name:</label>
-            <input v-model="updatedCustomer.fullName" type="text">
+            <input v-model="updatedCustomer.firstName" type="text">
+          </div>
+          <div class="form-group">
+            <label>Last Name:</label>
+            <input v-model="updatedCustomer.lastName" type="text">
           </div>
           <div class="form-group">
             <label>Email:</label>
@@ -53,6 +57,8 @@
   </template>
   
   <script>
+import { axiosPrivate } from '@/api/axios';
+
   export default {
     data() {
       return {
@@ -71,10 +77,24 @@
       saveChanges() {
         this.customer = { ...this.updatedCustomer };
         this.showModal = false;
+      },
+      getUserDetail(){
+        axiosPrivate.get('/api/auth/get-detail')
+        .then(res => {
+          const data = res.data;
+          if(data.success){
+            this.customer.fullName =data.data.firstName + data.data.lastName;
+            this.customer.email = data.data.email;
+            this.customer.phoneNumber = data.data.phoneNumber;
+            this.customer.address = data.data.address;
+            console.log(data.data)
+          }
+        })
       }
     },
     mounted() {
-      this.updatedCustomer = { ...this.customer };
+      this.getUserDetail();
+      this.updatedCustomer = this.customer ;
     }
   };
   </script>
@@ -151,6 +171,7 @@
   }
   
   .form-group {
+    width: 100%;
     margin-bottom: 15px;
     font-size: 1.2em;
   }
