@@ -2,6 +2,23 @@
     <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <div class="list-container">
         <h1>List of booking</h1>
+        <div class="search-container">
+          <select v-model="searchField" class="search-select">
+          <option value="all">All Fields</option>
+          <option value="Customer">Customer</option>
+          <option value="PetName">Pet Name</option>
+          <option value="Doctor">Doctor</option>
+          <option value="Service">Service</option>
+          <option value="Date">Date</option>
+          <option value="Note">Note</option>
+        </select>
+        <input 
+          v-model="searchQuery" 
+          @input="filterPets" 
+          placeholder="Search bookings..." 
+          class="search-input"
+        />
+      </div>
         <table>
           <thead>
             <tr>
@@ -16,7 +33,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(pet, index) in pets" :key="index">
+            <tr v-for="(pet, index) in filteredPets" :key="index">
               <td>{{ index + 1 }}</td>
               <td>{{ pet.Customer }}</td>
               <td>{{ pet.PetName }}</td>
@@ -43,7 +60,10 @@ import { axiosPrivate } from '@/api/axios';
     data() {
       return {
         backgroundImage: null,
-        pets: []
+        pets: [],
+        filteredPets: [],
+        searchQuery: '',
+        searchField: 'all'
       };
     },
   
@@ -75,6 +95,7 @@ import { axiosPrivate } from '@/api/axios';
                 console.log(booking);
                 this.pets.push(booking)
               });
+              this.filteredPets = [...this.pets];
             }
           })
           .catch(error => {
@@ -95,6 +116,23 @@ import { axiosPrivate } from '@/api/axios';
           // Handle error scenario
         });
     },
+    filterPets() {
+      if (this.searchField === 'all') {
+        this.filteredPets = this.pets.filter(pet => 
+          pet.Customer.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          pet.PetName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          pet.Doctor.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          pet.Service.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          pet.Date.includes(this.searchQuery) ||
+          pet.Note.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      } else {
+        this.filteredPets = this.pets.filter(pet => 
+          pet[this.searchField].toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+    },
+
     mapBookingData(petData) {
     const pet = petData.pet;
     const customer = pet.customer.user;
@@ -118,6 +156,33 @@ import { axiosPrivate } from '@/api/axios';
   </script>
   
   <style scoped>
+  .search-container {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.search-select, .search-input {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;
+}
+
+.search-select {
+  width: 150px;
+}
+
+.search-input {
+  flex-grow: 1;
+}
+
+.search-select:focus, .search-input:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
   .full-screen-background {
     background-size: cover;
     background-position: center;

@@ -8,7 +8,7 @@
       <h2>Pet Information</h2>
       <div class="form-row">
         <div class="form-group">
-          <label for="petName">Pet Name</label>
+          <label for="petName">Pet </label>
           <multiselect v-model="selectedPet" :options="petOptions" label="name" track-by="name"
                                     v-debounce:300ms="fetchPetOptions"
                                     placeholder="Select a pet" 
@@ -95,7 +95,7 @@
       </div>
       <button @click="addService" class="add-service-btn">+</button>
     </div>
-    <button @click="submitForm" class="submit-btn">Submit</button>
+    <button @click="submitForm" class="submit-btn">Create</button>
   </div>
 </template>
 
@@ -210,46 +210,53 @@ export default {
 <style scoped>
 .pet-health-record {
   width: 100%;
-  margin: 0 auto;
-  padding: 30px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  min-height: 100vh;
+  margin: 0;
+  padding: 40px;
+  background-color: #f0f4f8;
+  box-sizing: border-box;
 }
 
 .tittle {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
 .tittle h1 {
   color: #2c3e50;
   font-size: 2.5em;
-  border-bottom: 3px solid #3498db;
+  border-bottom: 4px solid #3498db;
+  display: inline-block;
   padding-bottom: 10px;
 }
 
 h2 {
   color: #34495e;
   margin-bottom: 20px;
+  font-size: 1.8em;
+  border-left: 5px solid #3498db;
+  padding-left: 15px;
 }
 
 .form-row {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
   margin-bottom: 20px;
 }
 
 .form-group {
-  flex: 1;
-  margin-right: 20px;
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: 250px;
 }
 
-.form-group:last-child {
-  margin-right: 0;
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #2c3e50;
 }
 
-/* General input styles */
 input,
 textarea,
 select {
@@ -259,6 +266,7 @@ select {
   border-radius: 4px;
   font-size: 16px;
   transition: border-color 0.3s ease;
+  box-sizing: border-box;
 }
 
 input:focus,
@@ -269,85 +277,39 @@ select:focus {
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
 
+/* Multiselect specific styles */
 .multiselect {
-  padding: 12px;
-  width: 100%;
+  width: 100% !important;
 }
 
-.multiselect__option--highlight {
-  background: #22445d !important;
+.multiselect__tags {
+  min-height: 44px !important;
+  padding: 8px 40px 0 8px !important;
+  border-radius: 4px !important;
+  border: 1px solid #bdc3c7 !important;
 }
 
-.multiselect .multiselect__select {
-  top: -2px !important;
+.multiselect__select {
+  height: 44px !important;
 }
 
-.multiselect .multiselect__tags {
-  min-height: 36px !important;
- 
-  padding: 6px 26px 0px 6px !important;
-  overflow: hidden;
+.multiselect__input,
+.multiselect__single {
+  font-size: 16px !important;
+  line-height: 24px !important;
 }
 
-.multiselect .multiselect__tags .multiselect__tag {
-  margin-bottom: 0px !important;
+.multiselect__option {
+  padding: 12px !important;
+  min-height: 40px !important;
 }
 
-.multiselect .multiselect__tags .multiselect__placeholder {
-  margin-bottom: 5px !important;
-}
-
-.multiselect__tag-icon:after {
-  color: #ffffff;
-}
-
-.multiselect__element {
-  cursor: not-allowed;
-}
-
-.multiselect__option--selected {
-  background: #ebebeb;
-  pointer-events: none;
-}
-
-.multiselect__spinner {
-  position: absolute;
-  right: 1px;
-  top: 2px;
-  width: 33px;
-  height: 29px;
-  background: #fff;
-  display: block;
-}
-
-.disabled-product-select-option .multiselect {
-  pointer-events: none !important;
-}
-
-.disabled-product-select-option .multiselect .multiselect__tags {
-  background: #e8e8e8 !important;
-}
-.multiselect__option{
-  white-space: normal !important;
-  word-break: break-all !important;
-}
-.vue-multiselect input[type="text"] {
-  /* Your styles here */
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  color: #eedbdb;
-}
-
-.vue-multiselect input[type="text"]:focus {
-  border-color: #ee240a;
-  outline: none;
-  box-shadow: 0 0 5px rgba(255, 104, 3, 0.5);
-}
 .service-section {
-  margin-top: 30px;
+  margin-top: 40px;
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
 }
 
 .service-header,
@@ -356,14 +318,9 @@ select:focus {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  background-color: #ecf0f1;
-  padding: 10px;
+  padding: 15px;
+  background-color: #f8f9fa;
   border-radius: 4px;
-}
-
-.service-header div {
-  font-weight: bold;
-  color: #2c3e50;
 }
 
 .service-header div,
@@ -373,8 +330,9 @@ select:focus {
   margin-right: 10px;
 }
 
-.service-row input[readonly] {
-  background-color: #e8e8e8;
+.service-header div {
+  font-weight: bold;
+  color: #2c3e50;
 }
 
 .service-row input[type="number"] {
@@ -389,6 +347,7 @@ select:focus {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .submit-btn {
@@ -415,5 +374,12 @@ select:focus {
 
 .remove-service-btn:hover {
   background-color: #c0392b;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: #bdc3c7;
+  margin: 30px 0;
 }
 </style>

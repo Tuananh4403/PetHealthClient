@@ -1,5 +1,4 @@
-Dĩ nhiên, tôi sẽ tối ưu hóa CSS cho component này, giống như cách chúng ta đã làm với component search. Đây là phiên bản đã được tối ưu:
-vueCopy<template>
+<template>
   <div class="modal-record" @click.self="$emit('close')">
     <div class="modal-content">
       <h2 class="modal-title">Update Record</h2>
