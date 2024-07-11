@@ -65,6 +65,16 @@ const router = createRouter({
       component: () => import('@/views/ManageUser.vue'),
     },
     {
+      path: '/record',
+      name: 'Record',
+      component: RecordPage
+    },
+    {
+      name: 'Service',
+      path: '/service',
+      component: () => import('../views/Service.vue'),
+    },
+    {
       path: '/customer',
       meta: { requiresAuth: true, role: ['Customer']},
       children: [
@@ -131,11 +141,11 @@ const router = createRouter({
       path: '/doctor',
       meta: { requiresAuth: true, role: ['Doctor']},
       children: [
-        {
-          path: 'record',
-          name: 'Record',
-          component: RecordPage
-        },
+        // {
+        //   path: 'record',
+        //   name: 'Record',
+        //   component: RecordPage
+        // },
 
         // Add more routes as needed
       ],
@@ -187,11 +197,11 @@ const router = createRouter({
           path: '/kennel',
           component: () => import('../views/Kennel.vue'),
         },
-        {
-          name: 'Service',
-          path: '/service',
-          component: () => import('../views/Service.vue'),
-        },   
+        // {
+        //   name: 'Service',
+        //   path: '/service',
+        //   component: () => import('../views/Service.vue'),
+        // },   
         {
           name: 'ManageDoctor',
           path: '/manage-doctor',

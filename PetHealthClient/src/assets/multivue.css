@@ -248,7 +248,6 @@
     line-height: 16px;
     text-decoration: none;
     text-transform: none;
-
     position: relative;
     cursor: pointer;
     white-space: nowrap;
@@ -282,11 +281,11 @@
     font-weight: bold;
   }
 
-  .multiselect__option--selected::after {
+  /* .multiselect__option--selected::after {
     content: attr(data-selected);
     color: silver;
   background: inherit;
-  }
+  } */
 
   .multiselect__option--selected.multiselect__option--highlight {
     background: #ff6a6a;

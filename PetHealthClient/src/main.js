@@ -5,7 +5,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import store from '@/store/store'; // Import the Vuex store
 import router from '@/router/router';
-import './assets/modal.css'
+import './assets/multivue.css'
 import 'toastr/build/toastr.min.css';
 
 const app = createApp(App)
