@@ -4,19 +4,19 @@
       <div class="booking-form">
         <h2>Book an appointment</h2>
         <multiselect class="form-service" v-model="selectedService" :options="services" :custom-label="detailService"
-         :showNoOptions="false":allow-empty="false" :close-on-select="true" :showLabels="false"
+         :showNoOptions="false" :allow-empty="false" :close-on-select="true" :showLabels="false"
           placeholder=" Select Service" label="nameService" @open="getService" track-by="idService"></multiselect>
         
         <div class="form-row">
           <div>
             <multiselect v-model="selectedDoctor" :options="doctors" :custom-label="detailDoctor"
-            :showNoOptions="false":allow-empty="false" :close-on-select="true" :showLabels="false"
+            :showNoOptions="false" :allow-empty="false" :close-on-select="true" :showLabels="false"
               placeholder=" Select doctor" label="nameDoctor" @open="getDoctor" track-by="idDoctor">
             </multiselect>
           </div>
           <div>
             <multiselect v-model="selectedPetName" :options="pets" :custom-label="detailPet"
-             :showNoOptions="false":allow-empty="false" :close-on-select="true" :showLabels="false"
+             :showNoOptions="false" :allow-empty="false" :close-on-select="true" :showLabels="false"
               placeholder=" Select Pet Name" @open="getPet" label="namePet" track-by="idPet">
             </multiselect>
           </div>
@@ -28,7 +28,7 @@
         <div class="form-row">
           <flat-pickr v-model="dateValue" :config="dateConfig" placeholder="Date"></flat-pickr>
           <multiselect v-model="shift" :options="shifts" :custom-label="detailShift"
-           :showNoOptions="false":allow-empty="false" :close-on-select="true" :showLabels="false"
+           :showNoOptions="false" :allow-empty="false" :close-on-select="true" :showLabels="false"
               placeholder=" Select shift" @open="getShift" label="shift" track-by="id">
             </multiselect>
         </div>
@@ -94,6 +94,7 @@ export default {
       shift: null
     }
   },
+  
   mounted() {
     import('@/assets/images/background.png')
       .then((image) => {
@@ -135,7 +136,7 @@ export default {
       return `${timeRange}`
     },
     async getService(){
-      await axiosPrivate.get('/api/service/get-service?searchOption=T&TypeId=2')
+      await axiosPrivate.get('/api/service/get-service?typeId=1')
       .then(response => {
         const data = response.data;
         if(data.success){
@@ -168,14 +169,12 @@ export default {
                   .then(async response => {
                     const data = response.data;
                     if(data.success){
-                      console.log(data.data)
                       this.doctors = this.mapDotor(data.data);
                     }
                   })
     },
     mapDotor(doctors){
       var result = [];
-      console.log(doctors);
       for(var doc in doctors){
         var doctor = new Object;
         doctor.id = doctors[doc].id;
@@ -185,7 +184,6 @@ export default {
       return result
     },
     async createBooking(){
-      console.log(this.selectedDoctor);
       const data = {
         PetId: this.selectedPetName.id,
         CustomerId: this.selectedPetName.customerId,
@@ -195,11 +193,9 @@ export default {
         Shift: this.shift.id,
         Note: this.Note ?? "",
       }
-      console.log(data);
       await axiosPrivate.post('/api/booking/create', data)
       .then(response => {
         const data = response.data;
-        console.log(response);
         if(data.success){
           toastSuccess(data.message);
           this.$router.push('/customer/main');

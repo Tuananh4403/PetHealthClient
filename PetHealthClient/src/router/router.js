@@ -14,6 +14,7 @@ import MedicalHistoryCustomer from '../views/MedicalHistoryCustomer.vue'
 import PetBarn from '../views/PetBarn.vue'
 import PetRecordDetail from '../views/PetRecordDetail.vue'
 import CustomerProfile from '../views/CustomerProfile.vue'
+import BaseLayout from '@/layouts/BaseLayout.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,11 +60,7 @@ const router = createRouter({
       name: 'Base',
       component: () => import('@/layouts/BaseLayout.vue'),
     },
-    {
-      path: '/manage-user',
-      name: 'ManageUser',
-      component: () => import('@/views/ManageUser.vue'),
-    },
+    
     {
       path: '/customer',
       meta: { requiresAuth: true, role: ['Customer']},
@@ -129,10 +126,11 @@ const router = createRouter({
     },
     {
       path: '/doctor',
+      // component: BaseLayout,
       meta: { requiresAuth: true, role: ['Doctor']},
       children: [
         {
-          path: 'record',
+          path: '/record',
           name: 'Record',
           component: RecordPage
         },
@@ -156,7 +154,7 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      // component: () => import('../layouts//BaseLayout.vue'),
+      component: () => import('../layouts//BaseLayout.vue'),
       meta: { requiresAuth: true, role: ['Admin']},
       children: [
         {
@@ -165,7 +163,11 @@ const router = createRouter({
           component: () => import('../views/Dashboard.vue'),
           meta: { roles: ['Admin'] }
         },
-        // Pages
+        {
+          path: '/manage-user',
+          name: 'ManageUser',
+          component: () => import('@/views/ManageUser.vue'),
+        },
         {
           name: 'Home',
           path: '/home',
