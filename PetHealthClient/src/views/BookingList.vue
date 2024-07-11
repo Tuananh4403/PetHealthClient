@@ -41,8 +41,8 @@
               <td>{{ pet.Service }}</td>
               <td>{{ pet.Date }}</td>
               <td>{{ pet.Note }}</td>
-              <td>
-                <button  @click="approveBooking(pet)">
+              <td >
+                <button v-if="isCustomer" @click="approveBooking(pet)">
                   Approve
                 </button>
               </td>
@@ -55,6 +55,9 @@
   
   <script>
 import { axiosPrivate } from '@/api/axios';
+import { getUserRole } from '@/utils/auth';
+import { toastSuccess, toastWarning } from '@/utils/toast';
+
 
   export default {
     data() {
@@ -75,25 +78,23 @@ import { axiosPrivate } from '@/api/axios';
         .catch((error) => {
           console.error('Error loading image:', error);
         });
-        this.fetchPets();
+        this.userRoles = getUserRole();
+        if(this.userRoles.includes('Customer')){
+          this.isCustomer = true;
+        }
+        this.fetchBookings();
+        
     },
     methods: {
-      fetchPets() {
-        console.log("test");
+      fetchBookings() {
         axiosPrivate.get("/api/booking/review-booking")
           .then(response => {
-            console.log(response.data.data);
-            console.log(response.data.success);
-
             if(response.data.success){
             console.log(response.data.data);
             var data = Object.values(response.data.data)
-            console.log(Array.isArray(data))
-
               data.forEach(item => {
                 var booking = this.mapBookingData(item);
-                console.log(booking);
-                this.pets.push(booking)
+                this.bookings.push(booking)
               });
               this.filteredPets = [...this.pets];
             }
@@ -104,12 +105,14 @@ import { axiosPrivate } from '@/api/axios';
     },
     approveBooking(pet) {
       // Example of sending data (pet) to an API endpoint
-      console.log(pet)
       axiosPrivate.post('/api/booking/confirm/' + pet.id)
         .then(response => {
-          // Handle success response if needed
-          console.log('Booking approved:', response.data);
-          // Optionally update UI or fetch new data after approval
+            const data = response.data;
+            if(data.success){
+              toastSuccess(data.message);
+            }else{
+              toastWarning(data.message)
+            }
         })
         .catch(error => {
           console.error('Error approving booking:', error);
@@ -137,9 +140,6 @@ import { axiosPrivate } from '@/api/axios';
     const pet = petData.pet;
     const customer = pet.customer.user;
     const Doctor = petData.doctor ? petData.doctor.user : 'Default Doctor';
-    console.log(petData.bookingServices[0].service.name);
-    // const Service = petData.bookingServices[0] ? pet.bookingServices[0].service.name : 'Default Service';
-    // console.log(Service);
     return {
         id : petData.id,
         Customer: `${customer.firstName} ${customer.lastName}`,
@@ -147,7 +147,7 @@ import { axiosPrivate } from '@/api/axios';
         Doctor: Doctor ? `${Doctor.firstName} ${Doctor.lastName}` :  'Default Doctor',
         Service: petData.bookingServices[0].service.name ? petData.bookingServices[0].service.name : 'Default Service', // Replace with actual service information if available
         Date: new Date(petData.bookingTime).toLocaleDateString(), // Format date as needed
-        Note: '' // Add any notes or additional information
+        Note: petData.note // Add any notes or additional information
     };
 }
 
