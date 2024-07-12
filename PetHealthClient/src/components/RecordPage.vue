@@ -121,14 +121,13 @@ export default {
         { no: '', name: '', code: '', type: '', quantity: '', unit: '', price: '' }
       ],
       serviceOptions: [
-        { name: 'Service 1', code: 'S001', type: 'Type 1', unit: 'Unit 1' },
-        { name: 'Service 2', code: 'S002', type: 'Type 2', unit: 'Unit 2' },
-        { name: 'Service 3', code: 'S003', type: 'Type 3', unit: 'Unit 3' },
+
       ]
     }
   },
   create() {
     this.fetchPetOptions();
+    this.getService();
   },
   watch: {
     selectedPet(newVal) {
@@ -199,11 +198,13 @@ export default {
                   })
     },
     async getService(){
-      await axiosPrivate.get('/api/service/get-service?searchOption=T&TypeId=2')
+      await axiosPrivate.get('/api/service/get-service')
       .then(response => {
         const data = response.data;
+        console.log(data);
         if(data.success){
-          this.services = data.data;
+          this.serviceOptions = data.data;
+          
           }
         }
       )

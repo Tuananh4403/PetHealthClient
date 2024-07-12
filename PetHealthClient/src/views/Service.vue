@@ -56,7 +56,7 @@ export default {
   },
   data() {
     return {
-      headers: ['Type', 'Id', 'Name', 'Price', 'Status', 'Note', 'Unit', 'Action'],
+      headers: ['type', 'id', 'name', 'price', 'note', 'Unit', 'Action'],
       services: [],
       filteredServices: [],
       showUpdateModal: false,
@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     uniqueTypes() {
-      return [...new Set(this.services.map((row) => row.Type))]
+      return [...new Set(this.services.map((row) => row.type))]
     },
     totalPages() {
       return Math.ceil(this.filteredServices.length / this.itemsPerPage)
@@ -93,8 +93,8 @@ export default {
     },
     filterAndPaginate() {
       this.filteredServices = this.services.filter((row) => {
-        const matchesSearch = row.Name.toLowerCase().includes(this.searchQuery.toLowerCase())
-        const matchesType = !this.filterType || row.Type === this.filterType
+        const matchesSearch = row.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        const matchesType = !this.filterType || row.type === this.filterType
         return matchesSearch && matchesType
       })
       this.currentPage = 1
@@ -112,16 +112,15 @@ export default {
     async fetchData() {
       try {
         this.loading = true
-        const response = await axiosPrivate.post('/api/Service/create', {
-          typeOfService: 0,
-          code: '',
-          name: '',
-          price: 0,
-          status: '',
-          note: '',
-          unitId: 0
-        })
-        this.services = Array.isArray(response.data) ? response.data : [response.data]
+        await axiosPrivate.get('/api/service/get-service')
+        .then(
+          response => {
+            const data = response.data;
+            if(data.success){
+              this.services = data.data;
+            }
+          }
+        )
         this.filterAndPaginate()
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -132,13 +131,12 @@ export default {
     },
     getRowValue(row, header) {
     switch(header) {
-      case 'Type': return row.typeOfService;
-      case 'Id': return row.code;
-      case 'Name': return row.name;
-      case 'Price': return row.price;
-      case 'Status': return row.status;
-      case 'Note': return row.note;
-      case 'Unit': return row.unitId;
+      case 'type': return row.type;
+      case 'id': return row.code;
+      case 'name': return row.name;
+      case 'price': return row.price;
+      case 'note': return row.note;
+      case 'Unit': return row.unit;
       default: return '';
     }
   }
