@@ -15,6 +15,7 @@ import PetBarn from '../views/PetBarn.vue'
 import PetRecordDetail from '../views/PetRecordDetail.vue'
 import CustomerProfile from '../views/CustomerProfile.vue'
 import BaseLayout from '@/layouts/BaseLayout.vue'
+import RecordList from '@/views/RecordList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,6 +66,11 @@ const router = createRouter({
       path: '/record',
       name: 'Record',
       component: RecordPage
+    },
+    {
+      path: '/record-list',
+      name: 'Record',
+      component: RecordList
     },
     {
       name: 'Service',

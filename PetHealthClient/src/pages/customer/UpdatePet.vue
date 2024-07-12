@@ -72,7 +72,19 @@
         console.error('Error fetching pet data:', error);
       }
     },
-    
+      async updatePet(){
+           axiosPrivate.post("", {
+            
+           })
+           .then(response => {
+            console.log(response)
+            const data = response.data;
+
+            if (data.success) {
+              this.pets = data.data.map(pet => ({ id: pet.id, name: pet.name }));
+            }
+          });
+      }
     }
     
   }

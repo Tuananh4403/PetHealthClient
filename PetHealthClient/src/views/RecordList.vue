@@ -89,8 +89,9 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
         })
       },
       fetchRecord() {
-        axiosPrivate.get("/api/booking/review-booking")
+        axiosPrivate.get("/api/record/get-list-record")
           .then(response => {
+            console.log(response)
             if(response.data.success){
             var data = Object.values(response.data.data)
               data.forEach(item => {
