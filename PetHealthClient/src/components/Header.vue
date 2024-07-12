@@ -22,7 +22,7 @@
   .header {
     background-color: #0b0c5d;
     color: white;
-    padding: 1rem;
+    padding: 0.8rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -45,6 +45,10 @@
   
   .nav a:hover {
     text-decoration: underline;
+  }
+
+  span {
+    margin-left: 100px ;
   }
   </style>
   
