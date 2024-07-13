@@ -16,15 +16,6 @@
           <input v-model="password" type="password" placeholder="Password" />
           <button type="submit">Login</button>
         </form>
-        <div class="or">----------Or----------</div>
-        <div class="social-login">
-          <button class="google-btn" @click="loginWithGoogle">
-            <i class="fab fa-google"></i> Login with Google
-          </button>
-          <button class="facebook-btn" @click="loginWithFacebook">
-            <i class="fab fa-facebook-f"></i> Login with Facebook
-          </button>
-        </div>
       </div>
     </div>
   </div>

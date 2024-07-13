@@ -20,13 +20,7 @@
         <input v-model="password" type="password" placeholder="Password" />
         <input type="password" placeholder="Confirm Password" />
         <button type="submit" >Sign up</button>
-        <div class="or">------------- Or -------------</div>
-        <div class="social-buttons" @click="registerWithGoogle">
-          <button class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
-          <button class="facebook-btn" @click="registerWithFacebook">
-            <i class="fab fa-facebook-f"></i> Continue with Facebook
-          </button>
-        </div>
+       
       </form>
     </div>
   </div>

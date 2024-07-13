@@ -2,6 +2,18 @@
     <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <div class="list-container">
         <h1>List of booking</h1>
+        <div class="controls">
+        <!-- <input
+          v-model="searchQuery"
+          placeholder="Search..."
+          class="search-input"
+          @input="filterAndPaginate"
+        /> -->
+        <select v-model="statusSearch" @change="fetchBookings()" class="filter-select">
+          <option value="Review">Review</option>
+          <option v-for="type in statusOpt" :key="type" :value="type">{{ type }}</option>
+        </select>
+      </div>
         <table>
           <thead>
             <tr>
@@ -54,7 +66,9 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
         backgroundImage: null,
         bookings: [],
         userRoles: null,
-        isCustomer: false
+        isCustomer: false,
+        statusSearch: 'Review',
+        statusOpt: ['Confirmed', 'Cancelled', 'Completed'],
       };
     },
   
@@ -87,9 +101,11 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
         })
       },
       fetchBookings() {
-        axiosPrivate.get("/api/booking/review-booking")
+        axiosPrivate.get("/api/booking/review-booking?status="+this.statusSearch )
           .then(response => {
+            console.log(response);
             if(response.data.success){
+              this.bookings = [];
             var data = Object.values(response.data.data)
               data.forEach(item => {
                 var booking = this.mapBookingData(item);
@@ -138,6 +154,21 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
   </script>
   
   <style scoped>
+  .controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f2f2f2;
+}
+
+.search-input,
+.filter-select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
   .full-screen-background {
     background-size: cover;
     background-position: center;

@@ -56,6 +56,7 @@ export const saveUserName = (name) => {
 export const saveUserRole = (roles) => {
   if(roles){
     var dataSave = [];
+    console.log(roles)
     roles.forEach(role => {
       dataSave.push(role.name);
       

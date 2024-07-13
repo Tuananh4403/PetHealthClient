@@ -42,13 +42,14 @@ export default createStore({
           saveToken(token);
           saveUserId(id);
           saveUserName(username);
+          console.log(role);
           saveUserRole(role);
           toastSuccess("Đăng nhập thành công!");
         } else {
           toastWarning(response.data.message);
         }
       } catch (error) {
-        toastError('Login action failed');
+        toastError('Đăng nhập thất bại');
         console.log(error);
         throw error;
       }

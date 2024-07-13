@@ -36,47 +36,43 @@ const router = createRouter({
       name: 'Register',
       component: RegisterPage
     },
-    {
-      name: 'medicalHistory',
-      path: '/medicalHistory',
-      component: () => import('../views/MedicalHistory.vue'),
-    },
-    {
-      name: 'ChatBox',
-      path: '/chatbox',
-      component: () => import('@/components/ChatBox.vue'),
-    },
-    {
-      name: 'MainPage',
-      path: '/mainpage',
-      component: () => import('@/components/MainPage.vue'),
-    },
-    {
-      path: '/listBooking',
-      name: 'listBooking',
-      component: BookingList
-    },
-    {
-      path: '/baselayout',
-      name: 'Base',
-      component: () => import('@/layouts/BaseLayout.vue'),
-    },
+    // {
+    //   name: 'medicalHistory',
+    //   path: '/medicalHistory',
+    //   component: () => import('../views/MedicalHistory.vue'),
+    // },
+    // {
+    //   name: 'ChatBox',
+    //   path: '/chatbox',
+    //   component: () => import('@/components/ChatBox.vue'),
+    // },
+    // {
+    //   name: 'MainPage',
+    //   path: '/mainpage',
+    //   component: () => import('@/components/MainPage.vue'),
+    // },
+    // {
+    //   path: '/listBooking',
+    //   name: 'listBooking',
+    //   component: BookingList
+    // },
+    // {
+    //   path: '/baselayout',
+    //   name: 'Base',
+    //   component: () => import('@/layouts/BaseLayout.vue'),
+    // },
     
-    {
-      path: '/record',
-      name: 'Record',
-      component: RecordPage
-    },
-    {
-      path: '/record-list',
-      name: 'Record',
-      component: RecordList
-    },
-    {
-      name: 'Service',
-      path: '/service',
-      component: () => import('@/views/Service.vue'),
-    },
+    
+    // {
+    //   path: '/record-list',
+    //   name: 'Record List',
+    //   component: RecordList
+    // },
+    // {
+    //   name: 'Service',
+    //   path: '/service',
+    //   component: () => import('@/views/Service.vue'),
+    // },
     {
       path: '/customer',
       meta: { requiresAuth: true, role: ['Customer']},
@@ -103,12 +99,12 @@ const router = createRouter({
           component: MainPage
         },
         {
-          path: 'petList',
+          path: 'pet-list',
           name: 'PetList',
           component: PetListPage
         },
         {
-          path: 'deletePet',
+          path: 'delete-pet',
           name: 'deletePet',
           component: DeletePet
         },
@@ -137,19 +133,24 @@ const router = createRouter({
           name: 'profile',
           component: CustomerProfile
         },
+          {
+      path: '/record-list',
+      name: 'Record List',
+      component: RecordList
+    },
       ],
       
     },
     {
       path: '/doctor',
-      // component: BaseLayout,
+      component: BaseLayout,
       meta: { requiresAuth: true, role: ['Doctor']},
       children: [
-        // {
-        //   path: 'record',
-        //   name: 'Record',
-        //   component: RecordPage
-        // },
+        {
+          path: 'record',
+          name: 'Record',
+          component: RecordPage
+        },
 
         // Add more routes as needed
       ],
@@ -159,11 +160,6 @@ const router = createRouter({
       path: '/staff',
       meta: { requiresAuth: true, role: ['Staff']},
       children: [
-        // {
-        //   path: '/listBooking',
-        //   name: 'listBooking',
-        //   component: BookingList
-        // },
         // Add more routes as needed
       ],
       
@@ -205,11 +201,11 @@ const router = createRouter({
           path: '/kennel',
           component: () => import('../views/Kennel.vue'),
         },
-        // {
-        //   name: 'Service',
-        //   path: '/service',
-        //   component: () => import('../views/Service.vue'),
-        // },   
+        {
+          name: 'Service',
+          path: '/service',
+          component: () => import('../views/Service.vue'),
+        },   
         {
           name: 'ManageDoctor',
           path: '/manage-doctor',

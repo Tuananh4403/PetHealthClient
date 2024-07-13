@@ -11,6 +11,7 @@
             <th>Gender</th>
             <th>Birthday</th>
             <th>Species</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -21,6 +22,9 @@
             <td>{{ pet.gender }}</td>
             <td>{{ pet.birthday }}</td>
             <td>{{ pet.species }}</td>
+            <td><button @click="detletPet(pet.id)">
+                  Archive Pet
+                </button></td>
           </tr>
         </tbody>
       </table>
@@ -32,6 +36,8 @@
 <script>
 import { axiosPrivate } from '@/api/axios';
 import { formatDate } from '@/utils/common';
+// import DeletePet from './customer/DeletePet.vue';
+import { toastSuccess, toastWarning } from '@/utils/toast';
 export default {
   data() {
     return {
@@ -57,7 +63,6 @@ export default {
                   .then(async response => {
                     const data = response.data;
                     if(data.success){
-                      console.log(response)
                       await this.addMappedPet(data.data);
                     }
                   })
@@ -65,6 +70,7 @@ export default {
     mapPetData(data) {
       // console.log(data.petName);
       var pet = {
+        id: data.id,
         name: data.petName,
         kind: data.kindOfPet,
         gender: data.gender ? 'Đực' : 'Cái',
@@ -76,12 +82,24 @@ export default {
     },
     async addMappedPet(data) {
       for(var pet in data){
-        console.log(data[pet]);
         const mappedPet = this.mapPetData(data[pet]);
         // console.log(mappedPet)
         await this.pets.push(mappedPet);
       }
   },
+  async detletPet(id){
+    axiosPrivate.delete("/api/pet/delete-pet/"+id)
+                .then(response =>{
+                  const data = response.data;
+;
+                  if(data.success){
+                    toastSuccess(data.message);
+                  }else{
+                    toastWarning(data.message)
+                  }
+                })
+
+  }
   }
 };
 </script>

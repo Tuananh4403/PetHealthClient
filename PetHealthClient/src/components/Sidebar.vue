@@ -43,6 +43,7 @@
 
 <script>
 import { ref } from 'vue';
+import { getUserRole } from '@/utils/auth';
 
 export default {
   setup() {

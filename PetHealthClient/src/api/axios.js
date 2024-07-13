@@ -42,6 +42,7 @@ const handleError = (error) => {
                 toastError('An error occurred. Please try again later.');
         }
     } else if (error.request) {
+        console.log(error)
         toastError('No response received. Please check your network.');
     } else {
         toastError('Error: ' + error.message);

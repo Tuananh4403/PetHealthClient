@@ -1,8 +1,11 @@
 <template>
   <div class="pet-health-record">
-    <div class="tittle">
+    <div class="header-container">
+      <button @click="returnToPreviousPage" class="return-btn">Return</button>
+    <div class="title">
       <h1>Pet Health Record Form</h1>
     </div>
+</div>
     <hr>
     <div class="pet-information">
       <h2>Pet Information</h2>
@@ -33,8 +36,16 @@
           <input id="species" v-model="petInfo.species" type="text" readonly>
         </div>
         <div class="form-group">
-          <label for="temperature">Temperature</label>
-          <input id="temperature" v-model="petInfo.temperature" type="text" readonly>
+          <div class="form-row">
+            <div class="form-group"> 
+              <label for="temperature">Temperature</label>
+              <input id="temperature" v-model="petInfo.temperature" type="number" step="any" >
+            </div>
+            <div class="form-group"> 
+              <label for="weight">Weight</label>
+              <input id="weight" v-model="petInfo.weight"  type="number" step="any" >
+            </div>
+        </div>
         </div>
       </div>
 
@@ -54,27 +65,38 @@
     <div class="service-section">
       <h2>Service</h2>
       <div class="service-header">
-        <div>NO</div>
-        <div>Name</div>
-        <div>CODE</div>
-        <div>Type</div>
-        <div>Quantity</div>
-        <div>Unit</div>
-        <div>Price</div>
+        <div class="no">NO</div>
+        <div class="name">Name/Code</div>
+        <div class="type">Type</div>
+        <div class="quantity">Quantity</div>
+        <div class="unit">Unit</div>
+        <div class="price">Price</div>
+        <div class="total">Total</div>
       </div>
       <div v-for="(service, index) in services" :key="index" class="service-row">
-        <input v-model="service.no" type="text">
-        <select v-model="service.name" @change="updateService(service)">
-          <option v-for="option in serviceOptions" :key="option.name" :value="option.name">
-            {{ option.name }}
-          </option>
-        </select>
-        <input v-model="service.code" type="text" readonly>
-        <input v-model="service.type" type="text" readonly>
-        <input v-model="service.quantity" type="number">
-        <input v-model="service.unit" type="text" readonly>
-        <input v-model="service.price">
-        <button @click="removeService(index)" class="remove-service-btn">x</button>
+        <input type="text" class="no" readonly :value="index+1">
+        <multiselect 
+        v-model="service.selectedService" 
+        :options="serviceOptions" 
+        :showNoOptions="false" :allow-empty="false" :showLabels="false"
+        :multiple="false" 
+        :close-on-select="true"
+        :searchable="true"
+        label="name" 
+        track-by="selectedService"
+        placeholder="Select a service"
+        :custom-label="detailService"
+        @open="getService"
+        @select="updateService(service)"
+        class="service-select name">
+      </multiselect>
+        <input v-model="service.type" type="text" readonly class="service-input type">
+        <input v-model="service.quantity" type="number" class="service-input quantity" @change="updateTotal(index)">
+        <input v-model="service.unit" type="text" readonly class="service-input unit">
+        <input v-model="service.price" type="number" readonly class="service-input price">
+        <input v-model="service.total" type="number" readonly class="service-input total">
+
+        <button @click="removeService(index)" class="service-input remove-service-btn .delete-btn">x</button>
       </div>
       <button @click="addService" class="add-service-btn">+</button>
     </div>
@@ -107,22 +129,23 @@ export default {
         species: '',
         temperature: ''
       },
-      genders: [{
+      genders: [
+          {
                 value: true,
                 name: 'Đực'
             },
             {
                 value: false,
                 name: 'Cái'
-            },],
+            }
+          ],
       detailPrediction: '',
       conclude: '',
+      servicesSelected: [],
       services: [
-        { no: '', name: '', code: '', type: '', quantity: '', unit: '', price: '' }
+        { no: '', id: 0, name: '', type: '', quantity: '', unit: '', price: 0, total: 0}
       ],
-      serviceOptions: [
-
-      ]
+      serviceOptions: []
     }
   },
   create() {
@@ -132,9 +155,8 @@ export default {
   watch: {
     selectedPet(newVal) {
       if (newVal) {
-        const name = newVal.customer.user.firstName + ' ' + newVal.customer.user.lastName;
-        console.log(newVal);
-        this.petOwner = name;
+        this.petOwner = newVal.customerName;
+        this.petInfo.id = newVal.id;
         this.petInfo.gender = this.genders.find(g => g.value === newVal.gender).name;
         this.petInfo.kind = newVal.kindOfPet;
         this.petInfo.birthday = formatDate(newVal.birthday);
@@ -146,65 +168,87 @@ export default {
     }
   },
   methods: {
+    returnToPreviousPage() {
+      this.$router.go(-1); // Navigates back one step in history
+    },
     detailPet({petName}) {
       return `${petName}`
     },
+    detailService({name, code}){
+      return `${name} - ${code}`;
+    },
     async submitForm() {
-      console.log('Form submitted', this.petInfo, this.detailPrediction, this.conclude, this.services)
       try {
-        await axiosPrivate.post('api/record/create', {
-          PetId: this.petInfo.id,
-          Heght: this.petInfo.height,
+        this.handleService(this.services)
+        const data ={ PetId: this.petInfo.id,
+          Heght: this.petInfo.weight,
           DetailPrediction: this.detailPrediction,
           Conclude: this.conclude,
-          ServiceIds: this.services,
-          SaveBarn: false
-
-        }
+          serviceQuantities: this.handleService(this.services),
+          ServiceIds: this.servicesSelected,
+          SaveBarn: false,
+          barnId: 0}
+          console.log(data);
+        await axiosPrivate.post('/api/record/create', data)
           .then(res => {
             if (res.data.success) {
               toastSuccess(res.data.message)
+              this.$router.push('/customer/main');
             } else {
               toastWarning(res.data.message)
             }
-          }));
+          });
       }
-      catch{
-        toastError("Lỗi hệ thống vui lòng thử lại!");
+      catch (error){
+        console.log(error)
+        // toastError("Lỗi hệ thống vui lòng thử lại!");
       }
+    },
+    async getPet(){
+      await axiosPrivate.get('/api/pet/get-list-pet')
+                  .then(async response => {
+                    const data = response.data;
+                    if(data.success){
+                      this.pets = data.data;
+                    }
+                  })
+    },
+    handleService(services){
+      var result ;
+      for(var service in services){
+        var data = services[service];
+        let id = String(data.id);
+        result = {
+          [id]: data.quantity
+        };
+        this.servicesSelected.push(data.id)
+      }
+      console.log(result)
+      return result;
     },
     addService() {
-      this.services.push({ no: '', name: '', code: '', type: '', quantity: '', unit: '', price: '' })
+      this.services.push({ no: '', name: '', type: '', quantity: '', unit: '', price: '' , total: ''})
     },
     updateService(service) {
-      const selectedService = this.serviceOptions.find(option => option.name === service.name)
-      if (selectedService) {
-        service.code = selectedService.code
-        service.type = selectedService.type
-        service.unit = selectedService.unit
+      if (service) {
+        service.id = service.selectedService.id,
+        service.code = service.selectedService.code;
+        service.type = service.selectedService.type;
+        service.unit = service.selectedService.unit;
+        service.price = service.selectedService.price;
+        service.total = service.selectedService.price * service.selectedService.quantity;
       }
     },
     removeService(index) {
       this.services.splice(index, 1)
     },
-    async getPet(){
-      await axiosPrivate.get('/api/pet/get-list-pet-by-user')
-                  .then(async response => {
-                    const data = response.data;
-                    if(data.success){
-                      console.log(data.data)
-                      this.pets = data.data;
-                    }
-                  })
-    },
+    
     async getService(){
       await axiosPrivate.get('/api/service/get-service')
       .then(response => {
         const data = response.data;
-        console.log(data);
         if(data.success){
           this.serviceOptions = data.data;
-          
           }
         }
       )
@@ -217,9 +261,15 @@ export default {
         species: selectedPet.species,
         temperature: selectedPet.temperature
       };
+    },
+    updateTotal(index) {
+      const service = this.services[index];
+      const quantity = parseFloat(service.quantity) || 0;
+      const price = parseFloat(service.price) || 0;
+      service.total = quantity * price;
     }
   }
-}
+  }
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 
@@ -232,17 +282,43 @@ export default {
   border-radius: 8px;
 }
 
-.tittle {
+header-container {
+  display: flex;
+  justify-content: space-between; /* Align items with space between */
+  align-items: center; /* Center items vertically */
+  margin-bottom: 30px;
+}
+.header-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-bottom: 30px;
 }
 
-.tittle h1 {
+.title {
+  flex-grow: 1; /* Allows the title to take up remaining space */
+  text-align: center; /* Centers the title text */
+}
+
+.title h1 {
   color: #2c3e50;
   font-size: 2.5em;
   border-bottom: 3px solid #3498db;
   padding-bottom: 10px;
+}
+
+.return-btn {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.return-btn:hover {
+  background-color: #2c3e50;
 }
 
 h2 {
@@ -273,7 +349,7 @@ select {
   padding: 12px;
   border: 1px solid #bdc3c7;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 10px;
   transition: border-color 0.3s ease;
 }
 
@@ -287,6 +363,7 @@ select:focus {
 
 .multiselect {
   padding: 12px;
+  border: none;
   width: 100%;
 }
 
@@ -351,9 +428,9 @@ select:focus {
   /* Your styles here */
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 10px;
   color: #eedbdb;
 }
 
@@ -365,7 +442,9 @@ select:focus {
 .service-section {
   margin-top: 30px;
 }
-
+.service-select{
+  width: 13%;
+}
 .service-header,
 .service-row {
   display: flex;
@@ -377,24 +456,81 @@ select:focus {
   border-radius: 4px;
 }
 
-.service-header div {
-  font-weight: bold;
-  color: #2c3e50;
+.service-header .no {
+  display: flex;
+  justify-content: center;
+  width: 5%; /* Smallest width */
 }
 
-.service-header div,
-.service-row input,
-.service-row select {
-  flex: 1;
-  margin-right: 10px;
+.service-header .name {
+  display: flex;
+  justify-content: center;
+  
+  width: 25%; /* Largest width */
 }
+
+.service-header .type,
+.service-header .quantity,
+.service-header .unit,
+.service-header .price,
+.service-header .total {
+  display: flex;
+  justify-content: center;
+
+  flex: 1; /* Equal width for these columns */
+}
+
+.service-header .delete-btn {
+  justify-content: center;
+  display: flex;
+  width: 5%; /* Fixed width for delete button */
+  text-align: center; /* Centering delete button */
+}
+
+
+
+
+.service-row .no {
+  justify-content: center;
+
+  width: 5%; /* Smallest width */
+}
+
+.service-row .name {
+  justify-content: center;
+
+  width: 25%; /* Largest width */
+}
+
+.service-row .type,
+.service-row .quantity,
+.service-row .unit,
+.service-row .price,
+.service-row .total {
+  justify-content: center;
+  display: flex;
+  flex: 1; /* Equal width for these columns */
+}
+
+.service-row .delete-btn {
+  justify-content: center;
+  display: flex;
+
+  width: 5%; /* Fixed width for delete button */
+  text-align: center; /* Centering delete button */
+}
+
 
 .service-row input[readonly] {
   background-color: #e8e8e8;
 }
 
 .service-row input[type="number"] {
-  width: 80px;
+  width: 70px; /* Fixed width for quantity input */
+}
+.service-row .delete-btn {
+  width: 5%; /* Fixed width for delete button */
+  text-align: center; /* Centering delete button */
 }
 
 .add-service-btn,
