@@ -9,8 +9,8 @@
           class="search-input"
           @input="filterAndPaginate"
         />
-        <select v-model="filterRole" @change="filterAndPaginate" class="filter-select">
-          <option value="">All Roles</option>
+       <select v-model="filterField" @change="filterAndPaginate" class="filter-select">
+          <option value="">All Fields</option>
           <option v-for="header in headers" :key="header" :value="header.toLowerCase()">
             {{ header }}
           </option>
