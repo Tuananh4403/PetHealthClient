@@ -40,6 +40,7 @@
 
 <script >
 import { apiClient } from '@/api/axios';
+import { getToken } from '@/utils/auth';
 
 export default {
   data() {
@@ -76,6 +77,8 @@ export default {
           email: this.email,
           password: this.password,
         });
+    console.log('=======================',getToken());
+
         this.$router.push('/customer/main'); 
       } catch (error) {
         console.error('Login failed:', error);

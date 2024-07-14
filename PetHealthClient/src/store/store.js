@@ -40,9 +40,9 @@ export default createStore({
           commit('setUser', user);
           commit('setToken', token);
           saveToken(token);
+          console.log(getToken());
           saveUserId(id);
           saveUserName(username);
-          console.log(role);
           saveUserRole(role);
           toastSuccess("Đăng nhập thành công!");
         } else {
