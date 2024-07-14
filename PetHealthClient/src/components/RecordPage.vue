@@ -132,11 +132,11 @@ export default {
       genders: [
           {
                 value: true,
-                name: 'Đực'
+                name: 'Male'
             },
             {
                 value: false,
-                name: 'Cái'
+                name: 'Female'
             }
           ],
       detailPrediction: '',

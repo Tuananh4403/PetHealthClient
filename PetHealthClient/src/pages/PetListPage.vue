@@ -73,7 +73,7 @@ export default {
         id: data.id,
         name: data.petName,
         kind: data.kindOfPet,
-        gender: data.gender ? 'Đực' : 'Cái',
+        gender: data.gender ? 'Male' : 'Female',
         birthday: formatDate(data.birthday),
         species: data.species
       }

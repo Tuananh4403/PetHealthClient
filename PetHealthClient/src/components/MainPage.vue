@@ -47,8 +47,8 @@
       <img src="@/assets/images/petshop.png" alt="Pet" class="background-image" />
       <div class="text-content">
           <h2 class="animated-text">PET SERVICE</h2>
-          <span class="animated-text">Dịch vụ thú cưng</span>
-          <span class="animated-text">Uy tín hàng đầu TP HCM</span>
+          <span class="animated-text">Best Service For Your Pet</span>
+          <span class="animated-text">Top reputation in Ho Chi Minh City</span>
           <button class="booking-button">Booking now</button>
         </div>
     <div class="chat-toggle" @click="toggleChat">
@@ -107,7 +107,7 @@ export default {
     return {
       backgroundImage: null,
       userName: "",
-      fullName: "John Doe" // Replace with actual full name fetching logic
+      fullName: "John Doe" 
     }
   },
   mounted() {
@@ -124,10 +124,10 @@ export default {
     logout(){
       try {
         this.$store.dispatch('logout');
-        this.$router.push('/login'); // Redirect to the main page
+        this.$router.push('/login'); 
       } catch (error) {
         console.error(error);
-        // Optionally show an error message to the user
+       
       }
     },
     fetchUsername(){
@@ -162,16 +162,12 @@ nav ul {
   align-items: center;
 }
 
-/* nav ul li {
-  margin: 0 5px; 
-} */
-
 nav ul li:first-child {
   margin-left: 100px; 
 }
 
 nav ul li:last-child {
-  margin-right: 100px; /* Increase spacing for the last item */
+  margin-right: 100px; 
 }
 
 nav ul li a {
@@ -181,7 +177,7 @@ nav ul li a {
 }
 
 .profile img {
-  height: 22px; /* Adjust icon size */
+  height: 22px; 
   width: auto;
   margin-right: 8px;
 }
@@ -209,7 +205,7 @@ nav ul li a {
 
 .animated-text {
   animation: fadeIn 2s ease-in-out;
-  display: block; /* Ensure each text is on a new line */
+  display: block; 
 }
 
 .animated-text:hover {
@@ -217,11 +213,11 @@ nav ul li a {
 }
 
 h2.animated-text {
-  font-size: 100px; /* Increase size for PET SERVICE */
+  font-size: 100px; 
 }
 
 span.animated-text {
-  font-size: 36px; /* Increase size for other texts */
+  font-size: 36px; 
   margin-top: 10px; 
 }
 
@@ -233,7 +229,7 @@ span.animated-text {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 20px; /* Add spacing above the button */
+  margin-top: 20px; 
 }
 
 .booking-button:hover {
@@ -301,7 +297,7 @@ span.animated-text {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url('../assets/images/background.png'); /* Ensure the background image covers the entire screen */
+  background-image: url('../assets/images/background.png'); 
 }
 
 .chat-toggle {
