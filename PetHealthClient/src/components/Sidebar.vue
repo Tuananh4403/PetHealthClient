@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div>
+  <div >
     <button @click="toggleSidebar" class="toggle-btn" :class="{ 'open': isSidebarOpen }">
       <span class="material-icons">{{ isSidebarOpen ? 'Menu' : 'Menu' }}</span>
     </button>
@@ -27,7 +27,7 @@
         <router-link to="/service" class="menu-item">
           <span class="material-icons">Service</span>
         </router-link>
-        <router-link to="/manageDoctor" class="menu-item">
+        <router-link to="/manage-doctor" class="menu-item">
           <span class="material-icons">Manage Doctor</span>
         </router-link>  
         <router-link to="/manage-staff" class="menu-item">
@@ -43,7 +43,6 @@
 
 <script>
 import { ref } from 'vue';
-import { getUserRole } from '@/utils/auth';
 
 export default {
   setup() {
@@ -97,7 +96,8 @@ export default {
 
 .toggle-btn {
   position: fixed;
-  top: 0px;
+  top: 20px;
+  left: 10px;
   z-index: 1000;
   background-color: #725cca;
   color: #fff;

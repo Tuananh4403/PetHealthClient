@@ -7,18 +7,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row, index) in rows" :key="index">
+        <tr v-for="(doctor, index) in doctors" :key="index">
           <td v-for="header in headers" :key="header">
-            <template v-if="header !== 'Action'">
-              {{ row[header.toLowerCase()] || '' }}
+            <template v-if="header !== 'Action' && header !== 'Status'">
+              {{ doctor[header.toLowerCase()] || '' }}
             </template>
-            <button v-else class="update-btn" @click="openUpdateModal(row)">Update</button>
+            <template v-else-if="header === 'Status'">
+              {{ status.find(s => s.value === doctor[header.toLowerCase()]).name }}
+            </template>
+            <template v-else>
+              <button class="update-btn" @click="openUpdateModal(doctor)">Update</button>
+            </template>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-   
+
   <UpdateDoctor
     v-if="showUpdateModal"
     :staff="selectedStaff"
@@ -27,25 +32,33 @@
 </template>
 
 <script>
-import UpdateDoctor from '../components/UpdateDoctor.vue';
+import { axiosPrivate } from '@/api/axios';
+import UpdateDoctor  from '../components/UpdateDoctor.vue';
+import { toastWarning } from '@/utils/toast';
 
 export default {
   components: {
-    UpdateDoctor
+    UpdateDoctor,
   },
   data() {
     return {
-      headers: ['Role', 'Id', 'Name', 'Status', 'Action'],
-      rows: [
-        { role: 'Doctor', id: 'DR001', name: 'Dr. John Smith', status: 'Active' },
-        { role: 'Doctor', id: 'DR002', name: 'Sarah Johnson', status: 'Active' },
-        { role: 'Doctor', id: 'DR003', name: 'Emily Brown', status: 'On Leave' },
-        { role: 'Doctor', id: 'DR004', name: 'Dr. Emma Davis', status: 'Active' },
-        { role: 'Doctor', id: 'DR005', name: 'Michael Wilson', status: 'Active' },
-      ],
+      headers: ['Email', 'Name', 'id', 'phone','Status', 'Specialty','Action'],
+      doctors: [],
+      status: [
+            {
+                value: true,
+                name: 'Active'
+            },
+            {
+                value: false,
+                name: 'Deactive'
+            }],
       showUpdateModal: false,
       selectedDoctor: null
     }
+  },
+  mounted(){
+    this.getDoctors();
   },
   methods: {
     openUpdateModal(doctor) {
@@ -55,6 +68,19 @@ export default {
     closeUpdateModal() {
       this.showUpdateModal = false;
       this.selectedDoctor = null;
+    },
+    getDoctors(){
+      axiosPrivate.get("/api/doctor/get-doctor")
+                  .then(response => {
+                    const data =response.data
+                    if(data.success){
+                      console.log(data)
+                      this,this.doctors = data.data;
+                      console.log(this.doctors);
+                    }else{
+                      toastWarning("Can get data");
+                    }
+                  })
     }
   }
 }

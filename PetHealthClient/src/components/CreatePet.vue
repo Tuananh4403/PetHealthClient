@@ -2,7 +2,7 @@
   <div id="app">
   <nav>
       <ul>
-        <li><a href="#"@click="navigateTo('/')">Home</a></li>
+        <li><a href="#" @click="navigateTo('/')">Home</a></li>
         <li class="dropdown">
           <a href="#" @click="toggleDropdown">Medical History</a>
           <div class="dropdown-content" v-show="showDropdown">

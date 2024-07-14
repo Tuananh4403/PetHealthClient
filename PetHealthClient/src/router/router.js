@@ -5,10 +5,10 @@ import MainPage from '../components/MainPage.vue'
 import BookingModal from '../components/BookingModal.vue'
 import PetListPage from '../pages/PetListPage.vue'
 import CreatePet from '../components/CreatePet.vue'
-import UpdatePet from '@/pages/customer/UpdatePet.vue' 
+import UpdatePet from '@/pages/customer/UpdatePet.vue'
 import DeletePet from '../pages/customer/DeletePet.vue'
 import RecordPage from '../components/RecordPage.vue'
-import store  from "@/store/store";
+import store from "@/store/store";
 import BookingList from '../views/BookingList.vue'
 import MedicalHistoryCustomer from '../views/MedicalHistoryCustomer.vue'
 import PetBarn from '../views/PetBarn.vue'
@@ -25,7 +25,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'Main',
-      meta: { requiresAuth: true},
+      meta: { requiresAuth: true },
       component: MainPage
     },
     {
@@ -38,46 +38,9 @@ const router = createRouter({
       name: 'Register',
       component: RegisterPage
     },
-    // {
-    //   name: 'medicalHistory',
-    //   path: '/medicalHistory',
-    //   component: () => import('../views/MedicalHistory.vue'),
-    // },
-    // {
-    //   name: 'ChatBox',
-    //   path: '/chatbox',
-    //   component: () => import('@/components/ChatBox.vue'),
-    // },
-    // {
-    //   name: 'MainPage',
-    //   path: '/mainpage',
-    //   component: () => import('@/components/MainPage.vue'),
-    // },
-    // {
-    //   path: '/listBooking',
-    //   name: 'listBooking',
-    //   component: BookingList
-    // },
-    // {
-    //   path: '/baselayout',
-    //   name: 'Base',
-    //   component: () => import('@/layouts/BaseLayout.vue'),
-    // },
-    
-    
-    // {
-    //   path: '/record-list',
-    //   name: 'Record List',
-    //   component: RecordList
-    // },
-    // {
-    //   name: 'Service',
-    //   path: '/service',
-    //   component: () => import('@/views/Service.vue'),
-    // },
     {
       path: '/customer',
-      meta: { requiresAuth: true, role: ['Customer']},
+      meta: { requiresAuth: true, role: ['Customer'] },
       children: [
         {
           path: 'updatePet',
@@ -126,7 +89,7 @@ const router = createRouter({
           component: PetBarn
         },
         {
-          path: '/customer/petRecord/:id',
+          path: '/customer/petRecord/',
           name: 'PetRecordDetail',
           component: PetRecordDetail
         },
@@ -135,101 +98,97 @@ const router = createRouter({
           name: 'profile',
           component: CustomerProfile
         },
-          {
-      path: '/record-list',
-      name: 'Record List',
-      component: RecordList
-    },
-    {
-      path: 'medicalHistory',
-      name: 'medicalHistory',
-      component: MedicalHistoryCustomer
-    },
+=
+      {
+        path: 'medicalHistory/:id',
+        name: 'medicalHistory',
+        component: MedicalHistoryCustomer
+      },
     {
       path: 'petBarnMedical',
       name: 'petBarnMedical',
       component: MedicalHistory
     },
-      ],
-      
-    },
-    {
-      path: '/doctor',
-      component: BaseLayout,
-      meta: { requiresAuth: true, role: ['Doctor']},
-      children: [
-        {
-          path: 'record',
-          name: 'Record',
-          component: RecordPage
-        },
+  ],
 
-        // Add more routes as needed
-      ],
-      
-    },
-    {
-      path: '/staff',
-      meta: { requiresAuth: true, role: ['Staff']},
-      children: [
-        // Add more routes as needed
-      ],
-      
-    },
-    {
-      path: '/admin',
-      component: () => import('../layouts//BaseLayout.vue'),
-      meta: { requiresAuth: true, role: ['Admin']},
-      children: [
-        {
-          name: 'Dashboard',
-          path: '/dashboard',
-          component: () => import('../views/Dashboard.vue'),
-          meta: { roles: ['Admin'] }
-        },
-        {
-          path: '/manage-user',
-          name: 'ManageUser',
-          component: () => import('@/views/ManageUser.vue'),
-        },
-        {
-          name: 'Home',
-          path: '/home',
-          component: () => import('../views/Home.vue'),
-        },
-        
-        {
-          name: 'PetListP',
-          path: '/petListP',
-          component: () => import('../views/PetList.vue'),
-        },
-        {
-          name: 'VaccineCalendar',
-          path: '/vaccine-calendar',
-          component: () => import('../views/VaccineCalendar.vue'),
-        },
-        {
-          name: 'Kennel',
-          path: '/kennel',
-          component: () => import('../views/Kennel.vue'),
-        },
-        {
-          name: 'Service',
-          path: '/service',
-          component: () => import('../views/Service.vue'),
-        },   
-        {
-          name: 'ManageDoctor',
-          path: '/manage-doctor',
-          component: () => import('../views/ManageDoctor.vue'),
-        },
-        {
-          name: 'ManageStaff',
-          path: '/manage-staff',
-          component: () => import('../views/ManageStaff.vue'),
-        },  
-      ],
-    },
+},
+  {
+    path: '/doctor',
+    component: BaseLayout,
+    meta: { requiresAuth: true, role: ['Doctor'] },
+    children: [
+      {
+        path: 'record',
+        name: 'Record',
+        component: RecordPage
+      },
+
+      // Add more routes as needed
+    ],
+
+  },
+  {
+    path: '/staff',
+    meta: { requiresAuth: true, role: ['Staff'] },
+    children: [
+      // Add more routes as needed
+    ],
+
+  },
+  {
+    path: '/admin',
+    component: () => import('../layouts//BaseLayout.vue'),
+    meta: { requiresAuth: false, role: ['Customer'] },
+    children: [
+      {
+        name: 'Dashboard',
+        path: '/dashboard',
+        component: () => import('../views/Dashboard.vue'),
+        meta: { roles: ['Admin'] }
+      },
+      {
+        path: '/manage-user',
+        name: 'ManageUser',
+        component: () => import('../views/ManageUser.vue'),
+      },
+      {
+        name: 'Home',
+        path: '/home',
+        component: () => import('../views/Home.vue'),
+      },
+
+      {
+        name: 'PetListP',
+        path: '/petListP',
+        component: () => import('../views/PetList.vue'),
+      },
+      {
+        name: 'VaccineCalendar',
+        path: '/vaccine-calendar',
+        component: () => import('../views/VaccineCalendar.vue'),
+      },
+      {
+        name: 'Kennel',
+        path: '/kennel',
+        component: () => import('../views/Kennel.vue'),
+      },
+      {
+        name: 'Service',
+        path: '/service',
+        component: () => import('../views/Service.vue'),
+      },
+      {
+        name: 'ManageDoctor',
+        path: '/manage-doctor',
+        component: () => import('@/views/ManageDoctor.vue'),
+      },
+      {
+        name: 'ManageStaff',
+        path: '/manage-staff',
+        component: () => import('../views/ManageStaff.vue'),
+      },
+    ],
+  },
   ]
 })
 router.beforeEach((to, from, next) => {
