@@ -2,7 +2,7 @@
   <div id="app">
     <nav>
       <ul>
-        <li><a href="#">Home</a></li>
+        <li><a href="#"@click="navigateTo('/')">Home</a></li>
         <li class="dropdown">
           <a href="#" @click="toggleDropdown">Medical History</a>
           <div class="dropdown-content" v-show="showDropdown">
@@ -14,7 +14,7 @@
           <div class="dropdown-content" v-show="showDropdown">
             <a href="#" @click="navigateTo('customer/createPet')">Create Pet</a>
             <a href="#" @click="navigateTo('customer/updatePet')">Update Pet</a>
-            <a href="#" @click="navigateTo('customer/deletePet')">Delete Pet</a>
+            <a href="#" @click="navigateTo('customer/delete-pet')">Delete Pet</a>
             <a href="#" @click="navigateTo('customer/pet-list')">List Pet</a>
           </div>
         </li>
@@ -186,7 +186,7 @@ nav ul li a {
   height: 50%; 
   object-fit: cover; 
   margin-right: 20px; 
-  margin-top: 200px;
+  margin-top: 20px;
 }
 
 .content-container {
@@ -199,7 +199,7 @@ nav ul li a {
 
 .text-content {
   color: white;
-  margin-top: 300px;
+  margin-top: 30px;
   margin-left: 150px;
 }
 
