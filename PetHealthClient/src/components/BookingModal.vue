@@ -75,11 +75,11 @@ export default {
       gender: '',
       genders: [{
                 value: true,
-                name: 'Đực'
+                name: 'Male'
             },
             {
                 value: false,
-                name: 'Cái'
+                name: 'Female'
             },],
       doctors: [],
       selectedDoctor: [],

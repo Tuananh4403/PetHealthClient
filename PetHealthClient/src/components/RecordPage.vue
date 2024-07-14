@@ -201,7 +201,6 @@ export default {
       }
       catch (error){
         console.log(error)
-        // toastError("Lỗi hệ thống vui lòng thử lại!");
       }
     },
     async getPet(){
