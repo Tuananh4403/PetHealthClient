@@ -16,6 +16,8 @@ import PetRecordDetail from '../views/PetRecordDetail.vue'
 import CustomerProfile from '../views/CustomerProfile.vue'
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import RecordList from '@/views/RecordList.vue'
+import PetMedicalHistory from '@/views/PetMedicalHistory.vue'
+import MedicalHistory from '@/views/MedicalHistory.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -114,9 +116,9 @@ const router = createRouter({
           component: BookingList
         },
         {
-          path: 'petMedicalHistory',
-          name: 'petMedicalHistory',
-          component: MedicalHistoryCustomer
+          path: 'petOfMedicalHistory',
+          name: 'petOfMedicalHistory',
+          component: PetMedicalHistory
         },
         {
           path: 'viewBarn',
@@ -137,6 +139,16 @@ const router = createRouter({
       path: '/record-list',
       name: 'Record List',
       component: RecordList
+    },
+    {
+      path: 'medicalHistory',
+      name: 'medicalHistory',
+      component: MedicalHistoryCustomer
+    },
+    {
+      path: 'petBarnMedical',
+      name: 'petBarnMedical',
+      component: MedicalHistory
     },
       ],
       

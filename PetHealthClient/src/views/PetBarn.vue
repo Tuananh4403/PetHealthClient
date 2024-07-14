@@ -6,7 +6,7 @@
         <li class="dropdown">
           <a href="#" @click="toggleDropdown">Medical History</a>
           <div class="dropdown-content" v-show="showDropdown">
-            <a href="#" @click="navigateTo('customer/petMedicalHistory')">Pet Medical</a>
+            <a href="#" @click="navigateTo('customer/petOfMedicalHistory')">Pet Medical</a>
           </div>
         </li>
         <li class="dropdown">
@@ -45,7 +45,7 @@
     </nav>
     <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <div class="container">
-        <div class="pet-frame" v-for="pet in pets" :key="pet.id" @click="navigateTo(pet.id)">
+        <div class="pet-frame" v-for="pet in pets" :key="pet.id" @click="navigateTo('customer/petBarnMedical')">
           <span class="pet-name">{{ pet.name }}</span>
         </div>
       </div>
