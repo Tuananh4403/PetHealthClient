@@ -118,19 +118,6 @@ const router = createRouter({
 
     },
     {
-      path: '/doctor',
-      component: BaseLayout,
-      meta: { requiresAuth: true, role: ['Doctor'] },
-      children: [
-        {
-          path: 'record',
-          name: 'Record',
-          component: RecordPage
-        },
-      ],
-
-    },
-    {
       path: '/',
       component: BaseLayout,
       meta: { requiresAuth: true, role: ['Doctor', 'Staff', 'Admin'] },
