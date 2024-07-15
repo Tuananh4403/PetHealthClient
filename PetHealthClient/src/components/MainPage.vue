@@ -29,6 +29,7 @@
           <div class="dropdown-content" v-show="showDropdown">
             <a href="#" @click="navigateTo('customer/booking')">Create Booking</a>
             <a href="#" @click="navigateTo('customer/listBooking')">List Booking</a>
+            <a href="#" @click="navigateTo('customer/payment')">Payment</a>
           </div>
         </li>
         <li class="profile dropdown split">
