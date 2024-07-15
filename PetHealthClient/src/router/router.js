@@ -18,6 +18,7 @@ import BaseLayout from '@/layouts/BaseLayout.vue'
 import RecordList from '@/views/RecordList.vue'
 import PetMedicalHistory from '@/views/PetMedicalHistory.vue'
 import MedicalHistory from '@/views/MedicalHistory.vue'
+import Payment from '@/views/Payment.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -107,6 +108,24 @@ const router = createRouter({
           path: 'petBarnMedical',
           name: 'petBarnMedical',
           component: MedicalHistory
+        },
+        {
+          path: 'payment',
+          name: 'payment',
+          component: Payment
+        },
+      ],
+
+    },
+    {
+      path: '/doctor',
+      component: BaseLayout,
+      meta: { requiresAuth: true, role: ['Doctor'] },
+      children: [
+        {
+          path: 'record',
+          name: 'Record',
+          component: RecordPage
         },
       ],
 
