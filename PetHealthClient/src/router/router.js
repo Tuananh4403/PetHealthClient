@@ -23,12 +23,7 @@ import Payment from '@/views/Payment.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/',
-      name: 'Main',
-      meta: { requiresAuth: true },
-      component: MainPage
-    },
+    
     {
       path: '/login',
       name: 'Login',
@@ -43,6 +38,12 @@ const router = createRouter({
       path: '/customer',
       meta: { requiresAuth: true, role: ['Customer'] },
       children: [
+        {
+          path: '',
+          name: 'Main',
+          meta: { requiresAuth: true },
+          component: MainPage
+        },
         {
           path: 'updatePet',
           name: 'updatePet',
@@ -143,11 +144,16 @@ const router = createRouter({
           component: () => import('../views/Home.vue'),
         },
         {
-          name: 'Dashboard',
-          path: '/dashboard',
-          component: () => import('../views/Dashboard.vue'),
-          meta: { roles: ['Admin'] }
+          name: 'IPetlist',
+          path: '/pet-list',
+          component: () => import('../views/PetList.vue'),
         },
+        // {
+        //   name: 'Dashboard',
+        //   path: '/dashboard',
+        //   component: () => import('../views/Dashboard.vue'),
+        //   meta: { roles: ['Admin'] }
+        // },
         // Add more routes as needed
       ],
 
@@ -165,11 +171,7 @@ const router = createRouter({
         },
 
 
-        {
-          name: 'PetListP',
-          path: '/petListP',
-          component: () => import('../views/PetList.vue'),
-        },
+        
         {
           name: 'VaccineCalendar',
           path: '/vaccine-calendar',

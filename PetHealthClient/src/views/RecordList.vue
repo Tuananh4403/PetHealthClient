@@ -19,6 +19,8 @@
         </tr>
       </tbody>
     </table>
+              <button class="create-btn" @click="navigateTo('create-record' )">Create</button>
+
   </div>
   </template>
   <script>
@@ -140,6 +142,7 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
 .data-table {
   width: 100%;
   border-collapse: collapse;
+  justify-content: flex-end;
 }
 
 .data-table th, .data-table td {
@@ -155,6 +158,20 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
 
 .update-btn {
   background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 2px 2px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.update-btn {
+  background-color: #4CAF50;
+  justify-content: end;
   border: none;
   color: white;
   padding: 5px 10px;

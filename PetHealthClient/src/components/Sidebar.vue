@@ -9,18 +9,18 @@
         <router-link to="/dashboard" class="menu-item">
           <span class="material-icons">Dashboard</span>
         </router-link>
-        <router-link to="/home" class="menu-item">
+        <!-- <router-link to="/home" class="menu-item">
           <span class="material-icons">Home</span>
-        </router-link>
+        </router-link> -->
         <router-link to="/record-list" class="menu-item">
           <span class="material-icons">List Record</span>
         </router-link>    
-        <router-link to="/petList" class="menu-item">
+        <router-link to="/pet-list" class="menu-item">
           <span class="material-icons">Pet List</span>
         </router-link>
-        <router-link to="/vaccineCalendar" class="menu-item">
+        <!-- <router-link to="/vaccineCalendar" class="menu-item">
           <span class="material-icons">Vaccine Calendar</span>
-        </router-link>
+        </router-link> -->
         <router-link to="/kennel" class="menu-item">
           <span class="material-icons">Kennel</span>
         </router-link>

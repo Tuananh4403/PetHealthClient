@@ -169,7 +169,7 @@ export default {
                   .then(async response => {
                     const data = response.data;
                     if(data.success){
-                      this.doctors = this.mapDotor(data.data);
+                      this.doctors = data.data;
                     }
                   })
     },
@@ -178,7 +178,7 @@ export default {
       for(var doc in doctors){
         var doctor = new Object;
         doctor.id = doctors[doc].id;
-        doctor.name = doctors[doc].user.firstName + ' ' +doctors[doc].user.lastName;
+        doctor.name = doctors.name;
         result.push(doctor)
       }
       return result

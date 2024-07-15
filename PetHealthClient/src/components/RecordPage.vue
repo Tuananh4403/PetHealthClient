@@ -170,7 +170,10 @@ export default {
   },
   mounted(){
     const recordId = this.$route.params.id;
+    if(recordId){
     this.getRecordDetail(recordId);
+      
+    }
   },
   methods: {
     async getRecordDetail(recordId){
