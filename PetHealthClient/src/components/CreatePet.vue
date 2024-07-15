@@ -33,9 +33,9 @@
         </li>
         <li class="profile dropdown split">
           <img src="../assets/images/icon.png" alt="Profile Image"/>
-          <a href="#" @click="toggleDropdown">{{userName}}</a>
+          <a href="#" @click="toggleDropdown">{{fullName}}</a>
           <div class="dropdown-content" v-show="showDropdown">
-            <span>{{fullName}}</span>
+            <span>{{userName}}</span>
             <hr>
             <a href="#" @click="navigateTo('customer/profile')">View Profile</a>
             <a href="#" @click="logout">Logout</a>
@@ -97,7 +97,7 @@
 import { axiosPrivate } from '@/api/axios';
 import { toastSuccess, toastWarning } from '@/utils/toast';
 import Multiselect from 'vue-multiselect';
-import { getUserName } from '@/utils/auth';
+import { getUserFullName, getUserName } from '@/utils/auth';
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 
@@ -125,6 +125,7 @@ import { ref } from 'vue'
       return {
         backgroundImage: null,
         userName: "",
+        fullName:"",
         petName: '',
         kindOfPet: '',
         gender: false,
@@ -184,6 +185,7 @@ import { ref } from 'vue'
     },
       fetchUsername(){
       this.userName = getUserName();
+      this.fullName = getUserFullName();
     },
       customLabel({ name }) {
             return `${name}`;

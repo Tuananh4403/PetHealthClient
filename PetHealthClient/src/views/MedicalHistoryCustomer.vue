@@ -1,4 +1,48 @@
 <template>
+    <div id="app">
+      <nav>
+        <ul>
+          <li><a href="#" @click="navigateTo('/')">Home</a></li>
+          <li class="dropdown">
+            <a href="#" @click="toggleDropdown">Medical History</a>
+            <div class="dropdown-content" v-show="showDropdown">
+              <a href="#" @click="navigateTo('customer/petOfMedicalHistory')">Pet Medical</a>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="#" @click="toggleDropdown">Pet</a>
+            <div class="dropdown-content" v-show="showDropdown">
+              <a href="#" @click="navigateTo('customer/createPet')">Create Pet</a>
+              <a href="#" @click="navigateTo('customer/updatePet')">Update Pet</a>
+              <a href="#" @click="navigateTo('customer/delete-pet')">Delete Pet</a>
+              <a href="#" @click="navigateTo('customer/pet-list')">List Pet</a>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="#" @click="toggleDropdown">Kennel</a>
+            <div class="dropdown-content" v-show="showDropdown">
+              <a href="#" @click="navigateTo('customer/viewBarn')">Save Barn</a>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="#" @click="toggleDropdown">Service</a>
+            <div class="dropdown-content" v-show="showDropdown">
+              <a href="#" @click="navigateTo('customer/booking')">Create Booking</a>
+              <a href="#" @click="navigateTo('customer/listBooking')">List Booking</a>
+            </div>
+          </li>
+          <li class="profile dropdown split">
+            <img src="../assets/images/icon.png" alt="Profile Image"/>
+            <a href="#" @click="toggleDropdown">{{fullName}}</a>
+            <div class="dropdown-content" v-show="showDropdown">
+              <span>{{userName}}</span>
+              <hr>
+              <a href="#" @click="navigateTo('customer/profile')">View Profile</a>
+              <a href="#" @click="logout">Logout</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
   <div class="pet-health-records">
     <h1>Pet Health Records</h1>
     <div class="section" v-for="(section, index) in sections" :key="index">
@@ -58,22 +102,59 @@
       </div>
     </div>
   </div>
+  </div>  
 </template>
 
 <script>
 
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { ref } from 'vue'
+import { getUserFullName, getUserName } from '@/utils/auth';
 import { axiosPrivate } from '@/api/axios';
 export default {
-
+  setup() {
+      const router = useRouter()
+      const showDropdown = ref(false)
+      const isChatOpen = ref(false)
+  
+      const toggleDropdown = () => {
+        showDropdown.value = !showDropdown.value
+      }
+  
+      const navigateTo = (route) => {
+        router.push(`/${route}`)
+      }
+  
+      const toggleChat = () => {
+        console.log('toggleChat called, isChatOpen:', isChatOpen.value);
+        isChatOpen.value = !isChatOpen.value;
+      }
+  
+      return {
+        navigateTo,
+        toggleDropdown,
+        showDropdown,
+        isChatOpen,
+        toggleChat
+      }
+    },
   mounted(){
+    import('@/assets/images/background.png')
+      .then((image) => {
+        this.backgroundImage = image.default
+      })
+      .catch((error) => {
+        console.error('Error loading image:', error)
+      })
     const petId = this.$route.params.id;
+    this.fetchUsername();
     this.getRecordHistory(petId);
   },
   data() {
     return {
       backgroundImage: null,
       userName: "",
+      fullName: '', 
       pet: {
         name: '',
         kind: '',
@@ -122,16 +203,6 @@ export default {
       ]
     };
   },
-  mounted() {
-    import('@/assets/images/background.png')
-      .then((image) => {
-        this.backgroundImage = image.default
-      })
-      .catch((error) => {
-        console.error('Error loading image:', error)
-      })
-    this.fetchUsername();
-  },
   methods: {
     toggleSection(index) {
       this.sections[index].collapsed = !this.sections[index].collapsed;
@@ -139,12 +210,11 @@ export default {
     getRecordHistory(petId){
       axiosPrivate.get('/api/pet/get-record-history?petId=' + petId)
       .then(res =>{
-        console.log(res);
         const data = res.data.data
         this.transformPetData(data)
       })
       },
-     transformPetData(data){
+      transformPetData(data){
         var pet= {
           name: data.petName,
           kind: data.kindOfPet,
@@ -171,7 +241,11 @@ export default {
         this.pet =pet;
         this.owner = owner;
         this.medicalHistory = medicalHistory;
-  }
+  },
+  fetchUsername(){
+        this.userName = getUserName();
+        this.fullName = getUserFullName();
+      }
   }
 };
 </script>

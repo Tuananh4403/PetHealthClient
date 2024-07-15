@@ -12,8 +12,8 @@
         <router-link to="/home" class="menu-item">
           <span class="material-icons">Home</span>
         </router-link>
-        <router-link to="/medicalHistory" class="menu-item">
-          <span class="material-icons">Medical History</span>
+        <router-link to="/record-list" class="menu-item">
+          <span class="material-icons">List Record</span>
         </router-link>    
         <router-link to="/petList" class="menu-item">
           <span class="material-icons">Pet List</span>

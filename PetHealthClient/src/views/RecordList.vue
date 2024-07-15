@@ -1,60 +1,49 @@
 <template>
-    <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
-      <div class="list-container">
-        <h1>List of Record</h1>
-        <table>
-          <thead>
-              <tr>
-                <th>Pet</th>
-                <th>Date</th>
-                <th>Doctor</th>
-                <th>Detail Prediction</th>
-                <th>Conclude</th>
-                <th>View Detail</th>
-                <th>Save Barn</th>
-                <th>Barn</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-          <tbody>
-            <tr v-for="(Record, index) in Records" :key="index">
-              <td>{{ index + 1 }}</td>
-              <td>{{ pet.Customer }}</td>
-              <td>{{ pet.PetName }}</td>
-              <td>{{ pet.Doctor }}</td>
-              <td>{{ pet.Service }}</td>
-              <td>{{ pet.Date }}</td>
-              <td>{{ pet.Note }}</td>
-              <td >
-                <button v-if="!isCustomer" @click="approveBooking(pet)">
-                  Approve 
-                </button>
-              </td>
-              <td>
-                <button v-if="pet.Status == 1" @click="createRecord(pet)">
-                  Create Record
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
+    <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th v-for="header in headers" :key="header">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(record, index) in records" :key="index">
+          <td v-for="header in headers" :key="header">
+            <template v-if="header !== 'Detail'">
+              
+              {{ record[header] || '' }}
+            </template>
+            
+              <button v-else class="update-btn" @click="navigateTo('record/'+ record['id'] )">Detail</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   </template>
-  
   <script>
 import { axiosPrivate } from '@/api/axios';
+import { useRouter } from 'vue-router';
 import { getUserRole } from '@/utils/auth';
+import { formatDate } from '@/utils/common';
 import { toastSuccess, toastWarning } from '@/utils/toast';
 
 
   export default {
+    setup(){
+      const router = useRouter()
+      const navigateTo = (route) => {
+        router.push(`/${route}`)
+      }
+      return {
+        navigateTo}
+    },
     data() {
       return {
+      headers: ['Pet', 'Date', 'Doctor', 'Detail Prediction','Conclude','Save Barn', 'Barn','Detail'],
+
         backgroundImage: null,
-        bookings: [],
+        records: [],
         userRoles: null,
         isCustomer: false
       };
@@ -79,7 +68,6 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
       createRecord(){
         axiosPrivate.post("/api/record/create")
         .then(res => {
-          console.log(res);
           const data = res.data; 
           if(data.success){
             toastSuccess(data.message)
@@ -92,34 +80,34 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
         axiosPrivate.get("/api/record/get-list-record")
           .then(response => {
             console.log(response)
-            if(response.data.success){
-            var data = Object.values(response.data.data)
-              data.forEach(item => {
-                var booking = this.mapBookingData(item);
-                this.bookings.push(booking)
+            const data = response.data;
+            if(data.success){
+              var result = [];
+              this.records = result
+              data.data.forEach(element => {
+                var record = this.mapRecordToFields(element);
+                result.push(record)
               });
+              this.records = result;
             }
           })
           .catch(error => {
             console.error('Error fetching pets:', error);
           });
     },
-    approveBooking(pet) {
-      // Example of sending data (pet) to an API endpoint
-      axiosPrivate.post('/api/booking/confirm/' + pet.id)
-        .then(response => {
-            const data = response.data;
-            if(data.success){
-              toastSuccess(data.message);
-            }else{
-              toastWarning(data.message)
-            }
-        })
-        .catch(error => {
-          console.error('Error approving booking:', error);
-          // Handle error scenario
-        });
-    },
+    mapRecordToFields(record) {
+    return {
+        id: record.id        ,
+        Pet: record.pet.petName,
+        Date: formatDate(record.createdAt),
+        Doctor: record.doctor.user.firstName +  " " +record.doctor.user.lastName,  // Assuming the doctor's name is stored in record.doctor.user.name
+        'Detail Prediction': record.detailPrediction,
+        Conclude: record.conclude,
+        'Save Barn': record.saveBarn ? "Yes" : "No",
+        Barn: record.barnId || "",
+        'View Detail': record.id
+    }
+  },
     mapBookingData(petData) {
     const pet = petData.pet;
     const customer = pet.customer.user;
@@ -141,44 +129,42 @@ import { toastSuccess, toastWarning } from '@/utils/toast';
   </script>
   
   <style scoped>
-  .full-screen-background {
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .list-container {
-    width: 90%;
-    margin: auto;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 5px;
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: center;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #9b0f0a;
-  }
-  
-  tr:hover {
-    background-color: #555;
-  }
+  .table-container {
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 85%;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.data-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.update-btn {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 2px 2px;
+  cursor: pointer;
+  border-radius: 3px;
+}
   </style>
   

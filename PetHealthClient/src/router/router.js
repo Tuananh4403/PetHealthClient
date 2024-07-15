@@ -98,97 +98,99 @@ const router = createRouter({
           name: 'profile',
           component: CustomerProfile
         },
-=
-      {
-        path: 'medicalHistory/:id',
-        name: 'medicalHistory',
-        component: MedicalHistoryCustomer
-      },
-    {
-      path: 'petBarnMedical',
-      name: 'petBarnMedical',
-      component: MedicalHistory
+        {
+          path: 'medicalHistory/:id',
+          name: 'medicalHistory',
+          component: MedicalHistoryCustomer
+        },
+        {
+          path: 'petBarnMedical',
+          name: 'petBarnMedical',
+          component: MedicalHistory
+        },
+      ],
+
     },
-  ],
+    {
+      path: '/',
+      component: BaseLayout,
+      meta: { requiresAuth: true, role: ['Doctor', 'Staff', 'Admin'] },
+      children: [
+        {
+          path: 'create-record',
+          name: 'CreateRecord',
+          component: RecordPage
+        },
+        {
+          path: 'record/:id',
+          name: 'Record',
+          component: RecordPage
+        },
+        {
+          path: 'record-list',
+          name: 'RecordList',
+          component: RecordList
+        },
+        {
+          name: 'Home',
+          path: '/home',
+          component: () => import('../views/Home.vue'),
+        },
+        {
+          name: 'Dashboard',
+          path: '/dashboard',
+          component: () => import('../views/Dashboard.vue'),
+          meta: { roles: ['Admin'] }
+        },
+        // Add more routes as needed
+      ],
 
-},
-  {
-    path: '/doctor',
-    component: BaseLayout,
-    meta: { requiresAuth: true, role: ['Doctor'] },
-    children: [
-      {
-        path: 'record',
-        name: 'Record',
-        component: RecordPage
-      },
+    },
+    {
+      path: '/admin',
+      component: () => import('../layouts//BaseLayout.vue'),
+      meta: { requiresAuth: false, role: ['Customer'] },
+      children: [
 
-      // Add more routes as needed
-    ],
+        {
+          path: '/manage-user',
+          name: 'ManageUser',
+          component: () => import('../views/ManageUser.vue'),
+        },
 
-  },
-  {
-    path: '/staff',
-    meta: { requiresAuth: true, role: ['Staff'] },
-    children: [
-      // Add more routes as needed
-    ],
 
-  },
-  {
-    path: '/admin',
-    component: () => import('../layouts//BaseLayout.vue'),
-    meta: { requiresAuth: false, role: ['Customer'] },
-    children: [
-      {
-        name: 'Dashboard',
-        path: '/dashboard',
-        component: () => import('../views/Dashboard.vue'),
-        meta: { roles: ['Admin'] }
-      },
-      {
-        path: '/manage-user',
-        name: 'ManageUser',
-        component: () => import('../views/ManageUser.vue'),
-      },
-      {
-        name: 'Home',
-        path: '/home',
-        component: () => import('../views/Home.vue'),
-      },
-
-      {
-        name: 'PetListP',
-        path: '/petListP',
-        component: () => import('../views/PetList.vue'),
-      },
-      {
-        name: 'VaccineCalendar',
-        path: '/vaccine-calendar',
-        component: () => import('../views/VaccineCalendar.vue'),
-      },
-      {
-        name: 'Kennel',
-        path: '/kennel',
-        component: () => import('../views/Kennel.vue'),
-      },
-      {
-        name: 'Service',
-        path: '/service',
-        component: () => import('../views/Service.vue'),
-      },
-      {
-        name: 'ManageDoctor',
-        path: '/manage-doctor',
-        component: () => import('@/views/ManageDoctor.vue'),
-      },
-      {
-        name: 'ManageStaff',
-        path: '/manage-staff',
-        component: () => import('../views/ManageStaff.vue'),
-      },
-    ],
-  },
+        {
+          name: 'PetListP',
+          path: '/petListP',
+          component: () => import('../views/PetList.vue'),
+        },
+        {
+          name: 'VaccineCalendar',
+          path: '/vaccine-calendar',
+          component: () => import('../views/VaccineCalendar.vue'),
+        },
+        {
+          name: 'Kennel',
+          path: '/kennel',
+          component: () => import('../views/Kennel.vue'),
+        },
+        {
+          name: 'Service',
+          path: '/service',
+          component: () => import('../views/Service.vue'),
+        },
+        {
+          name: 'ManageDoctor',
+          path: '/manage-doctor',
+          component: () => import('@/views/ManageDoctor.vue'),
+        },
+        {
+          name: 'ManageStaff',
+          path: '/manage-staff',
+          component: () => import('../views/ManageStaff.vue'),
+        },
+      ],
+    },
   ]
 })
 router.beforeEach((to, from, next) => {

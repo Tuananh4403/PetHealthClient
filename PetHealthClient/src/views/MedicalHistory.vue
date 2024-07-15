@@ -33,9 +33,9 @@
         </li>
         <li class="profile dropdown split">
           <img src="../assets/images/icon.png" alt="Profile Image" />
-          <a href="#" @click="toggleDropdown">{{ userName }}</a>
+          <a href="#" @click="toggleDropdown">{{ fullName }}</a>
           <div class="dropdown-content" v-show="showDropdown">
-            <span>{{ fullName }}</span>
+            <span>{{ userName }}</span>
             <hr>
             <a href="#" @click="navigateTo('customer/profile')">View Profile</a>
             <a href="#" @click="logout">Logout</a>
@@ -123,7 +123,7 @@
 <script>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { getUserName } from '@/utils/auth';
+import { getUserFullName, getUserName } from '@/utils/auth';
 
 export default {
   setup() {
@@ -156,6 +156,7 @@ export default {
     return {
       backgroundImage: null,
       userName: "",
+      fullName: "",
       pet: {
         name: '',
         kind: '',
@@ -229,6 +230,7 @@ export default {
     },
     fetchUsername() {
       this.userName = getUserName();
+      this.fullName = getUserFullName();
     }
   }
 };

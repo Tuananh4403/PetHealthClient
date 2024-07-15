@@ -33,9 +33,9 @@
           </li>
           <li class="profile dropdown split">
             <img src="../assets/images/icon.png" alt="Profile Image"/>
-            <a href="#" @click="toggleDropdown">{{userName}}</a>
+            <a href="#" @click="toggleDropdown">{{fullName}}</a>
             <div class="dropdown-content" v-show="showDropdown">
-              <span>{{fullName}}</span>
+              <a href="#" >{{userName}}</a>
               <hr>
               <a href="#" @click="navigateTo('customer/profile')">View Profile</a>
               <a href="#" @click="logout">Logout</a>
@@ -45,7 +45,7 @@
       </nav>
       <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
         <div class="container">
-          <div class="pet-frame" v-for="pet in pets" :key="pet.id" @click="navigateTo('customer/medicalHistory')">
+          <div class="pet-frame" v-for="pet in pets" :key="pet.id" @click="navigateTo('customer/medicalHistory/' + pet.id)">
             <span class="pet-name">{{ pet.name }}</span>
           </div>
         </div>
@@ -69,7 +69,9 @@
   import { useRouter } from 'vue-router';
   import { ref } from 'vue'
   import Chatbox from '@/components/ChatBox.vue'
-  import { getUserName } from '@/utils/auth';
+  import { getUserFullName, getUserName } from '@/utils/auth';
+import { axiosPrivate } from '@/api/axios';
+import { formatDate } from '@/utils/common';
   
   export default {
     components: {
@@ -105,6 +107,7 @@
       return {
         backgroundImage: null,
         userName: "",
+        fullName: "",
         pets: [
           { id: 1, name: 'Pet 1' },
           { id: 2, name: 'Pet 2' },
@@ -122,6 +125,7 @@
           console.error('Error loading image:', error)
         })
       this.fetchUsername();
+    this.fetchGetPet();
     },
     methods: {
       logout(){
@@ -134,7 +138,39 @@
       },
       fetchUsername(){
         this.userName = getUserName();
+        this.fullName = getUserFullName();
+      },
+      async fetchGetPet(){
+      await axiosPrivate.get('/api/pet/get-list-pet-by-user' )
+                  .then(async response => {
+                    const data = response.data;
+                    if(data.success){
+                      await this.addMappedPet(data.data);
+                    }
+                  })
+    },
+    mapPetData(data) {
+      // console.log(data.petName);
+      var pet = {
+        id: data.id,
+        name: data.petName,
+        kind: data.kindOfPet,
+        gender: data.gender ? 'Male' : 'Female',
+        birthday: formatDate(data.birthday),
+        species: data.species
       }
+      // console.log(pet);
+      return pet;
+    },
+    async addMappedPet(data) {
+      this.pets = [];
+      for(var pet in data){
+        const mappedPet = this.mapPetData(data[pet]);
+        // console.log(mappedPet)
+        
+        await this.pets.push(mappedPet);
+      }
+  },
     }
   };
   </script>

@@ -33,9 +33,9 @@
         </li>
         <li class="profile dropdown split">
           <img src="../assets/images/icon.png" alt="Profile Image"/>
-          <a href="#" @click="toggleDropdown">{{userName}}</a>
+          <a href="#" @click="toggleDropdown">{{fullName}}</a>
           <div class="dropdown-content" v-show="showDropdown">
-            <span>{{fullName}}</span>
+            <span>{{userName}}</span>
             <hr>
             <a href="#" @click="navigateTo('customer/profile')">View Profile</a>
             <a href="#" @click="logout">Logout</a>
@@ -45,7 +45,7 @@
     </nav>
     <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <div class="container">
-        <div class="pet-frame" v-for="pet in pets" :key="pet.id" @click="navigateTo('customer/petBarnMedical')">
+        <div class="pet-frame" v-for="pet in pets" :key="pet.id" @click="navigateTo('customer/medicalHistory/' + pet.id)">
           <span class="pet-name">{{ pet.name }}</span>
         </div>
       </div>
@@ -69,7 +69,7 @@
 import { useRouter } from 'vue-router';
 import { ref } from 'vue'
 import Chatbox from '@/components/ChatBox.vue'
-import { getUserName } from '@/utils/auth';
+import { getUserFullName, getUserName } from '@/utils/auth';
 import { axiosPrivate } from '@/api/axios';
 import { formatDate } from '@/utils/common';
 
@@ -107,11 +107,8 @@ export default {
     return {
       backgroundImage: null,
       userName: "",
+      fullName: "",
       pets: [
-        { id: 1, name: 'Pet 1' },
-        { id: 2, name: 'Pet 2' },
-        { id: 3, name: 'Pet 3' },
-        { id: 4, name: 'Pet 4' }
       ]
     };
   },
@@ -137,9 +134,10 @@ export default {
     },
     fetchUsername(){
       this.userName = getUserName();
+      this.fullName = getUserFullName();
     },
     async fetchGetPet(){
-      await axiosPrivate.get('/api/pet/get-list-pet-by-user')
+      await axiosPrivate.get('/api/pet/get-list-pet-by-user?saveBarn=true' )
                   .then(async response => {
                     const data = response.data;
                     if(data.success){
@@ -161,9 +159,11 @@ export default {
       return pet;
     },
     async addMappedPet(data) {
+      this.pets = [];
       for(var pet in data){
         const mappedPet = this.mapPetData(data[pet]);
         // console.log(mappedPet)
+        
         await this.pets.push(mappedPet);
       }
   },

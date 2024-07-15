@@ -2,7 +2,7 @@
 import { createStore } from 'vuex';
 import { apiClient } from '@/api/axios';
 import { toastSuccess, toastError, toastWarning } from '@/utils/toast';
-import { saveToken, saveUserId, saveUserName, getToken, getUserId, getUserName, saveUserRole, getUserRole} from '@/utils/auth';
+import { saveToken, saveUserId, saveUserName, getToken, getUserId, getUserName, saveUserRole, getUserRole, saveUserFullName } from '@/utils/auth';
 
 export default createStore({
   state: {
@@ -36,12 +36,13 @@ export default createStore({
         console.log(response);
         if (response.data.success) {
           const { id, fullName, email, username, role, token } = response.data.data;
-          const user = { id, fullName, email, username , role};
+          const user = { id, fullName, email, username, role };
           commit('setUser', user);
           commit('setToken', token);
           saveToken(token);
-          console.log(getToken());
+          saveToken(token);
           saveUserId(id);
+          saveUserFullName(fullName)
           saveUserName(username);
           saveUserRole(role);
           toastSuccess("Đăng nhập thành công!");

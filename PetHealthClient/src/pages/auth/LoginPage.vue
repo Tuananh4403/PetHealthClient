@@ -40,7 +40,7 @@
 
 <script >
 import { apiClient } from '@/api/axios';
-import { getToken } from '@/utils/auth';
+import { getToken, getUserRole } from '@/utils/auth';
 
 export default {
   data() {
@@ -77,9 +77,12 @@ export default {
           email: this.email,
           password: this.password,
         });
-    console.log('=======================',getToken());
-
-        this.$router.push('/customer/main'); 
+        if(getUserRole().includes('Customer')){
+          this.$router.push('/customer/main'); 
+        }
+        if(getUserRole().includes('Doctor')){
+          this.$router.push('/record-list'); 
+        }
       } catch (error) {
         console.error('Login failed:', error);
        

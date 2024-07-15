@@ -1,5 +1,4 @@
 <template>
-  <div id="app">
     <nav>
       <ul>
         <li><a href="#"@click="navigateTo('/')">Home</a></li>
@@ -43,40 +42,13 @@
         </li>
       </ul>
     </nav>
-    <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
-      <img src="@/assets/images/petshop.png" alt="Pet" class="background-image" />
-      <div class="text-content">
-          <h2 class="animated-text">PET SERVICE</h2>
-          <span class="animated-text">Best Service For Your Pet</span>
-          <span class="animated-text">Top reputation in Ho Chi Minh City</span>
-          <button class="booking-button" @click="navigateTo('customer/booking')">Booking now</button>
-        </div>
-    <div class="chat-toggle" @click="toggleChat">
-      <div class="chat-bar">Message</div>
-    </div>
-    <Chatbox v-if="isChatOpen" :isOpen="isChatOpen" @close="toggleChat" />
-  </div>
-  <div class="footer-content">
-        <h2>PET SERVICE</h2>
-        <p>Your pet's health and happiness are our top priority.</p>
-        <div class="footer-info">
-          <p><strong>Hotline:</strong>  0819790919</p>
-          <p><strong>Zalo:</strong>   0819790919</p>
-          <p><strong>Address:</strong>   8A, Le Van Viet Street, District 9, Thu Duc City</p>
-        </div>
-    </div>
-  </div>
 </template>
 <script>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import Chatbox from '@/components/ChatBox.vue'
-import { getUserName, getUserFullName } from '@/utils/auth';
+import { getUserName } from '@/utils/auth';
 
 export default {
-  components: {
-    Chatbox
-  },
   setup() {
     const router = useRouter()
     const showDropdown = ref(false)
@@ -132,7 +104,6 @@ export default {
     },
     fetchUsername(){
       this.userName = getUserName();
-      this.fullName = getUserFullName();
     }
   }
 }
@@ -301,24 +272,5 @@ span.animated-text {
   background-image: url('../assets/images/background.png'); 
 }
 
-.chat-toggle {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
 
-.chat-bar {
-  width: 100%;
-  height: 100%;
-  background-color: #007bff;
-  color: white;
-  align-content: center;
-}
 </style>
-
-

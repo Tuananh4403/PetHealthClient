@@ -82,12 +82,13 @@ import { axiosPrivate } from '@/api/axios';
         axiosPrivate.get('/api/auth/get-detail')
         .then(res => {
           const data = res.data;
+          console.log(res)
+
           if(data.success){
             this.customer.fullName =data.data.firstName + data.data.lastName;
             this.customer.email = data.data.email;
             this.customer.phoneNumber = data.data.phoneNumber;
             this.customer.address = data.data.address;
-            console.log(data.data)
           }
         })
       }

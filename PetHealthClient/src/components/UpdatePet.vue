@@ -4,7 +4,7 @@
       <h1>Update your pet</h1>
       <form>
         <label for="pet-name">Pet Name</label>
-        <multiselect v-model="selectedPet" :options="pets" placeholder="Pet Name" label="name" track-by="id"
+        <multiselect v-model="selectedPet" :options="pets" placeholder="Pet Name" label="name" track-by="id" :custom-label="detailPet"
           :searchable="true" @open="fetchPetData" :allow-empty="false" />
 
         <label for="kind-of-pet">Kind Of Pet</label>
@@ -28,14 +28,24 @@
 <script>
 import { axiosPrivate } from '@/api/axios';
 import Multiselect from 'vue-multiselect';
-import { toastWarning, toastSuccess } from '@/utils/toast';
+import { formatDate } from '@/utils/common';
 export default {
   components: { Multiselect },
   data() {
     return {
       backgroundImage: null,
       pets: [],
-      selectedPet: null,
+      selectedPet: {
+        id: 0,
+        name: '',
+        gender: null,
+        kind: '',
+        birthday: '',
+        weight: '',
+        height: '',
+        species: '',
+        temperature: ''
+      },
     }
   },
   mounted() {
@@ -47,25 +57,56 @@ export default {
         console.error('Error loading image:', error)
       })
   },
-  methods: {
-    async fetchPetData() {
-      try {
-        await axiosPrivate.get('/api/pet/get-list-pet-by-user')
-          .then(response => {
-            console.log(response);
-            const data = response;
-
-            if (data.success) {
-              this.pets = data.data.map(pet => ({ id: pet.id, name: pet.name }));
-            } else {
-              toastWarning(data.message || 'An error occurred during registration');
-            }
-          }); // Replace with your API endpoint
-
-      } catch (error) {
-        console.error('Error fetching pet data:', error);
+  watch: {
+    selectedPet(newVal) {
+      if (newVal) {
+        this.petOwner = newVal.customerName;
+        this.petInfo.id = newVal.id;
+        this.petInfo.gender = this.genders.find(g => g.value === newVal.gender).name;
+        this.petInfo.kind = newVal.kindOfPet;
+        this.petInfo.birthday = formatDate(newVal.birthday);
+        this.petInfo.species = newVal.species;
+      } else {
+        this.petOwner = '';
+        this.gender = '';
       }
     }
+  },
+  methods: {
+    detailService({name}){
+      return `${name}`;
+    },
+    async fetchGetPet(){
+      await axiosPrivate.get('/api/pet/get-list-pet-by-user' )
+                  .then(async response => {
+                    const data = response.data;
+                    if(data.success){
+                      await this.addMappedPet(data.data);
+                    }
+                  })
+    },
+    mapPetData(data) {
+      // console.log(data.petName);
+      var pet = {
+        id: data.id,
+        name: data.petName,
+        kind: data.kindOfPet,
+        gender: data.gender ? 'Male' : 'Female',
+        birthday: formatDate(data.birthday),
+        species: data.species
+      }
+      // console.log(pet);
+      return pet;
+    },
+    async addMappedPet(data) {
+      this.pets = [];
+      for(var pet in data){
+        const mappedPet = this.mapPetData(data[pet]);
+        // console.log(mappedPet)
+        
+        await this.pets.push(mappedPet);
+      }
+  },
   }
 
 

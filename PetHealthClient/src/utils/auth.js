@@ -5,19 +5,20 @@ const accessTokenKey = 'access_token';
 const userId = 'user_id';
 const userName = 'user_name';
 const roleTitle = "role_title";
+const fullName = 'full_name'
 
 const objCookies = {
-    path  : "/",
-    expires : 365,
-    domain: COOKIE_DOMAIN
+  path: "/",
+  expires: 365,
+  domain: COOKIE_DOMAIN
 };
 
 export const saveToken = (access_token) => {
-  if(access_token){
+  if (access_token) {
     Cookies.set(accessTokenKey, access_token, {
       ...objCookies,
     });
-  } else{
+  } else {
     Cookies.remove(accessTokenKey, {
       ...objCookies,
       path: "/",
@@ -26,8 +27,8 @@ export const saveToken = (access_token) => {
   }
 };
 
-export const saveUserId = (id) =>{
-  if(id){
+export const saveUserId = (id) => {
+  if (id) {
     Cookies.set(userId, id.toString(), {
       ...objCookies,
     });
@@ -39,13 +40,25 @@ export const saveUserId = (id) =>{
     });
   }
 };
-
+export const saveUserFullName = (fullname) => {
+  if (fullname) {
+    Cookies.set(fullName, fullname, {
+      ...objCookies,
+    });
+  } else {
+    Cookies.remove(fullName, {
+      ...objCookies,
+      path: "/",
+      domain: COOKIE_DOMAIN,
+    });
+  }
+};
 export const saveUserName = (name) => {
-  if(name){
+  if (name) {
     Cookies.set(userName, name, {
       ...objCookies,
     });
-  } else { 
+  } else {
     Cookies.remove(userName, {
       ...objCookies,
       path: "/",
@@ -54,17 +67,17 @@ export const saveUserName = (name) => {
   };
 };
 export const saveUserRole = (roles) => {
-  if(roles){
+  if (roles) {
     var dataSave = [];
     console.log(roles)
     roles.forEach(role => {
       dataSave.push(role.name);
-      
+
     });
     Cookies.set(roleTitle, dataSave, {
       ...objCookies,
     });
-  } else { 
+  } else {
     Cookies.remove(roleTitle, {
       ...objCookies,
       path: "/",
@@ -84,6 +97,10 @@ export const getUserId = () => {
 
 export const getUserName = () => {
   const name = Cookies.get(userName);
+  return name;
+};
+export const getUserFullName = () => {
+  const name = Cookies.get(fullName);
   return name;
 };
 

@@ -13,7 +13,7 @@
         <div class="form-group">
           <label for="petName">Pet Name</label>
           <multiselect v-model="selectedPet" :options="pets" :custom-label="detailPet"
-             :showNoOptions="false" :allow-empty="false" :close-on-select="true" :showLabels="false"
+             :showNoOptions="false" :allow-empty="false" :close-on-select="true" :showLabels="false" :disabled="isReadonly"
               placeholder=" Select Pet Name" @open="getPet" label="namePet" track-by="idPet">
             </multiselect>
         </div>
@@ -53,12 +53,12 @@
 
     <div class="form-group">
       <label for="detailPrediction">Detail prediction</label>
-      <textarea id="detailPrediction" v-model="detailPrediction" rows="4"></textarea>
+      <textarea id="detailPrediction" v-model="detailPrediction" rows="4" :disabled="isReadonly"></textarea>
     </div>
 
     <div class="form-group">
       <label for="conclude">Conclude</label>
-      <textarea id="conclude" v-model="conclude" rows="4"></textarea>
+      <textarea id="conclude" v-model="conclude" rows="4" :disabled="isReadonly"></textarea>
     </div>
     <hr>
 
@@ -74,7 +74,7 @@
         <div class="total">Total</div>
       </div>
       <div v-for="(service, index) in services" :key="index" class="service-row">
-        <input type="text" class="no" readonly :value="index+1">
+        <input type="text" class="no" readonly :value="index+1" >
         <multiselect 
         v-model="service.selectedService" 
         :options="serviceOptions" 
@@ -88,26 +88,26 @@
         :custom-label="detailService"
         @open="getService"
         @select="updateService(service)"
-        class="service-select name">
+        class="service-select name" :disabled="isReadonly">
       </multiselect>
         <input v-model="service.type" type="text" readonly class="service-input type">
-        <input v-model="service.quantity" type="number" class="service-input quantity" @change="updateTotal(index)">
+        <input v-model="service.quantity" type="number" class="service-input quantity" @change="updateTotal(index)" :disabled="isReadonly">
         <input v-model="service.unit" type="text" readonly class="service-input unit">
         <input v-model="service.price" type="number" readonly class="service-input price">
         <input v-model="service.total" type="number" readonly class="service-input total">
 
-        <button @click="removeService(index)" class="service-input remove-service-btn .delete-btn">x</button>
+        <button @click="removeService(index)" class="service-input remove-service-btn .delete-btn" :disabled="isReadonly">x</button>
       </div>
-      <button @click="addService" class="add-service-btn">+</button>
+      <button @click="addService" class="add-service-btn" :disabled="isReadonly">+</button>
     </div>
-    <button @click="submitForm" class="submit-btn">Submit</button>
+    <button @click="submitForm" class="submit-btn" :disabled="isReadonly">Submit</button>
   </div>
 </template>
 
 <script>
 import Multiselect from 'vue-multiselect';
 import { axiosPrivate } from '@/api/axios';
-import { toastError, toastSuccess, toastWarning } from '@/utils/toast';
+import { toastSuccess, toastWarning } from '@/utils/toast';
 import { formatDate } from '@/utils/common';
 
 export default {
@@ -116,6 +116,7 @@ export default {
 
   data() {
     return {
+      isReadonly: false,
       selectedPet: null,
       pets: [],
       petInfo: {
@@ -167,7 +168,14 @@ export default {
       }
     }
   },
+  mounted(){
+    const recordId = this.$route.params.id;
+    this.getRecordDetail(recordId);
+  },
   methods: {
+    async getRecordDetail(recordId){
+      await axiosPrivate.get("/api/record/")
+    },
     returnToPreviousPage() {
       this.$router.go(-1); // Navigates back one step in history
     },

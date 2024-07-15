@@ -33,9 +33,9 @@
         </li>
         <li class="profile dropdown split">
           <img src="../assets/images/icon.png" alt="Profile Image"/>
-          <a href="#" @click="toggleDropdown">{{userName}}</a>
+          <a href="#" @click="toggleDropdown">{{fullName}}</a>
           <div class="dropdown-content" v-show="showDropdown">
-            <span>{{fullName}}</span>
+            <span>{{userName}}</span>
             <hr>
             <a href="#" @click="navigateTo('customer/profile')">View Profile</a>
             <a href="#" @click="logout">Logout</a>
@@ -46,8 +46,8 @@
     <div class="full-screen-background" :style="{ backgroundImage: `url(${backgroundImage})` }">
       <div class="signup-container">
         <h1>Update your pet</h1>
-        <form>
-          <label for="pet-name">Pet Name</label>
+        <form  @submit.prevent="updatePet">
+          <label for="name">Pet Name</label>
           <multiselect 
           v-model="selectedPet"
           @open="fetchPetData" 
@@ -55,21 +55,36 @@
           placeholder="Pet Name" 
           label="name" 
           track-by="id"
+          :custom-label="detailPet"
           :searchable="true"
           :allow-empty="false"
         />
   
           <label for="kind-of-pet">Kind Of Pet</label>
-          <input type="text" id="kind-of-pet" placeholder="Kind Of Pet" />
+          <input v-model="selectedPet.kind" type="text" id="kind-of-pet" placeholder="Kind Of Pet" />
   
           <label for="gender">Gender</label>
-          <input type="text" id="gender" placeholder="Gender" />
+          <multiselect v-model="selectedPet.gender" style="cursor: pointer"
+                                    class="custom-input-select" 
+                                    placeholder="Choose Gender" :options="genders" :custom-label="detailGender">
+                                    <template #tag="{ option, remove }">
+                                        <span class="multiselect__tag" style="background: #22445d">
+                                            <span class="font-weight-bold">{{
+                                        option.name
+                                    }}</span>
+                                            <i tabindex="1" class="multiselect__tag-icon" @click="remove(option)"></i>
+                                        </span>
+                                    </template>
+                                    <template #noResult>
+                                        Không tìm thấy dữ liệu.
+                                    </template>
+                                </multiselect>
   
           <label for="birthday">Birthday</label>
-          <input type="date" id="birthday" />
+          <input type="date" v-model="selectedPet.birthday" id="birthday" />
   
           <label for="species">Species</label>
-          <input type="text" id="species" placeholder="Species" />
+          <input type="text" v-model="selectedPet.species" id="species" placeholder="Species" />
   
           <button type="submit">Save change</button>
         </form>
@@ -92,12 +107,13 @@
   import Multiselect from 'vue-multiselect';
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
-  import Chatbox from '@/components/ChatBox.vue'
-  import { getUserName } from '@/utils/auth';
+  // import Chatbox from '@/components/ChatBox.vue'
+  import { getUserFullName, getUserName } from '@/utils/auth';
+import { formatDate } from '@/utils/common';
+import { toastSuccess } from '@/utils/toast';
 
 export default {
   components: {
-    Chatbox,
     Multiselect
   },
   setup() {
@@ -131,10 +147,44 @@ export default {
       return {
         backgroundImage: null,
         userName: "",
+        fullName:"",
         pets: [],
-        selectedPet: null,
+        selectedPet: {
+          id: 0,
+          petName: '',
+          gender: false,
+          kind: '',
+          birthday: '',
+          species: '',
+        },
+      genders: [
+          {
+                value: true,
+                name: 'Male'
+            },
+            {
+                value: false,
+                name: 'Female'
+            }
+          ],
       }
     },
+    watch: {
+    selectedPet(newVal) {
+      console.log(newVal.id);
+      if (newVal) {
+        // console.log(this.selectedPet.gender)
+        this.selectedPet.gender = this.genders.find(g => g.value === newVal.gender);
+        console.log(this.selectedPet.gender)
+        this.selectedPet.kind = newVal.kindOfPet;
+        this.selectedPet.birthday = formatDate(newVal.birthday);
+        this.selectedPet.species = newVal.species;
+      } else {
+        this.petOwner = '';
+        this.gender = '';
+      }
+    }
+  },
     mounted() {
       import('@/assets/images/background.png')
         .then((image) => {
@@ -144,17 +194,22 @@ export default {
           console.error('Error loading image:', error)
         })
         this.fetchUsername();
+        this
     },
     methods:{
+      detailPet({petName}){
+      return `${petName}`;
+    },
+    detailGender({name}){
+      return `${name}`
+    },
       async fetchPetData() {
       try {
         await axiosPrivate.get('/api/pet/get-list-pet-by-user')
           .then(response => {
-            console.log(response)
             const data = response.data;
-
             if (data.success) {
-              this.pets = data.data.map(pet => ({ id: pet.id, name: pet.name }));
+              this.pets = data.data;
             }
           }); 
       } catch (error) {
@@ -162,20 +217,24 @@ export default {
       }
     },
       async updatePet(){
-           axiosPrivate.post("", {
-            
+           axiosPrivate.put("/api/pet/update-pet/"+ this.selectedPet.id, {
+            petName : this.selectedPet.petName,
+            gender : this.selectedPet.gender?.value,
+            KindOfPet: this.selectedPet.kind,
+            Birthday: this.selectedPet.birthday,
+            Species: this.selectedPet.species,
            })
            .then(response => {
-            console.log(response)
             const data = response.data;
-
             if (data.success) {
-              this.pets = data.data.map(pet => ({ id: pet.id, name: pet.name }));
+              this.$router.push('/customer/main');
+              toastSuccess(data.message);
             }
           });
       },
       fetchUsername(){
       this.userName = getUserName();
+      this.fullName = getUserFullName();
     }
     }
     

@@ -77,7 +77,6 @@ export default {
         birthday: formatDate(data.birthday),
         species: data.species
       }
-      // console.log(pet);
       return pet;
     },
     async addMappedPet(data) {
