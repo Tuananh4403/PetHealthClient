@@ -4,20 +4,27 @@
       <h2 class="modal-title">Update Doctor</h2>
       <form @submit.prevent="updateDoctor">
         <div class="form-group">
-          <label for="role">Role:</label>
-          <input id="role" v-model="form.role" required>
-        </div>
-        <div class="form-group">
-          <label for="id">ID:</label>
-          <input id="id" v-model="form.id" required>
-        </div>
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input id="name" v-model="form.name" required>
-        </div>
-        <div class="form-group">
           <label for="status">Status:</label>
-          <input id="status" v-model="form.status" required>
+          <multiselect v-model="statusSelected" style="cursor: pointer" label="status" track-by="name"
+                                    class="custom-input-select" selectLabel="" deselectLabel="" selectedLabel=""
+                                    placeholder="Choose Status" :options="status" :custom-label="customLabel">
+                                    <template #tag="{ option, remove }">
+                                        <span class="multiselect__tag" style="background: #22445d">
+                                            <span class="font-weight-bold">{{
+                                        option.name
+                                    }}</span>
+                                            <i tabindex="1" class="multiselect__tag-icon" @click="remove(option)"></i>
+                                        </span>
+                                    </template>
+                                    <template #noResult>
+                                        Không tìm thấy dữ liệu.
+                                    </template>
+                                </multiselect>
+  
+        </div>
+        <div class="form-group">
+          <label for="name">Specialtys:</label>
+          <input id="name" v-model="form.specialty" required>
         </div>
         <div class="form-actions">
           <button type="submit" class="btn btn-primary">Update</button>
@@ -29,19 +36,38 @@
 </template>
 
 <script>
+import {Multiselect} from 'vue-multiselect';
 export default {
+  components:{
+    Multiselect
+  },
+  name: 'UpdateDoctor',
   props: {
     doctor: {
       type: Object,
-      required: true
+      required: true,
+      
     }
   },
   data() {
     return {
-      form: { ...this.doctor }
+      form: { ...this.doctor },
+      statusSelected: false,
+      status: [
+            {
+                value: true,
+                name: 'Active'
+            },
+            {
+                value: false,
+                name: 'Deactive'
+            }],
     }
   },
   methods: {
+    customLabel(status) {
+      return `${status.name}`;
+    },
     updateDoctor() {
       console.log('Updating doctor:', this.form);
       this.$emit('update', this.form);

@@ -1,38 +1,43 @@
 <template>
-    <div>
-      <HeaderComponet />
-      <div class="main-content">
-        <SidebarComponet />
-        <router-view />
-        <div class="content">
-          <slot></slot>
-        </div>
-      </div>
-      <FooterComponet />
+  <div>
+    <HeaderComponent />
+    <div class="main-content">
+      <SidebarComponent />
+      <router-view />
     </div>
-  </template>
-  
-  <script>
-  import HeaderComponet from '../components/Header.vue';
-  import FooterComponet from '../components/Footer.vue';
-  import SidebarComponet from '../components/Sidebar.vue';
-  
-  export default {
-    name: 'BaseLayout',
-    components: {
-        HeaderComponet,
-        FooterComponet,
-        SidebarComponet,
-    },
-  };
-  </script>
-  
-  <style>
-  .main-content {
-    display: flex;
+    <FooterComponent />
+  </div>
+</template>
+
+<script>
+import HeaderComponent from '@/components/Header.vue'; // Adjust path as needed
+import SidebarComponent from '@/components/Sidebar.vue'; // Adjust path as needed
+import FooterComponent from '@/components/Footer.vue'; // Adjust path as needed
+import { useStore } from 'vuex';
+
+export default {
+  components: {
+    HeaderComponent,
+    SidebarComponent,
+    FooterComponent
+  },
+  setup() {
+    const store = useStore();
+
+    const toggleSidebar = () => {
+      store.dispatch('toggleSidebar'); // Ensure 'toggleSidebar' matches the action name in your store
+    };
+
+    return {
+      toggleSidebar,
+      isSidebarOpen: store.state.isSidebarOpen // Optionally, if you need to access the sidebar state
+    };
   }
-  .content {
-    flex: 1;
-  }
-  </style>
-  
+};
+</script>
+
+<style>
+.main-content {
+  display: flex;
+}
+</style>

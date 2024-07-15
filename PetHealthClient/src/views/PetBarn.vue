@@ -70,6 +70,8 @@ import { useRouter } from 'vue-router';
 import { ref } from 'vue'
 import Chatbox from '@/components/ChatBox.vue'
 import { getUserName } from '@/utils/auth';
+import { axiosPrivate } from '@/api/axios';
+import { formatDate } from '@/utils/common';
 
 export default {
   components: {
@@ -122,6 +124,7 @@ export default {
         console.error('Error loading image:', error)
       })
     this.fetchUsername();
+    this.fetchGetPet();
   },
   methods: {
     logout(){
@@ -134,7 +137,36 @@ export default {
     },
     fetchUsername(){
       this.userName = getUserName();
-    }
+    },
+    async fetchGetPet(){
+      await axiosPrivate.get('/api/pet/get-list-pet-by-user')
+                  .then(async response => {
+                    const data = response.data;
+                    if(data.success){
+                      await this.addMappedPet(data.data);
+                    }
+                  })
+    },
+    mapPetData(data) {
+      // console.log(data.petName);
+      var pet = {
+        id: data.id,
+        name: data.petName,
+        kind: data.kindOfPet,
+        gender: data.gender ? 'Male' : 'Female',
+        birthday: formatDate(data.birthday),
+        species: data.species
+      }
+      // console.log(pet);
+      return pet;
+    },
+    async addMappedPet(data) {
+      for(var pet in data){
+        const mappedPet = this.mapPetData(data[pet]);
+        // console.log(mappedPet)
+        await this.pets.push(mappedPet);
+      }
+  },
   }
 };
 </script>

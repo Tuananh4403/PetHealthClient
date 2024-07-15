@@ -1,9 +1,5 @@
 <template>
     <header class="header">
-      <div class="logo">
-        <!-- <img src="/path/to/logo.png" alt="Logo" /> -->
-        <span>My App</span>
-      </div>
       <nav class="nav">
         <router-link to="/">Home</router-link>
         <router-link to="/about">About</router-link>
@@ -35,6 +31,8 @@
   
   .nav {
     display: flex;
+    background-color: #0b0c5d;
+    justify-content: flex-end;
   }
   
   .nav a {
